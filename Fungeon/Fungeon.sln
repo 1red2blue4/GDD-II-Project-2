@@ -1,0 +1,29 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2008
+
+Project("{E2948EA4-7B57-4397-7B56-20ED78EE1CAA}") = "Fungeon", "Assembly-CSharp-firstpass.csproj", "{4BB6A381-DF82-5846-79E3-58A8AD27EDC6}"
+EndProject
+Project("{E2948EA4-7B57-4397-7B56-20ED78EE1CAA}") = "Fungeon", "Assembly-CSharp-Editor.csproj", "{50DE3A63-7D90-A006-E20D-06A486FA21F8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4BB6A381-DF82-5846-79E3-58A8AD27EDC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BB6A381-DF82-5846-79E3-58A8AD27EDC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BB6A381-DF82-5846-79E3-58A8AD27EDC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BB6A381-DF82-5846-79E3-58A8AD27EDC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50DE3A63-7D90-A006-E20D-06A486FA21F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50DE3A63-7D90-A006-E20D-06A486FA21F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50DE3A63-7D90-A006-E20D-06A486FA21F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50DE3A63-7D90-A006-E20D-06A486FA21F8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+	EndGlobalSection
+EndGlobal

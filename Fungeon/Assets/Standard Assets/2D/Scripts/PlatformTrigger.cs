@@ -19,7 +19,7 @@ public class PlatformTrigger : MonoBehaviour //KI
     {
         if (that.gameObject.tag == "Player") //If the colliding object is the player
         {
-            if (pT.m_Position && pT.m_Sticky) //If the player should stick to the platform when it moves
+            if ((pT.m_Position || pT.m_Circle) && pT.m_Sticky && !Input.GetButton("Jump")) //If the player should stick to the platform when it moves
             {
                 that.transform.position = new Vector3(transform.position.x, transform.position.y + transform.parent.transform.localScale.y, that.transform.position.z); //Snap the player to the collider
             }
@@ -36,6 +36,11 @@ public class PlatformTrigger : MonoBehaviour //KI
             if (pT.m_Rotation && pT.m_RotationIsTrigger) //If collider has a rotation trigger
             {
                 pT.m_RotationIsTrigger = false; //Activate the rotation trigger
+            }
+
+            if(pT.m_Circle && pT.m_CircleIsTrigger) //If the collider has a circle trigger
+            {
+                pT.m_CircleIsTrigger = false; //Activate the circle trigger
             }
         }
     }

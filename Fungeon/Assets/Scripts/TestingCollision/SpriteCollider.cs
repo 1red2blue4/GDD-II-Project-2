@@ -3,13 +3,13 @@ using System.Collections;
 
 public class SpriteCollider : MonoBehaviour {
 
-
-    void OnCollisionEnter2D(Collision2D col)
+    void OnTriggerEnter2D(Collider2D col)
     {
-        if(col.gameObject.tag == "stab")
+        if (col.gameObject.tag == "weapon")
         {
+            print("poop");
             SpriteRenderer sr = this.gameObject.GetComponent<SpriteRenderer>();
-            if(this != null)
+            if (this != null)
             {
                 sr.color = Color.blue;
             }

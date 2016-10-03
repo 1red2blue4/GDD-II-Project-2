@@ -19,9 +19,15 @@ namespace UnityStandardAssets._2D
         private Animator m_Anim;            // Reference to the player's animator component.
         private Rigidbody2D m_Rigidbody2D;
         private bool m_FacingRight = true;  // For determining which way the player is currently facing.
+        private bool canAttack = true;      // For creating a delay between attacks
+        private float timer = 0.0f;         // Timer for the cooldown
+        private float coolDown = 1.0f;             // Length the timer has to count up to
 
         public GameObject stabPrefab;
         public Camera cam;
+
+        //Getter
+        public bool CanAttack { get { return canAttack; } }
 
         private void Awake()
         {
@@ -32,6 +38,18 @@ namespace UnityStandardAssets._2D
             m_Rigidbody2D = GetComponent<Rigidbody2D>();
         }
 
+        private void Update()
+        {
+            if (!canAttack)
+            {
+                timer += Time.deltaTime;
+                if(timer >= coolDown)
+                {
+                    canAttack = true;
+                    timer = 0.0f;
+                }
+            }
+        }
 
         private void FixedUpdate()
         {
@@ -111,9 +129,9 @@ namespace UnityStandardAssets._2D
             m_FacingRight = !m_FacingRight;
 
             // Multiply the player's x local scale by -1.
-            Vector3 theScale = transform.localScale;
+            Vector3 theScale = this.GetComponentInChildren<SpriteRenderer>().transform.localScale;
             theScale.x *= -1;
-            transform.localScale = theScale;
+            this.GetComponentInChildren<SpriteRenderer>().transform.localScale = theScale;
         }
 
         /// <summary>
@@ -136,9 +154,11 @@ namespace UnityStandardAssets._2D
                 scale.x *= -1;
             }
 
+            //Need to make a weapon class and reimpliment this.
             GameObject weapon = (GameObject)Instantiate(stabPrefab, position, this.transform.rotation);
             weapon.transform.localScale = scale;
             weapon.transform.parent = this.gameObject.transform;
+            canAttack = false;
         }
     }
 }

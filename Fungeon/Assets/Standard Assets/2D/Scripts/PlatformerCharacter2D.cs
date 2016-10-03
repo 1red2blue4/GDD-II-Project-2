@@ -20,6 +20,9 @@ namespace UnityStandardAssets._2D
         private Rigidbody2D m_Rigidbody2D;
         private bool m_FacingRight = true;  // For determining which way the player is currently facing.
 
+        public GameObject stabPrefab;
+        public Camera cam;
+
         private void Awake()
         {
             // Setting up references.
@@ -99,7 +102,9 @@ namespace UnityStandardAssets._2D
             }
         }
 
-
+        /// <summary>
+        /// Flips the direction the avatar is facing for the player
+        /// </summary>
         private void Flip()
         {
             // Switch the way the player is labelled as facing.
@@ -109,6 +114,31 @@ namespace UnityStandardAssets._2D
             Vector3 theScale = transform.localScale;
             theScale.x *= -1;
             transform.localScale = theScale;
+        }
+
+        /// <summary>
+        /// Uses the currently equipped weapon to attack
+        /// </summary>
+        public void Attack()
+        {
+            //calculating position to spawn sprite
+            Vector3 position = this.transform.position;
+            Vector3 scale = stabPrefab.transform.localScale;
+
+            //chekcing which side to attack on based on mouse position
+            if (Input.mousePosition.x > (cam.WorldToViewportPoint(this.gameObject.transform.position).x) * Screen.width)
+            {
+                position.x += this.gameObject.GetComponent<BoxCollider2D>().size.x;
+            }
+            else
+            {
+                position.x -= this.gameObject.GetComponent<BoxCollider2D>().size.x;
+                scale.x *= -1;
+            }
+
+            GameObject weapon = (GameObject)Instantiate(stabPrefab, position, this.transform.rotation);
+            weapon.transform.localScale = scale;
+            weapon.transform.parent = this.gameObject.transform;
         }
     }
 }

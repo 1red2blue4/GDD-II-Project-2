@@ -9,26 +9,21 @@ public class PlatformTrigger : MonoBehaviour //KI
     {
         pT = GetComponentInParent<PlatformTransform>(); //Get the parent PlatformTransform script
 	}
-	
-	void Update() //Update is called once per frame
-    {
 
-	}
-
-    void OnCollisionStay2D(Collision2D that) //Detect collisions with the collider
+    void OnTriggerStay2D(Collider2D that) //Detect collisions with the collider
     {
         if (that.gameObject.tag == "Player") //If the colliding object is the player
         {
-            if ((pT.m_Position || pT.m_Circle) && pT.m_Sticky && !Input.GetButton("Jump")) //If the player should stick to the platform when it moves
+            if ((pT.m_Position || pT.m_Circle) && pT.m_Sticky && !Input.GetButton("Jump") && Mathf.Abs(Input.GetAxis("Horizontal")) < .05f) //If the player should stick to the platform when it moves
             {
-                that.transform.position = new Vector3(transform.position.x, transform.position.y + transform.parent.transform.localScale.y, that.transform.position.z); //Snap the player to the collider
+                that.transform.position = new Vector3(transform.position.x, transform.position.y + transform.parent.transform.localScale.y + .05f, that.transform.position.z); //Snap the player to the collider
             }
             if (pT.m_Position && pT.m_PositionIsTrigger) //If the collider has a position trigger
             {
                 pT.m_PositionIsTrigger = false; //Activate the position trigger
                 pT.Timer = 0; //Reset the timer
             }
-
+    
             if (pT.m_Rotation && (Mathf.Abs(pT.transform.eulerAngles.z) <= 70f || Mathf.Abs(pT.transform.eulerAngles.z) >= 290f)) //If the platform is rotating at 70 degrees
             {
                 that.transform.rotation = transform.rotation; //Rotate the player with the platform
@@ -37,14 +32,14 @@ public class PlatformTrigger : MonoBehaviour //KI
             {
                 pT.m_RotationIsTrigger = false; //Activate the rotation trigger
             }
-
+    
             if(pT.m_Circle && pT.m_CircleIsTrigger) //If the collider has a circle trigger
             {
                 pT.m_CircleIsTrigger = false; //Activate the circle trigger
             }
         }
     }
-
+    
     void OnCollisionExit2D(Collision2D that) //Detect when leaving the collider
     {
         if (that.gameObject.tag == "Player" && pT.m_Rotation) //If the colliding object is the player and the platform is rotating

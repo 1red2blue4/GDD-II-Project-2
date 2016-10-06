@@ -61,7 +61,19 @@ namespace UnityStandardAssets._2D
             for (int i = 0; i < colliders.Length; i++)
             {
                 if (colliders[i].gameObject != gameObject)
-                    m_Grounded = true;
+                {
+                    if (colliders[i].gameObject.transform.parent != null)
+                    {
+                        if (colliders[i].gameObject.transform.parent.tag == "Platform")
+                        {
+                            m_Grounded = true;
+                        }
+                    }
+                    else if(colliders[i].gameObject.tag == "Platform")
+                    {
+                        m_Grounded = true;
+                    }
+                }
             }
             m_Anim.SetBool("Ground", m_Grounded);
 
@@ -153,6 +165,7 @@ namespace UnityStandardAssets._2D
                 position.x -= this.gameObject.GetComponent<BoxCollider2D>().size.x;
                 scale.x *= -1;
             }
+            position.y = this.gameObject.transform.FindChild("Center").transform.position.y;
 
             //Need to make a weapon class and reimpliment this.
             GameObject weapon = (GameObject)Instantiate(stabPrefab, position, this.transform.rotation);

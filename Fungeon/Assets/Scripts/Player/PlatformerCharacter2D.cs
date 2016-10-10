@@ -64,12 +64,12 @@ namespace UnityStandardAssets._2D
                 {
                     if (colliders[i].gameObject.transform.parent != null)
                     {
-                        if (colliders[i].gameObject.transform.parent.tag == "Platform")
+                        if (colliders[i].gameObject.transform.parent.tag == "platform")
                         {
                             m_Grounded = true;
                         }
                     }
-                    else if(colliders[i].gameObject.tag == "Platform")
+                    else if(colliders[i].gameObject.tag == "platform")
                     {
                         m_Grounded = true;
                     }
@@ -125,6 +125,7 @@ namespace UnityStandardAssets._2D
             // If the player should jump...
             if (m_Grounded && jump && m_Anim.GetBool("Ground"))
             {
+                Debug.Log("Jump");
                 // Add a vertical force to the player.
                 m_Grounded = false;
                 m_Anim.SetBool("Ground", false);

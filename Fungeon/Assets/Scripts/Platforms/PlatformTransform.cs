@@ -4,57 +4,118 @@ using System.Collections;
 public class PlatformTransform : MonoBehaviour //KI
 {
     #region Attributes
-    public bool m_Position = false; //Inspector checkbox for position transforms
+    [SerializeField] private bool m_Position = false; //Inspector checkbox for position transforms
     [Tooltip("When unchecked and moving in both the X and Y directions, movement speed will be averaged")] //m_LoopPosition tooltop
-    public bool m_LoopPosition = false; //Inspector checkbox to loop the movement
-    public bool m_PositionIsTrigger = false; //Inspector checkbox to make the object have a trigger
+    [SerializeField] private bool m_LoopPosition = false; //Inspector checkbox to loop the movement
+    [SerializeField] private bool m_PositionIsTrigger = false; //Inspector checkbox to make the object have a trigger
     
     [Tooltip("Distance the object will move in the X direction. A negative value will make the object move left first")] //moveDistanceX tooltip
-    public float moveDistanceX; //Distance to move the platform in the X direction
+    [SerializeField] private float moveDistanceX; //Distance to move the platform in the X direction
     [Tooltip("Distance the object will move in the Y direction. A negative value will make the object move down first")] //moveDistanceY tooltip
-    public float moveDistanceY; //Distance to move the platform in the Y direction
+    [SerializeField] private float moveDistanceY; //Distance to move the platform in the Y direction
     [Tooltip("Movement speed in the X direction")] //moveSpeedX tooltip
-    public float moveSpeedX; //How fast the platform can move
+    [SerializeField] private float moveSpeedX; //How fast the platform can move
     [Tooltip("Movement speed in the Y direction")] //moveSpeedY tooltip
-    public float moveSpeedY; //How fast the platform can move
+    [SerializeField] private float moveSpeedY; //How fast the platform can move
     [Space(10)] //Space out the inspector UI elements
     
-    public bool m_Rotation = false; //Inspector checkbox for rotation transforms
-    public bool m_RotationIsTrigger = false; //Inspector checkbox to make the object have a trigger
+    [SerializeField] private bool m_Rotation = false; //Inspector checkbox for rotation transforms
+    [SerializeField] private bool m_RotationIsTrigger = false; //Inspector checkbox to make the object have a trigger
     [Tooltip("How many degrees that platform will rotate each second. A negative value will make the object rotate right")] //m_RotationDegreesPerSecond tooltip
-    public float m_RotationDPS; //How many degrees to rotate the platform by each second
+    [SerializeField] private float m_RotationDPS; //How many degrees to rotate the platform by each second
     [Space(10)] //Space out the inspector UI elements
     
-    public bool m_Circle = false; //Inspector checkbox to move platforms in a circle
-    public bool m_CircleIsTrigger = false; //Inspector checkbox to make the object have a trigger
+    [SerializeField] private bool m_Circle = false; //Inspector checkbox to move platforms in a circle
+    [SerializeField] private bool m_CircleIsTrigger = false; //Inspector checkbox to make the object have a trigger
     [Tooltip("The point at which the platform rotates around")] //m_CenterOfRotation tooltip
-    public Vector3 m_CenterOfRotation; //The point at which the platform rotates around
+    [SerializeField] private Vector3 m_CenterOfRotation; //The point at which the platform rotates around
     [Tooltip("How many degrees that platform will rotate each second. A negative value will make the object rotate right")] //m_CircleDegreesPerSecond tooltip
-    public float m_CircleDPS; //How many degrees to move the circle by each second
+    [SerializeField] private float m_CircleDPS; //How many degrees to move the circle by each second
     [Space(10)] //Space out the inspector UI elements
     
     [Tooltip("Sticky does not apply to rotation transforms")] //m_Sticy tooltip
-    public bool m_Sticky = false; //Inspector checkbox to make an object sticky
+    [SerializeField] private bool m_Sticky = false; //Inspector checkbox to make an object sticky
     
     private SpriteRenderer rend; //Renderer for object sizes
     private Vector3 startPosition; //The starting position of the object
     private Vector3 arcRotation; //How far to move the platform each frame
     private bool runOnce = false; //Controls the movement of the platform when it is not looping
     private float timer; //Timer for movement
-    #endregion
-    
-    public float Timer //Timer property
+
+    public bool M_Position //M_Position property
     {
         get
         {
-            return timer; //Return the value of the timer
+            return m_Position; //Return the value of m_Position
         }
+    }
+    public bool M_PositionIsTrigger //M_PositionIsTrigger property
+    {
+        get
+        {
+            return m_PositionIsTrigger; //Return the value of m_PositionIsTrigger
+        }
+        set
+        {
+            m_PositionIsTrigger = value; //Set m_PositionIsTrigger equal to the value
+        }
+    }
+
+    public bool M_Rotation //M_Rotation property
+    {
+        get
+        {
+            return m_Rotation; //Return the value of m_Rotation
+        }
+    }
+    public bool M_RotationIsTrigger //M_RotationIsTrigger property
+    {
+        get
+        {
+            return m_RotationIsTrigger; //Return the value of m_RotationIsTrigger
+        }
+        set
+        {
+            m_PositionIsTrigger = value; //Set m_RotationIsTrigger equal to the value
+        }
+    }
+
+    public bool M_Circle //M_Circle property
+    {
+        get
+        {
+            return m_Circle; //Return the value of m_Circle
+        }
+    }
+    public bool M_CircleIsTrigger //M_CircleIsTrigger property
+    {
+        get
+        {
+            return m_CircleIsTrigger; //Return the value of m_CircleIsTrigger
+        }
+        set
+        {
+            m_CircleIsTrigger = value; //Set m_CircleIsTrigger equal to the value
+        }
+    }
+
+    public bool M_Sticky //M_Sticky property
+    {
+        get
+        {
+            return m_Sticky; //Return the value of m_Sticky
+        }
+    }
+
+    public float Timer //Timer property
+    {
         set
         {
             timer = value; //Set the timer equal to the value
         }
     }
-    
+    #endregion
+
     void Start() //Runs once to initialize
     {
         rend = GetComponentInChildren<SpriteRenderer>(); //Get the renderer

@@ -22,9 +22,11 @@ namespace UnityStandardAssets._2D
         private bool canAttack = true;      // For creating a delay between attacks
         private float timer = 0.0f;         // Timer for the cooldown
         private float coolDown = 1.0f;             // Length the timer has to count up to
+        private float defaultGravityScale = 3.0f;
 
         public GameObject stabPrefab;
         public Camera cam;
+        public float slopeFriction;
 
         //Getter
         public bool CanAttack { get { return canAttack; } }
@@ -36,6 +38,7 @@ namespace UnityStandardAssets._2D
             m_CeilingCheck = transform.Find("CeilingCheck");
             m_Anim = GetComponent<Animator>();
             m_Rigidbody2D = GetComponent<Rigidbody2D>();
+            defaultGravityScale = m_Rigidbody2D.gravityScale;
         }
 
         private void Update()
@@ -127,6 +130,7 @@ namespace UnityStandardAssets._2D
             {
                 Debug.Log("Jump");
                 // Add a vertical force to the player.
+                m_Rigidbody2D.gravityScale = defaultGravityScale;
                 m_Grounded = false;
                 m_Anim.SetBool("Ground", false);
                 m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
@@ -173,6 +177,25 @@ namespace UnityStandardAssets._2D
             weapon.transform.localScale = scale;
             weapon.transform.parent = this.gameObject.transform;
             canAttack = false;
+        }
+
+        public void NormalizeSlope(float move)
+        {
+            if(m_Grounded)
+            {
+                RaycastHit2D hit = Physics2D.Raycast(transform.position, -Vector2.up, 1.5f, m_WhatIsGround);
+                if (hit.collider != null && Mathf.Abs(hit.normal.x) > 0.1f)
+                {
+                    //trying to not slide down slopes
+
+                    //m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x - (hit.normal.x * 0.6f), m_Rigidbody2D.velocity.y);
+                    ////m_Rigidbody2D.velocity = new Vector2(-move * m_MaxSpeed * hit.normal.x, move * m_Rigidbody2D.velocity.y * hit.normal.y);
+                    //Vector3 pos = transform.position;
+                    //pos.y += -hit.normal.x * Mathf.Abs(m_Rigidbody2D.velocity.x) * Time.deltaTime * (m_Rigidbody2D.velocity.x - hit.normal.x > 0 ? 1 : -1);
+                    //transform.position = pos;
+                }
+                
+            }
         }
     }
 }

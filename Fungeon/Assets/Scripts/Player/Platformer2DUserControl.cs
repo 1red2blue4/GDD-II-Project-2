@@ -34,6 +34,7 @@ namespace UnityStandardAssets._2D
             float h = CrossPlatformInputManager.GetAxis("Horizontal");
             // Pass all parameters to the character control script.
             m_Character.Move(h, crouch, m_Jump);
+            m_Character.NormalizeSlope(h);
             if (Input.GetButtonDown("Fire1") && m_Character.CanAttack)
             {
                 m_Character.Attack();

@@ -41,6 +41,9 @@ public class FlockManager : MonoBehaviour {
     public GameObject enemyPrefab;
     public GameObject target;
 
+    // to pass to each enemy flocker for determining at what distance they should attack
+    //public float attackRad;
+
     //-------------------------------------------------------------------------------------
 
     // Accessor Statements, mostly to ensure that enemies know where and which direction to flock to
@@ -80,6 +83,8 @@ public class FlockManager : MonoBehaviour {
 
             // add an enemy to the flock
             enemyFlock.Add((GameObject)Instantiate(enemyPrefab, randPos, Quaternion.identity));
+            //enemyFlock[i].GetComponent<TriangleEnemy>().target = target;
+            //enemyFlock[i].GetComponent<TriangleEnemy>().attackRadius = attackRad;
         }
 	}
 	

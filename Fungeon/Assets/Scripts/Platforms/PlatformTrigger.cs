@@ -10,7 +10,7 @@ public class PlatformTrigger : MonoBehaviour //KI
         pT = GetComponentInParent<PlatformTransform>(); //Get the parent PlatformTransform script
 	}
 
-    void OnTriggerStay2D(Collider2D that) //Detect collisions with the collider
+    void OnTriggerStay2D(Collider2D that) //Detect collisions with the trigger
     {
         if (that.gameObject.tag == "Player") //If the colliding object is the player
         {
@@ -40,7 +40,7 @@ public class PlatformTrigger : MonoBehaviour //KI
         }
     }
     
-    void OnCollisionExit2D(Collision2D that) //Detect when leaving the collider
+    void OnTriggerExit2D(Collider2D that) //Detect when leaving the trigger
     {
         if (that.gameObject.tag == "Player" && pT.M_Rotation) //If the colliding object is the player and the platform is rotating
         {

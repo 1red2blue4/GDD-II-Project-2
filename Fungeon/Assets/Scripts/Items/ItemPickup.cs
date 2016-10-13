@@ -17,7 +17,7 @@ public class ItemPickup : MonoBehaviour //KI
     {
         if(that.gameObject.tag == "item") //If the player is colliding with the item
         {
-            Debug.Log("Collided with item");
+            Destroy(that.gameObject); //Destroy the item
         }
     }
 }

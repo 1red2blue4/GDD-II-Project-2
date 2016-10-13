@@ -53,6 +53,23 @@ namespace UnityStandardAssets._2D
                     timer = 0.0f;
                 }
             }
+            if(Input.GetKey(KeyCode.Q))
+            {
+                activeWeapon--;
+                if(activeWeapon < 0)
+                {
+                    activeWeapon = weapons.Length - 1;
+                }
+                
+            }
+            if(Input.GetKey(KeyCode.E))
+            {
+                activeWeapon++;
+                if (activeWeapon >= weapons.Length)
+                {
+                    activeWeapon = 0;
+                }
+            }
         }
 
         private void FixedUpdate()

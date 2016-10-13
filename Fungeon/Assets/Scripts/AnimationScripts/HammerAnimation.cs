@@ -7,6 +7,14 @@ namespace UnityStandardAssets._2D
 
         public PolygonCollider2D box1;
         public PolygonCollider2D box2;
+        private PolygonCollider2D localCol;
+
+        public void Awake()
+        {
+            localCol = gameObject.AddComponent<PolygonCollider2D>();
+            localCol.isTrigger = true;
+            localCol.pathCount = 0;
+        }
 
         public void DestroySelf()
         {
@@ -15,22 +23,22 @@ namespace UnityStandardAssets._2D
 
         public void SetBox1Enabled()
         {
-            box1.enabled = true;
+            localCol.SetPath(0, box1.GetPath(0));
         }
 
         public void SetBox2Enabled()
         {
-            box2.enabled = true;
+            localCol.SetPath(0, box2.GetPath(0));
         }
 
         public void SetBox1Disabled()
         {
-            box1.enabled = false;
+            localCol.pathCount = 0;
         }
 
         public void SetBox2Disabled()
         {
-            box2.enabled = false;
+            localCol.pathCount = 0;
         }
 
         public override Vector3 GetSpawnPosition(PlatformerCharacter2D character)

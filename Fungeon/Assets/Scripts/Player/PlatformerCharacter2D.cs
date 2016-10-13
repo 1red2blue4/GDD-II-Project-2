@@ -53,7 +53,7 @@ namespace UnityStandardAssets._2D
                     timer = 0.0f;
                 }
             }
-            if(Input.GetKey(KeyCode.Q))
+            if(Input.GetKeyDown(KeyCode.Q))
             {
                 activeWeapon--;
                 if(activeWeapon < 0)
@@ -62,7 +62,7 @@ namespace UnityStandardAssets._2D
                 }
                 
             }
-            if(Input.GetKey(KeyCode.E))
+            if(Input.GetKeyDown(KeyCode.E))
             {
                 activeWeapon++;
                 if (activeWeapon >= weapons.Length)

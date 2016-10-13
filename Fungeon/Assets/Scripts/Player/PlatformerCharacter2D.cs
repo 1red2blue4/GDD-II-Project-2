@@ -24,7 +24,8 @@ namespace UnityStandardAssets._2D
         private float coolDown = 1.0f;             // Length the timer has to count up to
         private float defaultGravityScale = 3.0f;
 
-        public GameObject stabPrefab;
+        public int activeWeapon;
+        public GameObject[] weapons;
         public Camera cam;
         public float slopeFriction;
 
@@ -129,7 +130,7 @@ namespace UnityStandardAssets._2D
             if (m_Grounded && jump && m_Anim.GetBool("Ground"))
             {
                 // Add a vertical force to the player.
-                m_Rigidbody2D.gravityScale = defaultGravityScale;
+                //m_Rigidbody2D.gravityScale = defaultGravityScale;
                 m_Grounded = false;
                 m_Anim.SetBool("Ground", false);
                 m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
@@ -155,24 +156,19 @@ namespace UnityStandardAssets._2D
         /// </summary>
         public void Attack()
         {
-            //calculating position to spawn sprite
-            Vector3 position = this.transform.position;
-            Vector3 scale = stabPrefab.transform.localScale;
+            Vector3 scale = weapons[activeWeapon].transform.localScale;
 
             //chekcing which side to attack on based on mouse position
             if (Input.mousePosition.x > (cam.WorldToViewportPoint(this.gameObject.transform.position).x) * Screen.width)
             {
-                position.x += this.gameObject.GetComponent<BoxCollider2D>().size.x;
             }
             else
             {
-                position.x -= this.gameObject.GetComponent<BoxCollider2D>().size.x;
                 scale.x *= -1;
             }
-            position.y = this.gameObject.transform.FindChild("Center").transform.position.y;
-
             //Need to make a weapon class and reimpliment this.
-            GameObject weapon = (GameObject)Instantiate(stabPrefab, position, this.transform.rotation);
+            Vector3 position = weapons[activeWeapon].GetComponent<Weapon>().GetSpawnPosition(this);
+            GameObject weapon = (GameObject)Instantiate(weapons[activeWeapon], position, this.transform.rotation);
             weapon.transform.localScale = scale;
             weapon.transform.parent = this.gameObject.transform;
             canAttack = false;

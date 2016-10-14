@@ -75,12 +75,14 @@ public class TriangleEnemy : MonoBehaviour
             Destroy(this.gameObject); //Destroy this gameobject
         }
 
+        /*
         if (coll.gameObject.tag == "Player")
         {
             SceneManager.LoadScene(SceneManager.GetSceneAt(0).name);
             RoomManager manager = new RoomManager();
             manager.SpawnRooms();
         }
+        */
     }
 
     /// <summary>

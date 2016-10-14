@@ -1,22 +1,28 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
+
 
 public class RoomManager : MonoBehaviour {
 
     public List<GameObject> roomSet = new List<GameObject>();
-    static public int numRooms = 21;
+    static public int numRooms = 49;
     static public GameObject[] saveRooms = new GameObject[50];
     static public GameObject[] rooms = new GameObject[numRooms];
+    static public GameObject firstRoom;
     static public float[] roomsWidth = new float[numRooms];
     static public float[] roomsHeight = new float[numRooms];
+    static public float[] roomsOffsetX = new float[numRooms];
+    static public float[] roomsOffsetY = new float[numRooms];
 
     static private Vector2 initialPosition;
 
 
 	// Use this for initialization
 	void Start () {
-        initialPosition = new Vector2(20, 0);
+        initialPosition = new Vector2(this.GetComponent<Transform>().position.x, this.GetComponent<Transform>().position.y);
+        firstRoom = GameObject.FindGameObjectWithTag("FirstRoom");
         SpawnRooms();
 
     }
@@ -40,27 +46,46 @@ public class RoomManager : MonoBehaviour {
         //define the rooms
         for (int i = 0; i < numRooms; i++)
         {
-            int randRoom = Random.Range(0, roomSet.Count);
+            int randRoom = UnityEngine.Random.Range(0, roomSet.Count);
             rooms[i] = roomSet[randRoom];
-            roomsWidth[i] = rooms[i].GetComponent<BoxCollider2D>().size.x;
-            roomsHeight[i] = rooms[i].GetComponent<BoxCollider2D>().size.y;
+            roomsWidth[i] = rooms[i].GetComponent<Room>().width;
+            roomsHeight[i] = rooms[i].GetComponent<Room>().height;
+            roomsOffsetX[i] = rooms[i].GetComponent<Room>().offsetX;
+            roomsOffsetY[i] = rooms[i].GetComponent<Room>().offsetY;
         }
 
-        //Instantiate the roomss
-        for (int i = 0; i < rooms.Length; i++)
+        //Instantiate the rooms
+        for (int i = 0; i < (int)Math.Sqrt((double)numRooms); i++)
         {
-            if (i == 0)
+            for (int t = 0; i < (int)Math.Sqrt((double)numRooms); t++)
             {
-                MonoBehaviour.Instantiate(rooms[i], initialPosition, Quaternion.identity);
-            }
-            else
-            {
-                float distanceSum = 0;
-                for (int j = i; j > 0; j--)
+                if (i >= (int)Math.Sqrt((double)numRooms) || t >= (int)Math.Sqrt((double)numRooms))
                 {
-                    distanceSum += roomsWidth[j - 1];
+                    break;
                 }
-                MonoBehaviour.Instantiate(rooms[i], new Vector2(initialPosition.x + distanceSum + (roomsWidth[i] - roomsWidth[i-1])/2, initialPosition.y), Quaternion.identity);
+                if (i == 0 && t == 0)
+                {
+                    MonoBehaviour.Instantiate(firstRoom, initialPosition, Quaternion.identity);
+                }
+                else
+                {
+                    int sqrtRooms = (int)Math.Sqrt((double)numRooms);
+                    int index = i * sqrtRooms + t;
+                    Debug.Log((int)Math.Sqrt((double)numRooms));
+                    float distanceSumX = 0;
+                    float distanceSumY = 0;
+                    for (int j = index; j > sqrtRooms - 1; j-=sqrtRooms)
+                    {
+                        distanceSumX += roomsWidth[j - sqrtRooms];
+                    }
+                    for (int j = index; j > index - t; j--)
+                    {
+                        distanceSumY += roomsHeight[j - 1];
+                    }
+                    float xVal = initialPosition.x + roomsOffsetX[index] + distanceSumX + (roomsWidth[index] - roomsWidth[index - 1]) / 2;
+                    float yVal = initialPosition.y + roomsOffsetY[index] + distanceSumY + (roomsHeight[index] - roomsHeight[index - 1]) / 2;
+                    MonoBehaviour.Instantiate(rooms[index], new Vector2(xVal, yVal), Quaternion.identity);
+                }
             }
         }
     }

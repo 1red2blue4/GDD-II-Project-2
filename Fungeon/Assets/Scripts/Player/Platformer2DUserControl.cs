@@ -39,6 +39,7 @@ namespace UnityStandardAssets._2D
             {
                 m_Character.Attack();
             }
+            m_Character.ControllerAttack();
             m_Jump = false;
         }
     }

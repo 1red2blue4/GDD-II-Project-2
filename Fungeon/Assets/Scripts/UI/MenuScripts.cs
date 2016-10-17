@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
-using UnityEditor.SceneManagement; //Load scenes
 using System.Collections;
+using UnityEngine.SceneManagement; //Load scenes
 
 public class MenuScripts : MonoBehaviour //KI
 {
@@ -26,7 +26,7 @@ public class MenuScripts : MonoBehaviour //KI
 
     public void StartButton(string loadLevel) //When the start button is clicked
     {
-        EditorSceneManager.LoadScene(loadLevel); //Load the scene
+        SceneManager.LoadScene(loadLevel); //Load the scene
     }
 
     public void ResumeButton() //When the resume button is clicked
@@ -54,7 +54,7 @@ public class MenuScripts : MonoBehaviour //KI
         }
     }
 
-    public void Pause() //When the pause button is clicked
+    private void Pause() //When the pause button is clicked
     {
         if (!pauseMenu.gameObject.activeInHierarchy) //If the pause menu is disabled
         {
@@ -68,7 +68,7 @@ public class MenuScripts : MonoBehaviour //KI
         }
     }
 
-    public void Controls() //Handles closing the controls button with a keyboard command
+    private void Controls() //Handles closing the controls button with a keyboard command
     {
         if (!pauseMenu.gameObject.activeInHierarchy && controlMenu.gameObject.activeInHierarchy) //If the pause menu is disabled and the control menu is enabled
         {

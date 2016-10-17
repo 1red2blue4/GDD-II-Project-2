@@ -53,7 +53,7 @@ namespace UnityStandardAssets._2D
                     timer = 0.0f;
                 }
             }
-            if(Input.GetKeyDown(KeyCode.Q))
+            if(Input.GetButtonDown("SwitchWeaponLeft"))
             {
                 activeWeapon--;
                 if(activeWeapon < 0)
@@ -62,7 +62,7 @@ namespace UnityStandardAssets._2D
                 }
                 
             }
-            if(Input.GetKeyDown(KeyCode.E))
+            if(Input.GetButtonDown("SwitchWeaponRight"))
             {
                 activeWeapon++;
                 if (activeWeapon >= weapons.Length)
@@ -189,6 +189,40 @@ namespace UnityStandardAssets._2D
             weapon.transform.localScale = scale;
             weapon.transform.parent = this.gameObject.transform;
             canAttack = false;
+        }
+
+        public void ControllerAttack() //Use the controller input to attack
+        {
+            Vector3 scale = weapons[activeWeapon].transform.localScale;
+
+            if (Input.GetAxis("AttackStick") < -.2 && canAttack) //Attack left
+            {
+                if (scale.x > 0) //If the attack should flip
+                {
+                    scale.x *= -1;
+                }
+
+                //Need to make a weapon class and reimpliment this.
+                Vector3 position = weapons[activeWeapon].GetComponent<Weapon>().GetSpawnPosition(this);;
+                GameObject weapon = (GameObject)Instantiate(weapons[activeWeapon], position, this.transform.rotation);
+                weapon.transform.localScale = scale;
+                weapon.transform.parent = this.gameObject.transform;
+                canAttack = false;
+            }
+            else if (Input.GetAxis("AttackStick") > .2 && canAttack) //Attack right
+            {
+                if (scale.x < 0) //If the attack should flip
+                {
+                    scale.x *= -1;
+                }
+
+                //Need to make a weapon class and reimpliment this.
+                Vector3 position = weapons[activeWeapon].GetComponent<Weapon>().GetSpawnPosition(this);
+                GameObject weapon = (GameObject)Instantiate(weapons[activeWeapon], position, this.transform.rotation);
+                weapon.transform.localScale = scale;
+                weapon.transform.parent = this.gameObject.transform;
+                canAttack = false;
+            }
         }
 
         public void NormalizeSlope(float move)

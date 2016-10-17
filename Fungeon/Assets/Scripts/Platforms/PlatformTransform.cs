@@ -153,7 +153,7 @@ public class PlatformTransform : MonoBehaviour //KI
             transformCircle(); //Move the platform in a circle
         }
     
-        timer += Time.deltaTime; //Set the timer
+        timer += Time.fixedDeltaTime; //Set the timer
     }
     
     void transformPosition() //Moves the platform

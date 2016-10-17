@@ -9,8 +9,20 @@ public class MenuScripts : MonoBehaviour //KI
 
 	void Update() //Update is called once per frame
     {
-        MenuInputManager(); //Check for button presses
-	}
+        if (Input.GetButtonDown("Pause") && !controlMenu.gameObject.activeInHierarchy) //If the pause button is pressed and the control menu is not active
+        {
+            Pause(); //Pause or unpause the game
+        }
+        else if ((Input.GetButtonDown("Pause") || Input.GetButtonDown("Cancel")) && pauseMenu.gameObject.activeInHierarchy && !controlMenu.gameObject.activeInHierarchy) //If the pause or cancel button is pressed while the pause menu is active and the control menu is not active
+        {
+            Pause(); //Pause or unpause the game
+        }
+
+        if (Input.GetButtonDown("Pause") || Input.GetButtonDown("Cancel")) //If the pause or cancel button is pressed
+        {
+            Controls(); //Bring up or close the controls menu
+        }
+    }
 
     public void StartButton(string loadLevel) //When the start button is clicked
     {
@@ -39,23 +51,6 @@ public class MenuScripts : MonoBehaviour //KI
         {
             controlMenu.gameObject.SetActive(false); //Disable the controls menu
             pauseMenu.gameObject.SetActive(true); //Enable the pause menu
-        }
-    }
-
-    public void MenuInputManager() //Manages button input
-    {
-        if (Input.GetButtonDown("Pause") && !controlMenu.gameObject.activeInHierarchy) //If the pause button is pressed and the control menu is not active
-        {
-            Pause(); //Pause or unpause the game
-        }
-        else if((Input.GetButtonDown("Pause") || Input.GetButtonDown("Cancel")) && pauseMenu.gameObject.activeInHierarchy && !controlMenu.gameObject.activeInHierarchy) //If the pause or cancel button is pressed while the pause menu is active and the control menu is not active
-        {
-            Pause(); //Pause or unpause the game
-        }
-
-        if (Input.GetButtonDown("Pause") || Input.GetButtonDown("Cancel")) //If the pause or cancel button is pressed
-        {
-            Controls(); //Bring up or close the controls menu
         }
     }
 

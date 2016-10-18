@@ -203,7 +203,7 @@ namespace UnityStandardAssets._2D
                 }
 
                 //Need to make a weapon class and reimpliment this.
-                Vector3 position = weapons[activeWeapon].GetComponent<Weapon>().GetSpawnPosition(this);;
+                Vector3 position = weapons[activeWeapon].GetComponent<Weapon>().ControllerGetSpawnPosition(this);
                 GameObject weapon = (GameObject)Instantiate(weapons[activeWeapon], position, this.transform.rotation);
                 weapon.transform.localScale = scale;
                 weapon.transform.parent = this.gameObject.transform;
@@ -217,7 +217,7 @@ namespace UnityStandardAssets._2D
                 }
 
                 //Need to make a weapon class and reimpliment this.
-                Vector3 position = weapons[activeWeapon].GetComponent<Weapon>().GetSpawnPosition(this);
+                Vector3 position = weapons[activeWeapon].GetComponent<Weapon>().ControllerGetSpawnPosition(this);
                 GameObject weapon = (GameObject)Instantiate(weapons[activeWeapon], position, this.transform.rotation);
                 weapon.transform.localScale = scale;
                 weapon.transform.parent = this.gameObject.transform;

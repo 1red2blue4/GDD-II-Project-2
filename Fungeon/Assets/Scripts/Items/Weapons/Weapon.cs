@@ -24,5 +24,6 @@ namespace UnityStandardAssets._2D
         }
 
         public abstract Vector3 GetSpawnPosition(PlatformerCharacter2D character);
+        public abstract Vector3 ControllerGetSpawnPosition(PlatformerCharacter2D character); //Weapon spawning for the controller
     }
 }

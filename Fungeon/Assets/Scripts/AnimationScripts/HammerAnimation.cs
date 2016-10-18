@@ -54,5 +54,17 @@ namespace UnityStandardAssets._2D
             }
             return position;
         }
+
+        public override Vector3 ControllerGetSpawnPosition(PlatformerCharacter2D character) //Weapon spawning for the controller
+        {
+            Vector3 position = character.transform.FindChild("HammerSpawn").transform.position;
+
+            if (Input.GetAxis("AttackStick") < -.2) //Attacking left
+            {
+                position.x -= (character.transform.FindChild("HammerSpawn").transform.position.x - character.transform.FindChild("Center").transform.position.x) * 2;
+            }
+
+            return position;
+        }
     }
 }

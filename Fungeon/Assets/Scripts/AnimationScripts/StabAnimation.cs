@@ -44,5 +44,25 @@ namespace UnityStandardAssets._2D
             position.y = character.gameObject.transform.FindChild("Center").transform.position.y + .05f;
             return position;
         }
+
+        public override Vector3 ControllerGetSpawnPosition(PlatformerCharacter2D character) //Weapon spawning for the controller
+        {
+            //calculating position to spawn sprite
+            Vector3 position = character.transform.position;
+
+            //chekcing which side to attack on based on mouse position
+            if (Input.GetAxis("AttackStick") > .2) //Attacking right
+            {
+                position.x += character.gameObject.GetComponent<BoxCollider2D>().size.x - .05f;
+            }
+            else if (Input.GetAxis("AttackStick") < -.2) //Attacking left
+            {
+                position.x -= character.gameObject.GetComponent<BoxCollider2D>().size.x;
+            }
+
+            position.y = character.gameObject.transform.FindChild("Center").transform.position.y + .05f;
+
+            return position;
+        }
     }
 }

@@ -4,13 +4,13 @@ using UnityEngine.SceneManagement; //Reloading scenes
 
 public class UIOverlayScript : MonoBehaviour //KI
 {
-    [SerializeField] private Canvas uiOverlay; //The UI overlay
+    [SerializeField] private Canvas UIOverlay; //The UI overlay
     [SerializeField] private HealthTracker playerHealthTracker; //The player
     private UnityEngine.UI.Image[] healthUIImages; //The UI images for the player's health
 
     void Start() //Use this for initialization
     {
-        healthUIImages = uiOverlay.GetComponentsInChildren<UnityEngine.UI.Image>(); //Get the images from the children
+        healthUIImages = UIOverlay.GetComponentsInChildren<UnityEngine.UI.Image>(); //Get the images from the children
     }
 	
 	void Update() //Update is called once per frame

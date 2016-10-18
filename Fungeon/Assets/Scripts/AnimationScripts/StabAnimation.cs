@@ -6,6 +6,10 @@ namespace UnityStandardAssets._2D
     public class StabAnimation : Weapon
     {
 
+        public StabAnimation(float cooldown) : base(cooldown)
+        {
+        }
+
         public void DestroySelf()
         {
             Destroy(this.gameObject);

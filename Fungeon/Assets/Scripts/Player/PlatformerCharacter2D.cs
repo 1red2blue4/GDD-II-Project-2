@@ -23,6 +23,7 @@ namespace UnityStandardAssets._2D
         private float timer = 0.0f;         // Timer for the cooldown
         private float coolDown = 1.0f;             // Length the timer has to count up to
         private float defaultGravityScale = 3.0f;
+        private SpriteRenderer playerSprite;
 
         public int activeWeapon;
         public GameObject[] weapons;
@@ -40,10 +41,13 @@ namespace UnityStandardAssets._2D
             m_Anim = GetComponent<Animator>();
             m_Rigidbody2D = GetComponent<Rigidbody2D>();
             defaultGravityScale = m_Rigidbody2D.gravityScale;
+            coolDown = weapons[activeWeapon].GetComponent<Weapon>().cooldown;
+            playerSprite = GetComponentInChildren<SpriteRenderer>();
         }
 
         private void Update()
         {
+            //Runs when player is cooling down
             if (!canAttack)
             {
                 timer += Time.deltaTime;
@@ -51,6 +55,12 @@ namespace UnityStandardAssets._2D
                 {
                     canAttack = true;
                     timer = 0.0f;
+                    playerSprite.color = new Color(1, 1, 1);
+                }
+                else
+                {//changing color
+                    float colorTemp = .4f + ((timer / coolDown) * .6f);
+                    playerSprite.color = new Color(colorTemp, colorTemp, colorTemp);
                 }
             }
             if(Input.GetButtonDown("SwitchWeaponLeft"))
@@ -60,7 +70,7 @@ namespace UnityStandardAssets._2D
                 {
                     activeWeapon = weapons.Length - 1;
                 }
-                
+                coolDown = weapons[activeWeapon].GetComponent<Weapon>().cooldown;
             }
             if(Input.GetButtonDown("SwitchWeaponRight"))
             {
@@ -69,7 +79,17 @@ namespace UnityStandardAssets._2D
                 {
                     activeWeapon = 0;
                 }
+                coolDown = weapons[activeWeapon].GetComponent<Weapon>().cooldown;
             }
+            if(Input.mousePosition.x - (cam.WorldToViewportPoint(this.transform.position).x*Screen.width) < 0 && m_FacingRight)
+            {
+                Flip();
+            }
+            else if (Input.mousePosition.x - (cam.WorldToViewportPoint(this.transform.position).x * Screen.width) > 0 && !m_FacingRight)
+            {
+                Flip();
+            }
+
         }
 
         private void FixedUpdate()
@@ -130,18 +150,18 @@ namespace UnityStandardAssets._2D
                 // Move the character
                 m_Rigidbody2D.velocity = new Vector2(move*m_MaxSpeed, m_Rigidbody2D.velocity.y);
 
-                // If the input is moving the player right and the player is facing left...
-                if (move > 0 && !m_FacingRight)
-                {
-                    // ... flip the player.
-                    Flip();
-                }
-                    // Otherwise if the input is moving the player left and the player is facing right...
-                else if (move < 0 && m_FacingRight)
-                {
-                    // ... flip the player.
-                    Flip();
-                }
+                //// If the input is moving the player right and the player is facing left...
+                //if (move > 0 && !m_FacingRight)
+                //{
+                //    // ... flip the player.
+                //    Flip();
+                //}
+                //    // Otherwise if the input is moving the player left and the player is facing right...
+                //else if (move < 0 && m_FacingRight)
+                //{
+                //    // ... flip the player.
+                //    Flip();
+                //}
             }
             // If the player should jump...
             if (m_Grounded && jump && m_Anim.GetBool("Ground"))
@@ -189,6 +209,7 @@ namespace UnityStandardAssets._2D
             weapon.transform.localScale = scale;
             weapon.transform.parent = this.gameObject.transform;
             canAttack = false;
+            playerSprite.color = new Color(.4f, .4f, .4f);
         }
 
         public void ControllerAttack() //Use the controller input to attack

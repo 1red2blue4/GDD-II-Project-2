@@ -7,7 +7,7 @@ namespace UnityStandardAssets._2D
 
         //private float damage;
         //private float knockback;
-        //private float cooldown;
+        public float cooldown;
         //private GameObject weaponPrefab;
 
         //public Weapon(float damage, float knockback, float cooldown, GameObject weaponPrefab)
@@ -18,9 +18,9 @@ namespace UnityStandardAssets._2D
         //    this.weaponPrefab = weaponPrefab;
         //}
 
-        public Weapon()
+        public Weapon(float cooldown)
         {
-
+            this.cooldown = cooldown;
         }
 
         public abstract Vector3 GetSpawnPosition(PlatformerCharacter2D character);

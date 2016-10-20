@@ -9,6 +9,10 @@ namespace UnityStandardAssets._2D
         public PolygonCollider2D box2;
         private PolygonCollider2D localCol;
 
+        public HammerAnimation(float cooldown) : base(cooldown)
+        {
+        }
+
         public void Awake()
         {
             localCol = gameObject.AddComponent<PolygonCollider2D>();

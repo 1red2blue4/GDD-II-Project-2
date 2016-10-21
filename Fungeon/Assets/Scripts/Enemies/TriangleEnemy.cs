@@ -20,6 +20,24 @@ public class TriangleEnemy : MonoBehaviour
     public float pursueRadius;
     public float attackRadius;
 
+    // variables for controlling charge up
+    public float chargeDuration = 1.5f;
+    private float chargeTimer = 0.0f;
+    private bool chargeAttack = false;
+
+    // variables for how long enemies will pursue the player
+    public float attackDuration = 3.0f;
+    private float attackTimer = 0.0f;
+    private bool attackNow = false;
+
+    // different states for the enemy
+    //public enum States
+    //{
+    //    Idle,
+    //    Pursue,
+    //    ChargeAttack,
+    //    Attack
+    //}
 
     [SerializeField] private GameObject player;
     [SerializeField] private float moveSpeed;
@@ -34,6 +52,9 @@ public class TriangleEnemy : MonoBehaviour
 
         fm = GameObject.Find("FlockManagerGO").GetComponent<FlockManager>();
 
+        // set the current state for the enemy, always start in idle
+        //States currentState = Idle;
+
         //for (int i = 0; i < drops.Count; i++) //For each drop in the list of drops
         //{
             //dropsRigidbodies = drops[0].GetComponent<Rigidbody2D>(); //Take the rigidbody from the drop
@@ -42,11 +63,25 @@ public class TriangleEnemy : MonoBehaviour
 
     void Update() //Physics updates
     {
+        // gets the current distance from the enemy to the player
         Vector3 distance = CalcDistance();
 
-        if (distance.magnitude <= attackRadius)
+        if (distance.magnitude <= attackRadius && attackNow == false)
         {
-            Attack();
+            chargeAttack = true;
+        }
+        else if (attackNow == true)
+        {
+            attackTimer += Time.deltaTime;
+            if (attackTimer >= attackDuration)
+            {
+                attackNow = false;
+                attackTimer = 0.0f;
+            }
+            else
+            {
+                Attack();
+            }
         }
         else if (distance.magnitude <= pursueRadius)
         {
@@ -55,6 +90,21 @@ public class TriangleEnemy : MonoBehaviour
         else
         {
             Idle();
+        }
+
+        if(chargeAttack == true)
+        {
+            chargeTimer += Time.deltaTime;
+            if (chargeTimer >= chargeDuration)
+            {
+                chargeAttack = false;
+                attackNow = true;
+                chargeTimer = 0.0f;
+            }
+            else
+            {
+                ChargeAttack();
+            }
         }
 
         //Vector3 offset = player.gameObject.transform.position - this.transform.position;
@@ -74,15 +124,6 @@ public class TriangleEnemy : MonoBehaviour
 
             Destroy(this.gameObject); //Destroy this gameobject
         }
-
-        /*
-        if (coll.gameObject.tag == "Player")
-        {
-            SceneManager.LoadScene(SceneManager.GetSceneAt(0).name);
-            RoomManager manager = new RoomManager();
-            manager.SpawnRooms();
-        }
-        */
     }
 
     /// <summary>
@@ -91,11 +132,25 @@ public class TriangleEnemy : MonoBehaviour
     /// </summary>
     void Attack()
     {
+        rb.isKinematic = false;
         Vector3 offset = GameObject.Find("Player").transform.position - this.transform.position;
         Vector3 unitOffset = offset.normalized;
         transform.up = unitOffset;
         rb.velocity = unitOffset * attackSpeed;
         rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y, 0);
+    }
+
+    /// <summary>
+    /// function that will "charge" the enemy's attack
+    /// should only be called if chargeTimer is less than
+    /// chargeDuration
+    /// </summary>
+    void ChargeAttack()
+    {
+        rb.isKinematic = true;
+        Vector3 offset = GameObject.Find("Player").transform.position - this.transform.position;
+        Vector3 unitOffset = offset.normalized;
+        transform.up = unitOffset;
     }
 
     /// <summary>
@@ -127,31 +182,6 @@ public class TriangleEnemy : MonoBehaviour
     //    desired -= velocity;
     //    desired.z = 0;
     //    return desired;
-    //}
-    //
-    //Vector3 Seperation()
-    //{
-    //    // this is the total flee force that will be the sum of any number of flockers fleeing
-    //    Vector3 totalFleeForce = new Vector3(0, 0, 0);
-    //
-    //    // loop through all vehicles and see if any are close to this one
-    //    for (int i = 0; i < fm.EnemyFlock.Count; i++)
-    //    {
-    //        // calculate the distance between this flocker and another
-    //        Vector3 distance = fm.EnemyFlock[i].transform.position - transform.position;
-    //
-    //        // check if this distance is greater than zero (we don't want the flocker fleeing from itself!)
-    //        // and if it less than the seperation distance then this flocker will flee this flocker
-    //        if (distance.magnitude > 0 && distance.magnitude < sepRadius)
-    //        {
-    //            Vector3 partialFleeForce = Flee(fm.EnemyFlock[i].transform.position);
-    //
-    //            // add the partial flee force to the total one
-    //            totalFleeForce = partialFleeForce + totalFleeForce;
-    //        }
-    //    }
-    //    // this should be the combined seperation force
-    //    return totalFleeForce;
     //}
     //
     //public Vector3 Cohesion()

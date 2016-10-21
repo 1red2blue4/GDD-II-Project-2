@@ -90,16 +90,9 @@ public class FlockManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
-        // for each enemy in the flock check if they are equal to null
-        // if so then remove it from the flock
-        // this way, enemyFlock.Count should always reflect the current # of enemies in the flock
-        for (int i = 0; i < enemyFlock.Count; i ++ )
+        if (this == null || this.transform == null)
         {
-            if (enemyFlock[i] == null)
-            {
-                enemyFlock.RemoveAt(i);
-            }
+            return;
         }
 
         // check to see if there are any enemies left in the flock
@@ -107,10 +100,25 @@ public class FlockManager : MonoBehaviour {
         if (enemyFlock.Count <= 0)
         {
             Destroy(this.gameObject);
+            return;
         }
 
-        // updates the flock's centroid
-        CalcCentroid();
+        if (this != null)
+        {
+            // for each enemy in the flock check if they are equal to null
+            // if so then remove it from the flock
+            // this way, enemyFlock.Count should always reflect the current # of enemies in the flock
+            for (int i = 0; i < enemyFlock.Count; i++)
+            {
+                if (enemyFlock[i] == null)
+                {
+                    enemyFlock.RemoveAt(i);
+                }
+            }
+
+            // updates the flock's centroid
+            CalcCentroid();
+        }
 	}
 
     /// <summary>

@@ -13,6 +13,8 @@ namespace UnityStandardAssets._2D
         private static GameManager _instance;
         private Dictionary<string, float> colors;
         private string[] colorKeys;
+        private string activeColor;
+        private bool roomLoaded;
 
         //Variables: In The Scene
         private Camera mainCamera;
@@ -24,6 +26,8 @@ namespace UnityStandardAssets._2D
         public Camera MainCamera { get { return mainCamera; } }
         public PlatformerCharacter2D Player { get { return player; } set { player = value; } }
         public List<GameObject> Enemies { get { return enemies; } }
+        public bool RoomLoaded { get { return roomLoaded; } set { roomLoaded = value; } }
+        public HSBColor ActiveColorHSB { get { return new HSBColor(colors[activeColor], 1.0f, 0.0f); } }
 
         //happens when created
         private void Awake()
@@ -56,12 +60,16 @@ namespace UnityStandardAssets._2D
             colors.Add("orange", .069f);
             //adding color names to array
             colorKeys = new string[6] { "red", "orange", "yellow", "green", "blue", "purple" };
+            activeColor = "";
+            roomLoaded = true;
+            ChangeRoomColor(GameObject.Find("Level 01"), "red");
         }
 
         //Changes the visual color of the objects in the room.
         //Also influences room based on color.
-        public void ChangeColor(GameObject room, string color)
+        public void ChangeRoomColor(GameObject room, string color)
         {
+            activeColor = color;
             switch (color)
             {
                 case "red":
@@ -94,17 +102,6 @@ namespace UnityStandardAssets._2D
             camColor.s = 1.0f;
             mainCamera.backgroundColor = camColor.ToColor();
 
-            //Changing all enemy colors
-            //GameObject[] enemiesByTag = GameObject.FindGameObjectsWithTag("enemy");
-            //for(int i=0; i<enemiesByTag.Length; i++)
-            //{
-            //    SpriteRenderer enemySprite = enemiesByTag[i].GetComponentInChildren<SpriteRenderer>();
-            //    HSBColor c = HSBColor.FromColor(enemySprite.color);
-            //    c.h = colors[color];
-            //    c.s = 1.0f;
-            //    enemySprite.color = c.ToColor();
-            //}
-
             //Getting all instances of Sprite Renders in the room and changing their hue.
             SpriteRenderer[] children = room.GetComponentsInChildren<SpriteRenderer>();
             for (int i = 0; i < children.Length; i++)
@@ -114,6 +111,37 @@ namespace UnityStandardAssets._2D
                 c.s = 1.0f;
                 children[i].color = c.ToColor();
             }
+
+            //Changing all enemy colors
+            GameObject[] enemiesByTag = GameObject.FindGameObjectsWithTag("enemy");
+            for (int i = 0; i < enemiesByTag.Length; i++)
+            {
+                Enemy e = (Enemy)enemiesByTag[i].GetComponent<Enemy>();
+                SpriteRenderer enemySprite = e.EnemySprite;
+                HSBColor c = HSBColor.FromColor(enemySprite.color);
+                c.h = colors[color];
+                c.s = 1.0f;
+                enemySprite.color = c.ToColor();
+            }
         }
+
+        /// <summary>
+        /// Returns the active color version of the input color.
+        /// </summary>
+        /// <param name="current">A Unity Color</param>
+        /// <returns>The new colored version of the input color.</returns>
+        public Color ChangeColor(Color current)
+        {
+            HSBColor newColor = HSBColor.FromColor(current);
+            newColor.h = colors[activeColor];
+            newColor.s = 1.0f;
+            return newColor.ToColor();
+        }
+
+        //public Color LerpColor(Color currentColor, Color endColor, float alpha)
+        //{
+        //    HSBColor newColor = HSBColor.FromColor(currentColor);
+
+        //}
     }
 }

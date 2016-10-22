@@ -8,6 +8,8 @@ public class TriangleEnemy : Enemy
     //public float moveSpeed;
     public float attackSpeed;
 
+    private Color baseColor;
+
     public float pursueRadius;
     
     private FlockManager fm;
@@ -25,6 +27,7 @@ public class TriangleEnemy : Enemy
         base.Start();
 
         fm = GameObject.Find("FlockManagerGO").GetComponent<FlockManager>();
+        baseColor = this.enemySprite.color;
 
         //for (int i = 0; i < drops.Count; i++) //For each drop in the list of drops
         //{

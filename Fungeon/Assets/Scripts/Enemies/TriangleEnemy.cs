@@ -2,19 +2,13 @@
 using System.Collections;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic; //List
-public class TriangleEnemy : MonoBehaviour
+public class TriangleEnemy : Enemy
 {
-    public GameObject target;
+    //public GameObject target;
     //public float moveSpeed;
     public float attackSpeed;
-
-    private Rigidbody2D rb;
-    protected FlockManager fm;
-
-    //movement
-    protected Vector3 acceleration; //   CURRENTLY NOT IN USE
-    protected Vector3 velocity; //   CURRENTLY NOT IN USE
-    protected Vector3 desired; //   CURRENTLY NOT IN USE
+    
+    private FlockManager fm;
 
     // for detecting when to pursue and attack
     public float pursueRadius;
@@ -30,35 +24,19 @@ public class TriangleEnemy : MonoBehaviour
     private float attackTimer = 0.0f;
     private bool attackNow = false;
 
-    // sprite for changing color
-    SpriteRenderer enemySprite;
-
-    // different states for the enemy
-    //public enum States
-    //{
-    //    Idle,
-    //    Pursue,
-    //    ChargeAttack,
-    //    Attack
-    //}
-
     [SerializeField] private GameObject player;
     [SerializeField] private float moveSpeed;
-    [SerializeField] private List<GameObject> drops; //The drops
+
 
     //private Rigidbody2D dropsRigidbodies; //The rigidbodies on the drops
 
 
-	void Start() //Use this for initialization
+    override public void Start()
     {
-        rb = this.GetComponent<Rigidbody2D>();
+        //call parent's start
+        base.Start();
 
         fm = GameObject.Find("FlockManagerGO").GetComponent<FlockManager>();
-
-        enemySprite = GetComponentInChildren<SpriteRenderer>();
-
-        // set the current state for the enemy, always start in idle
-        //States currentState = Idle;
 
         //for (int i = 0; i < drops.Count; i++) //For each drop in the list of drops
         //{
@@ -66,7 +44,7 @@ public class TriangleEnemy : MonoBehaviour
         //}
     }
 
-    void Update() //Physics updates
+    override public void Update() //Physics updates
     {
         // gets the current distance from the enemy to the player
         Vector3 distance = CalcDistance();
@@ -119,18 +97,6 @@ public class TriangleEnemy : MonoBehaviour
 
 	}
 
-    void OnTriggerEnter2D(Collider2D coll) //When a collision occurs
-    {
-
-        if (coll.gameObject.tag == "weapon") //If the collision is with a weapon
-        {
-            Instantiate(drops[0].gameObject, transform.position, Quaternion.identity); //Spawn in a drop
-            //dropsRigidbodies.velocity = new Vector2(Random.Range(-10, 10), 1f); //Fling the drop in a random direction
-
-            Destroy(this.gameObject); //Destroy this gameobject
-        }
-    }
-
     /// <summary>
     /// will be called when the bool attack is true
     /// will greatly speed up the enemy
@@ -168,6 +134,7 @@ public class TriangleEnemy : MonoBehaviour
     /// </summary>
    void Pursue()
     {
+        rb.isKinematic = false;
         Vector3 offset = GameObject.Find("Player").transform.position - this.transform.position;
         Vector3 unitOffset = offset.normalized;
         transform.up = unitOffset;
@@ -181,30 +148,47 @@ public class TriangleEnemy : MonoBehaviour
     /// </summary>
     void Idle()
    {
-       rb.velocity = new Vector3(0, 0, 0);
+       rb.velocity = new Vector3(0, 0.2f, 0);
    }
 
-    //protected Vector3 Seek(Vector3 targetPos)
-    //{
-    //    desired = targetPos - transform.position;
-    //    desired = desired.normalized * moveSpeed;
-    //    desired -= velocity;
-    //    desired.z = 0;
-    //    return desired;
+    // obstacle avoidance, self explanatory
+    //protected Vector3 ObstacleAvoidance(GameObject obstacle) {
+    //// set the desired
+    //desired = Vector3.zero;
+    //
+    //// get the distance from the seeker to the obstacle's center
+    //Vector3 centerDist = obstacle.transform.position - transform.position;
+    //
+    //// get the radius of the obstacle
+    ////float obstacleRadius = obstacle.GetComponent<ObstacleScript>().Radius;
+    ////
+    //// //check if objects aren't in the safe zone
+    ////if (centerDist.magnitude > safeDistance) {
+    ////    return desired;
+    ////}
+    ////
+    ////// if the obstacles are behind the seeker then don't worry about them
+    ////if (Vector3.Dot (centerDist, transform.up) < 0) {
+    ////    return desired;
+    ////}
+    ////
+    ////// if they're not within the seeker's movement zone then don't worry about them
+    ////if (Mathf.Abs (Vector3.Dot (centerDist, transform.right)) > radius + obstacleRadius) {
+    ////    return desired;
+    ////}
+    //
+    // //if the code reaches here, there will be a collision!
+    //
+    // //check whether to steer right or left
+    //if (Vector3.Dot (centerDist, transform.right) < 0) {
+    //    desired = transform.right * moveSpeed;
     //}
     //
-    //public Vector3 Cohesion()
-    //{
-    //    Vector3 centerForce = Seek(gm.barbCentroidObject.transform.position);
+    //if (Vector3.Dot (centerDist, transform.right) >=0) {
+    //    desired = transform.right * -moveSpeed;
+    //}
     //
-    //    return centerForce;
+    //return desired;
     //}
 
-    /// <summary>
-    /// calculates the distance from the enemy to the player
-    /// </summary>
-    Vector3 CalcDistance()
-    {
-        return GameObject.Find("Player").transform.position - this.transform.position;
-    }
 }

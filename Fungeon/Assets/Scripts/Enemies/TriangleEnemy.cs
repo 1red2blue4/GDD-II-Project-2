@@ -30,6 +30,9 @@ public class TriangleEnemy : MonoBehaviour
     private float attackTimer = 0.0f;
     private bool attackNow = false;
 
+    // sprite for changing color
+    SpriteRenderer enemySprite;
+
     // different states for the enemy
     //public enum States
     //{
@@ -51,6 +54,8 @@ public class TriangleEnemy : MonoBehaviour
         rb = this.GetComponent<Rigidbody2D>();
 
         fm = GameObject.Find("FlockManagerGO").GetComponent<FlockManager>();
+
+        enemySprite = GetComponentInChildren<SpriteRenderer>();
 
         // set the current state for the enemy, always start in idle
         //States currentState = Idle;
@@ -151,6 +156,10 @@ public class TriangleEnemy : MonoBehaviour
         Vector3 offset = GameObject.Find("Player").transform.position - this.transform.position;
         Vector3 unitOffset = offset.normalized;
         transform.up = unitOffset;
+
+        // color changing to indicate attack
+        float colorTemp = .4f + ((chargeTimer / chargeDuration) * .6f);
+        enemySprite.color = new Color(colorTemp, colorTemp, colorTemp);
     }
 
     /// <summary>

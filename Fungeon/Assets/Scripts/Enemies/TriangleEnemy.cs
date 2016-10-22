@@ -7,22 +7,10 @@ public class TriangleEnemy : Enemy
     //public GameObject target;
     //public float moveSpeed;
     public float attackSpeed;
+
+    public float pursueRadius;
     
     private FlockManager fm;
-
-    // for detecting when to pursue and attack
-    public float pursueRadius;
-    public float attackRadius;
-
-    // variables for controlling charge up
-    public float chargeDuration = 1.5f;
-    private float chargeTimer = 0.0f;
-    private bool chargeAttack = false;
-
-    // variables for how long enemies will pursue the player
-    public float attackDuration = 3.0f;
-    private float attackTimer = 0.0f;
-    private bool attackNow = false;
 
     [SerializeField] private GameObject player;
     [SerializeField] private float moveSpeed;
@@ -148,6 +136,7 @@ public class TriangleEnemy : Enemy
     /// </summary>
     void Idle()
    {
+        // .2f counteracts gravity and causes the enemy to float
        rb.velocity = new Vector3(0, 0.2f, 0);
    }
 

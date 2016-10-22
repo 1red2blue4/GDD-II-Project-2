@@ -17,7 +17,7 @@ namespace UnityStandardAssets._2D
         private Transform m_CeilingCheck;   // A position marking where to check for ceilings
         const float k_CeilingRadius = .01f; // Radius of the overlap circle to determine if the player can stand up
         private Animator m_Anim;            // Reference to the player's animator component.
-        private Rigidbody2D m_Rigidbody2D;
+        public Rigidbody2D m_Rigidbody2D;
         private bool m_FacingRight = true;  // For determining which way the player is currently facing.
         private bool canAttack = true;      // For creating a delay between attacks
         private float timer = 0.0f;         // Timer for the cooldown
@@ -43,6 +43,13 @@ namespace UnityStandardAssets._2D
             defaultGravityScale = m_Rigidbody2D.gravityScale;
             coolDown = weapons[activeWeapon].GetComponent<Weapon>().cooldown;
             playerSprite = GetComponentInChildren<SpriteRenderer>();
+
+            //Changing color
+            Color color = playerSprite.color;
+            HSBColor c = HSBColor.FromColor(color);
+            c.h = 0.0f;
+            c.s = 0f;
+            playerSprite.color = c.ToColor();
         }
 
         private void Update()

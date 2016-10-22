@@ -13,6 +13,8 @@ abstract public class Enemy : MonoBehaviour {
 
     [SerializeField]private List<GameObject> drops; //The drops
 
+    public SpriteRenderer EnemySprite { get { return enemySprite; } }
+
 	// Use this for initialization
 	virtual public void Start () {
         rb = this.GetComponent<Rigidbody2D>();

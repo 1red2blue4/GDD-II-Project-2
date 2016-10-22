@@ -7,7 +7,8 @@ public class TriangleEnemy : Enemy
     //public GameObject target;
     //public float moveSpeed;
     public float attackSpeed;
-    
+    private Color baseColor;
+
     private FlockManager fm;
 
     // for detecting when to pursue and attack
@@ -37,6 +38,7 @@ public class TriangleEnemy : Enemy
         base.Start();
 
         fm = GameObject.Find("FlockManagerGO").GetComponent<FlockManager>();
+        baseColor = this.enemySprite.color;
 
         //for (int i = 0; i < drops.Count; i++) //For each drop in the list of drops
         //{

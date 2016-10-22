@@ -24,6 +24,7 @@ namespace UnityStandardAssets._2D
         private float coolDown = 1.0f;             // Length the timer has to count up to
         private float defaultGravityScale = 3.0f;
         private SpriteRenderer playerSprite;
+        private Color baseColor;
 
         public int activeWeapon;
         public GameObject[] weapons;
@@ -43,7 +44,7 @@ namespace UnityStandardAssets._2D
             defaultGravityScale = m_Rigidbody2D.gravityScale;
             coolDown = weapons[activeWeapon].GetComponent<Weapon>().cooldown;
             playerSprite = GetComponentInChildren<SpriteRenderer>();
-
+            baseColor = playerSprite.color;
             //Changing color
             Color color = playerSprite.color;
             HSBColor c = HSBColor.FromColor(color);
@@ -62,12 +63,12 @@ namespace UnityStandardAssets._2D
                 {
                     canAttack = true;
                     timer = 0.0f;
-                    playerSprite.color = new Color(1, 1, 1);
+                    playerSprite.color = GameManager.Instance.ChangeColor(baseColor);
                 }
                 else
                 {//changing color
                     float colorTemp = .4f + ((timer / coolDown) * .6f);
-                    playerSprite.color = new Color(colorTemp, colorTemp, colorTemp);
+                    //playerSprite.color = GameManager.Instance.LerpColor(playerSprite.color, baseColor, colorTemp);
                 }
             }
             if(Input.GetButtonDown("SwitchWeaponLeft"))
@@ -175,6 +176,7 @@ namespace UnityStandardAssets._2D
             {
                 // Add a vertical force to the player.
                 //m_Rigidbody2D.gravityScale = defaultGravityScale;
+                GameManager.Instance.ChangeRoomColor(GameObject.Find("Level 01"), "red");
                 m_Grounded = false;
                 m_Anim.SetBool("Ground", false);
                 m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));

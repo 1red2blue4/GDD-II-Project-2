@@ -202,5 +202,3 @@ Sprite outline generation failed - could not read texture pixel data. Did you fo
  
 (Filename:  Line: 117)
 
-Setting up 1 worker threads for Enlighten.
-  Thread -> id: 450 -> priority: 1 

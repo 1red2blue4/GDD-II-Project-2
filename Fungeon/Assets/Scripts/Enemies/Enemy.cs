@@ -7,6 +7,19 @@ using System.Collections.Generic;
 /// </summary>
 abstract public class Enemy : MonoBehaviour {
 
+    // for detecting when to pursue and attack
+    public float attackRadius;
+
+    // variables for controlling charge up
+    public float chargeDuration = 1.5f;
+    protected float chargeTimer = 0.0f;
+    protected bool chargeAttack = false;
+
+    // variables for how long enemies will pursue the player
+    public float attackDuration = 3.0f;
+    protected float attackTimer = 0.0f;
+    protected bool attackNow = false;
+
     protected Rigidbody2D rb;
 
     protected SpriteRenderer enemySprite;

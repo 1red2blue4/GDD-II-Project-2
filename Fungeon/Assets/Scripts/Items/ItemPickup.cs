@@ -11,6 +11,7 @@ public class ItemPickup : MonoBehaviour //KI
 
     void Start() //Use this for initialization
     {
+        healthInventory = 0; //Initialize the player's health inventory
         soundEffects = new AudioSource[5];
         soundEffects = GetComponents<AudioSource>();
     }
@@ -25,11 +26,6 @@ public class ItemPickup : MonoBehaviour //KI
         {
             healthInventory = value; //Set the healthInventory value
         }
-    }
-
-    void Start() //Use this for initialization
-    {
-        healthInventory = 0; //Initialize the player's health inventory
     }
 
     void OnTriggerEnter2D(Collider2D that) //If the player collides with something

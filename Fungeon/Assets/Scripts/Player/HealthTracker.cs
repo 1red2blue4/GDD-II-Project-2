@@ -6,6 +6,7 @@ public class HealthTracker : MonoBehaviour //KI
     private int health; //Huebert's health, not his peril
     private float damageCooldown; //The time between when Huebert can take damage
     private SpriteRenderer playerSR; //The player's sprite renderer
+    public AudioSource[] soundEffects;
 
     public int Health //Health property
     {
@@ -17,6 +18,7 @@ public class HealthTracker : MonoBehaviour //KI
 
 	void Start() //Use this for initialization
     {
+        soundEffects = this.GetComponents<AudioSource>();
         health = 3; //Give Huebert 3 health
         damageCooldown = 1; //Set the damageCooldown
         playerSR = gameObject.GetComponentInChildren<SpriteRenderer>(); //Get the player's sprite renderer
@@ -37,6 +39,8 @@ public class HealthTracker : MonoBehaviour //KI
         if (that.gameObject.tag == "enemy" && damageCooldown <= 0f) //If the player collides with an enemy
         {
             health--; //Decrement Huebert's health
+            soundEffects[0].Play();
+            //getsHit.Play();
             damageCooldown = 1; //Reset the damage cooldown
         }
     }

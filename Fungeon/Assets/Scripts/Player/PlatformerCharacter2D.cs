@@ -180,7 +180,7 @@ namespace UnityStandardAssets._2D
             {
                 // Add a vertical force to the player.
                 //m_Rigidbody2D.gravityScale = defaultGravityScale;
-                GameManager.Instance.ChangeRoomColor(GameObject.Find("Level 01"), "red");
+                //GameManager.Instance.ChangeRoomColor(GameObject.Find("Level 01"), "red");
                 m_Grounded = false;
                 m_Anim.SetBool("Ground", false);
                 m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));

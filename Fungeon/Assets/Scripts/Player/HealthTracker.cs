@@ -12,7 +12,11 @@ public class HealthTracker : MonoBehaviour //KI
     {
         get
         {
-            return health; //Return the value of health
+            return health; //Return the player's health
+        }
+        set
+        {
+            health = value; //Set the player's health
         }
     }
 
@@ -45,7 +49,7 @@ public class HealthTracker : MonoBehaviour //KI
         }
     }
 
-    void blink() //Make Huebert blink while in cooldown
+    private void blink() //Make Huebert blink while in cooldown
     {
         if (damageCooldown >= 0f) //If Huebert is in cooldown
         {

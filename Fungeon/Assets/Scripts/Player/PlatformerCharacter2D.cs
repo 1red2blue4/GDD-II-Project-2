@@ -173,6 +173,7 @@ namespace UnityStandardAssets._2D
             // If the player should jump...
             if (m_Grounded && jump && m_Anim.GetBool("Ground"))
             {
+                soundEffects[3].Play();
                 // Add a vertical force to the player.
                 //m_Rigidbody2D.gravityScale = defaultGravityScale;
                 m_Grounded = false;
@@ -237,6 +238,18 @@ namespace UnityStandardAssets._2D
 
             if (Input.GetAxis("AttackStick") < -.2 && canAttack) //Attack left
             {
+                //Play sound effect
+                //stab sound
+                if (activeWeapon == 0)
+                {
+                    soundEffects[2].Play();
+                }
+                //slash sound
+                else if (activeWeapon == 1)
+                {
+                    soundEffects[1].Play();
+                }
+
                 if (scale.x > 0) //If the attack should flip
                 {
                     scale.x *= -1;
@@ -251,6 +264,18 @@ namespace UnityStandardAssets._2D
             }
             else if (Input.GetAxis("AttackStick") > .2 && canAttack) //Attack right
             {
+                //Play sound effect
+                //stab sound
+                if (activeWeapon == 0)
+                {
+                    soundEffects[2].Play();
+                }
+                //slash sound
+                else if (activeWeapon == 1)
+                {
+                    soundEffects[1].Play();
+                }
+
                 if (scale.x < 0) //If the attack should flip
                 {
                     scale.x *= -1;

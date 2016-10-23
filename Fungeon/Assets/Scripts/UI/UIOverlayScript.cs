@@ -6,8 +6,25 @@ public class UIOverlayScript : MonoBehaviour //KI
 {
     [SerializeField] private Canvas UIOverlay; //The UI overlay
     [SerializeField] private HealthTracker playerHealthTracker; //The player's health
+    [SerializeField] private ItemPickup playerInventory; //The player's inventory script
     [SerializeField] private UnityStandardAssets._2D.PlatformerCharacter2D playerControlScript; //The player's control script 
     private UnityEngine.UI.Image[] UIImages; //The UI images for the player's health
+
+    public HealthTracker PlayerHealthTracker //PlayerHealthTracker property
+    {
+        get
+        {
+            return playerHealthTracker; //Return the player's health tracker
+        }
+    }
+
+    public ItemPickup PlayerInventory //PlayerInventory property
+    {
+        get
+        {
+            return playerInventory; //Return the player's inventory
+        }
+    }
 
     void Start() //Use this for initialization
     {
@@ -17,6 +34,7 @@ public class UIOverlayScript : MonoBehaviour //KI
 	void Update() //Update is called once per frame
     {
         healthUIUpdater(); //Update the player's health UI
+        healthRestoreUIUpdater(); //Update the player's health restore UI
         weaponUIUpdater(); //Update the player's weapon UI
     }
 
@@ -49,29 +67,54 @@ public class UIOverlayScript : MonoBehaviour //KI
         }
     }
 
+    private void healthRestoreUIUpdater() //Updates the player's health restore UI
+    {
+        if (playerInventory.HealthInventory == 0) //If the player has no health pickups
+        {
+            UIImages[6].enabled = false; //Show the health pickup on the UI
+            UIImages[7].enabled = false; //Hide the health pickup on the UI
+            UIImages[8].enabled = false; //Hide the health pickup on the UI
+        }
+        else if (playerInventory.HealthInventory == 1) //If the player has one health pickup
+        {
+            UIImages[6].enabled = true; //Show the health pickup on the UI
+            UIImages[7].enabled = false; //Hide the health pickup on the UI
+            UIImages[8].enabled = false; //Hide the health pickup on the UI
+        }
+        else if (playerInventory.HealthInventory == 2) //If the player has two health pickups
+        {
+            UIImages[7].enabled = true; //Show the health pickup on the UI
+            UIImages[8].enabled = false; //Hide the health pickup on the UI
+        }
+        else if (playerInventory.HealthInventory == 3) //If the player has three health pickups
+        {
+            UIImages[8].enabled = true; //Show the health pickup on the UI
+        }
+    }
+
     private void weaponUIUpdater() //Updates the player's weapon UI
     {
         for (int i = 0; i < playerControlScript.weapons.Length; i++) //For each weapon
         {
             if (playerControlScript.activeWeapon == i) //If the player's active weapon is the one to be enabled
             {
-                UIImages[6 + i].enabled = true; //Enable the active weapon
+                UIImages[9 + i].enabled = true; //Enable the active weapon
 
-                if (5 + i > 5) //If the weapon to the left exists
+                if (8 + i > 8) //If the weapon to the left exists
                 {
-                    UIImages[5 + i].enabled = false; //Disable the weapon to the left
+                    UIImages[8 + i].enabled = false; //Disable the weapon to the left
                 }
-                else if (5 + i <= 5) //If the weapon to the left does not exist
+                else if (8 + i <= 8) //If the weapon to the left does not exist
                 {
                     UIImages[UIImages.Length - 1].enabled = false; //Disable the weapon to the left
                 }
-                else if (7 + i <= UIImages.Length - 1) //If the weapon to the right exists
+                else if (10 + i <= UIImages.Length - 1) //If the weapon to the right exists
                 {
-                    UIImages[7 + i].enabled = false; //Disable the weapon to the right
+                    UIImages[10 + i].enabled = false; //Disable the weapon to the right
                 }
                 else //If the weapon to the right does not exist
                 {
-                    UIImages[6].enabled = false; //Disable the weapon to the right
+                    UIImages[10].enabled = false; //Disable the weapon to the right
                 }
             }
         }

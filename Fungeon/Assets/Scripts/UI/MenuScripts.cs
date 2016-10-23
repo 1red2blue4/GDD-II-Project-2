@@ -10,7 +10,14 @@ public class MenuScripts : MonoBehaviour //KI
     [SerializeField] private Canvas keyboardControlMenu; //The keyboard controls menu UI
     [SerializeField] private Canvas controllerControlMenu; //The controller controls menu UI
     [SerializeField] private Canvas inventoryMenu; //The inventory menu UI
+    [SerializeField] private ItemPickup playerInventory; //The player's inventory script
+    private UnityEngine.UI.Image[] inventoryImages; //The UI images for the inventory
     private bool controllerConnected; //If a controller is connected
+
+    void Start() //Use this for initialization
+    {
+        inventoryImages = inventoryMenu.GetComponentsInChildren<UnityEngine.UI.Image>(); //Get the images from the children
+    }
 
     void Update() //Update is called once per frame
     {
@@ -39,7 +46,10 @@ public class MenuScripts : MonoBehaviour //KI
             pauseMenu.gameObject.SetActive(true); //Enable the pause menu
         }
 
-        ControllerConnectionManager(); //Manages controller connection behavior
+        if (pauseMenu.gameObject.activeInHierarchy || keyboardControlMenu.gameObject.activeInHierarchy || controllerControlMenu.gameObject.activeInHierarchy) //If the pause menu is pressed
+        {
+            ControllerConnectionManager(); //Manages controller connection behavior
+        }
     }
 
     private void Pause() //When the pause button is pressed

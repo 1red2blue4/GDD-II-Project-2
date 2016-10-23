@@ -7,6 +7,13 @@ public class ItemPickup : MonoBehaviour //KI
     [SerializeField] private UnityStandardAssets._2D.PlatformerCharacter2D playerControlScript; //The player's control script 
     private int healthInventory; //Create an array to hold the health items
     private List<string> orbInventory = new List<string>(); //Create a list to hold the orb items
+    public AudioSource[] soundEffects;
+
+    void Start() //Use this for initialization
+    {
+        soundEffects = new AudioSource[5];
+        soundEffects = GetComponents<AudioSource>();
+    }
 
     public int HealthInventory //HealthInventory property
     {
@@ -39,6 +46,7 @@ public class ItemPickup : MonoBehaviour //KI
             }
 
             Destroy(that.gameObject); //Destroy the item
+            soundEffects[4].Play(); //Play a sound effect for destroying the item
         }
     }
 }

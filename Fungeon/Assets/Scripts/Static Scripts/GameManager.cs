@@ -117,6 +117,7 @@ namespace UnityStandardAssets._2D
             for (int i = 0; i < enemiesByTag.Length; i++)
             {
                 Enemy e = (Enemy)enemiesByTag[i].GetComponent<Enemy>();
+                print(e);
                 SpriteRenderer enemySprite = e.EnemySprite;
                 HSBColor c = HSBColor.FromColor(enemySprite.color);
                 c.h = colors[color];
@@ -138,10 +139,16 @@ namespace UnityStandardAssets._2D
             return newColor.ToColor();
         }
 
-        //public Color LerpColor(Color currentColor, Color endColor, float alpha)
-        //{
-        //    HSBColor newColor = HSBColor.FromColor(currentColor);
-
-        //}
+        public Color LerpColor(Color endColor, float alpha)
+        {
+            HSBColor endColorHSB = HSBColor.FromColor(endColor);
+            endColorHSB.s = 1.0f;
+            endColorHSB.h = colors[activeColor];
+            HSBColor newColor = HSBColor.FromColor(endColor);
+            newColor.b -= .6f;
+            newColor.s = 1.0f;
+            newColor.h = colors[activeColor];
+            return HSBColor.Lerp(newColor, endColorHSB, alpha).ToColor();
+        }
     }
 }

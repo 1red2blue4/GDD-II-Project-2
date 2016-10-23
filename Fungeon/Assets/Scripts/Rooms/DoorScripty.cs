@@ -15,9 +15,9 @@ namespace UnityStandardAssets._2D
             otherCollision = other;
             if (other.tag == "Player" && Input.GetButtonDown("DoorActivation") && !GameManager.Instance.MovingBetweenRooms)
             {
+                GameManager.Instance.MovingBetweenRooms = true;
                 FadeBetween();
                 openDoor.Play();
-                GameManager.Instance.MovingBetweenRooms = true;
             }
         }
         public void FadeBetween()

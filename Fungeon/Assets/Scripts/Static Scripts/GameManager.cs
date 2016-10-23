@@ -65,7 +65,7 @@ namespace UnityStandardAssets._2D
             colorKeys = new string[6] { "red", "orange", "yellow", "green", "blue", "purple" };
             activeColor = "red";
             roomLoaded = true;
-            //ChangeRoomColor(GameObject.Find("EntireLevel"));
+            ChangeRoomColor(GameObject.Find("EntireLevel"));
             player.playerSprite.color = ChangeColor(player.BaseColor);
         }
 

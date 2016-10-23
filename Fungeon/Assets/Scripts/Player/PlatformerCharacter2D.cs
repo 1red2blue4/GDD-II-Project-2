@@ -31,12 +31,16 @@ namespace UnityStandardAssets._2D
         public Camera cam;
         public float slopeFriction;
 
+        public AudioSource[] soundEffects;
+
         //Getter
         public bool CanAttack { get { return canAttack; } }
 
         private void Awake()
         {
             // Setting up references.
+            soundEffects = new AudioSource[5];
+            soundEffects = GetComponents<AudioSource>();
             m_GroundCheck = transform.Find("GroundCheck");
             m_CeilingCheck = transform.Find("CeilingCheck");
             m_Anim = GetComponent<Animator>();
@@ -203,6 +207,18 @@ namespace UnityStandardAssets._2D
         public void Attack()
         {
             Vector3 scale = weapons[activeWeapon].transform.localScale;
+
+            //Play sound effect
+            //stab sound
+            if (activeWeapon == 0)
+            {
+                soundEffects[2].Play();
+            }
+            //slash sound
+            else if (activeWeapon == 1)
+            {
+                soundEffects[1].Play();
+            }
 
             //chekcing which side to attack on based on mouse position
             if (Input.mousePosition.x > (cam.WorldToViewportPoint(this.gameObject.transform.position).x) * Screen.width)

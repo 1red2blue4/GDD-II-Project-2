@@ -178,6 +178,7 @@ namespace UnityStandardAssets._2D
             // If the player should jump...
             if (m_Grounded && jump && m_Anim.GetBool("Ground"))
             {
+                soundEffects[3].Play();
                 // Add a vertical force to the player.
                 //m_Rigidbody2D.gravityScale = defaultGravityScale;
                 //GameManager.Instance.ChangeRoomColor(GameObject.Find("Level 01"), "red");

@@ -23,7 +23,7 @@ namespace UnityStandardAssets._2D
         private float timer = 0.0f;         // Timer for the cooldown
         private float coolDown = 1.0f;             // Length the timer has to count up to
         private float defaultGravityScale = 3.0f;
-        private SpriteRenderer playerSprite;
+        public SpriteRenderer playerSprite;
         private Color baseColor;
 
         public int activeWeapon;
@@ -35,6 +35,7 @@ namespace UnityStandardAssets._2D
 
         //Getter
         public bool CanAttack { get { return canAttack; } }
+        public Color BaseColor { get { return baseColor; } }
 
         private void Awake()
         {
@@ -49,12 +50,6 @@ namespace UnityStandardAssets._2D
             coolDown = weapons[activeWeapon].GetComponent<Weapon>().cooldown;
             playerSprite = GetComponentInChildren<SpriteRenderer>();
             baseColor = playerSprite.color;
-            //Changing color
-            Color color = playerSprite.color;
-            HSBColor c = HSBColor.FromColor(color);
-            c.h = 0.0f;
-            c.s = 0f;
-            playerSprite.color = c.ToColor();
         }
 
         private void Update()

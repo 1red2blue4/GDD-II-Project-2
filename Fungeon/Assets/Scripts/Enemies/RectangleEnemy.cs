@@ -14,7 +14,7 @@ namespace UnityStandardAssets._2D
         private bool playerDetected = false;
         private bool edgeDetected = true;
         private bool isPatrolling = true;
-        public int direction;
+        public int direction = -1;
 
         // for raycasting
         public float detectPlayerDistance;
@@ -64,11 +64,11 @@ namespace UnityStandardAssets._2D
             }
 
             // enemy sees player sneaking up behind it
-            if (DetectRadiusPlayer() == true && isPatrolling == true)
-            {
-                playerDetected = true;
-                isPatrolling = false;
-            }
+            //if (DetectRadiusPlayer() == true && isPatrolling == true)
+            //{
+            //    playerDetected = true;
+            //    isPatrolling = false;
+            //}
 
         }
 
@@ -89,6 +89,7 @@ namespace UnityStandardAssets._2D
         /// </summary>
         public void Patrol()
         {
+
             bool left = DetectLeftEdge();
             bool right = DetectRightEdge();
 
@@ -96,8 +97,9 @@ namespace UnityStandardAssets._2D
             // patrol right
             if (direction == 1 && right == true)
             {
-                //Debug.Log("Going Right...");
-                rb.velocity = new Vector3(patrolSpeed, 0);
+                Debug.Log(transform.name + " Going Right at " + rb.velocity.x);
+                rb.velocity = new Vector3(patrolSpeed, 0, 0);
+                rb.transform.position = new Vector3(transform.position.x, transform.position.y + .0001f, 0);
             }
 
             // turn left
@@ -110,8 +112,9 @@ namespace UnityStandardAssets._2D
             // patrol left
             if (direction == -1 && left == true)
             {
-                //Debug.Log("Going Left...");
-                rb.velocity = new Vector3(-patrolSpeed, 0);
+                Debug.Log(transform.name + " Going Left at" + rb.velocity.x);
+                rb.velocity = new Vector3(-patrolSpeed, 0, 0);
+                rb.transform.position = new Vector3(transform.position.x, transform.position.y + .0001f, 0);
             }
 
             // turn right

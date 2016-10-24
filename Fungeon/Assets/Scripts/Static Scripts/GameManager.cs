@@ -8,7 +8,6 @@ namespace UnityStandardAssets._2D
     //To use methods or get properties, first type 'GameManager.Instance'
     public class GameManager : MonoBehaviour
     {
-
         //Variables: Data
         private static GameManager _instance;
         private Dictionary<string, float> colors;
@@ -21,6 +20,9 @@ namespace UnityStandardAssets._2D
         private Camera mainCamera;
         private PlatformerCharacter2D player;
         private List<GameObject> enemies;
+
+        public Sprite playerSpriteImage;
+        public Sprite trumpSpriteImage;
 
         //Properties
         public static GameManager Instance { get { return _instance; } }
@@ -99,14 +101,14 @@ namespace UnityStandardAssets._2D
                     }
                     break;
                 case "orange":
-                    //TODO: Need Trump Sprite
+                    player.playerSprite.sprite = trumpSpriteImage;
                     break;
                 case "yellow":
                     //TODO: Need pickup rate
                     break;
                 case "green":
                     player.defaultMaxSpeed = player.MaxSpeed;
-                    player.MaxSpeed = 20f;
+                    player.MaxSpeed = 15f;
                     for (int i = 0; i < enemiesByTag.Length; i++)
                     {
                         if (enemiesByTag[i].name != "Collider")
@@ -118,10 +120,9 @@ namespace UnityStandardAssets._2D
                     }
                         break;
                 case "blue":
-                    player.m_Rigidbody2D.gravityScale = .5f;
+                    player.m_Rigidbody2D.gravityScale = 1.5f;
                     break;
                 case "purple":
-                    //TODO: Need health pickups
                     break;
                 default:
                     //breaks out of method if color isn't in dictionary.
@@ -228,10 +229,9 @@ namespace UnityStandardAssets._2D
                     }
                     break;
                 case "blue":
-                    //player.m_Rigidbody2D.gravityScale = .5f;
+                    player.m_Rigidbody2D.gravityScale = 3.0f;
                     break;
                 case "purple":
-                    //TODO: Need health pickups
                     break;
                 default:
                     //breaks out of method if color isn't in dictionary.

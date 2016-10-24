@@ -46,7 +46,7 @@ namespace UnityStandardAssets._2D
 
         public void BeginLerp()
         {
-            GameManager.Instance.ChangeRoomColor(GameObject.Find("EntireLevel"));
+            GameManager.Instance.ChangeRoomColor(GameObject.Find("New_Entire_Level"));
             lerping = true;
             this.prevColor = spriteRenderer.color;
             int side = door.side;

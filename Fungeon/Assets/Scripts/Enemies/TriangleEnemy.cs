@@ -194,11 +194,16 @@ namespace UnityStandardAssets._2D
             }
 
             // apply a knockback force
-            if (coll.gameObject.tag == "Player")
+            if (coll.gameObject.tag == "Player" && attackNow == true)
             {
                 Debug.Log("Hit player");
 
                 connectTimerStart = true;
+            }
+
+            if (coll.gameObject.transform.parent.tag == "platform" && knockedback)
+            {
+                rb.velocity = new Vector3(0, 0, 0);
             }
         }
 

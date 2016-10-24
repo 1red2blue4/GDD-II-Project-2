@@ -14,7 +14,7 @@ namespace UnityStandardAssets._2D
         private bool playerDetected = false;
         private bool edgeDetected = true;
         private bool isPatrolling = true;
-        private int direction = 1;
+        public int direction;
 
         // for raycasting
         public float detectPlayerDistance;
@@ -27,6 +27,13 @@ namespace UnityStandardAssets._2D
         override public void Start()
         {
             base.Start();
+
+            if (direction == -1)
+            {
+                Vector3 theScale = this.GetComponentInChildren<SpriteRenderer>().transform.localScale;
+                theScale.x *= -1;
+                this.GetComponentInChildren<SpriteRenderer>().transform.localScale = theScale;
+            }
         }
 
         override public void Update()
@@ -63,11 +70,15 @@ namespace UnityStandardAssets._2D
                 isPatrolling = false;
             }
 
-            if (playerDetected == true)
+        }
+
+        // handles attacking
+        void FixedUpdate()
+        {
+            if (playerDetected == true && (DetectLeftEdge() == true || DetectRightEdge() == true))
             {
                 Attack();
             }
-
         }
 
         /// <summary>
@@ -94,7 +105,6 @@ namespace UnityStandardAssets._2D
             {
                 Flip();
                 //Debug.Log("Turning Left...");
-                direction = -1;
             }
 
             // patrol left
@@ -109,7 +119,6 @@ namespace UnityStandardAssets._2D
             {
                 Flip();
                 //Debug.Log("Turning Right...");
-                direction = 1;
             }
         }
 
@@ -122,7 +131,16 @@ namespace UnityStandardAssets._2D
             Vector3 dist = CalcDistance();
             Vector3 offset = CalcDistance();
             Vector3 unitOffset = offset.normalized;
-            rb.velocity = unitOffset * attackSpeed;
+            rb.velocity = new Vector2(unitOffset.x * attackSpeed, 0);
+
+            if (direction == -1 && rb.velocity.x > 0)
+            {
+                Flip();
+            }
+            if (direction == 1 && rb.velocity.x < 0)
+            {
+                Flip();
+            }
         }
 
         /// <summary>
@@ -134,6 +152,7 @@ namespace UnityStandardAssets._2D
             Vector3 theScale = this.GetComponentInChildren<SpriteRenderer>().transform.localScale;
             theScale.x *= -1;
             this.GetComponentInChildren<SpriteRenderer>().transform.localScale = theScale;
+            direction = direction * -1;
         }
 
         /// <summary>

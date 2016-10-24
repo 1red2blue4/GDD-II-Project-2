@@ -9,14 +9,23 @@ namespace UnityStandardAssets._2D
     /// </summary>
     abstract public class Enemy : MonoBehaviour
     {
-
         public int damage;
         public int health;
         public float moveSpeed;
         public float defaultMoveSpeed;
         public float attackSpeed;
-        // for detecting when to pursue and attack
-        public float attackRadius;
+
+        // force for knockback
+        public float knockback;
+        protected bool knockedback;
+        protected float knockbackTimer = 0.0f;
+        public float knockbackDuration = 0.5f;
+
+        // for knockback, if enemies are knocked back immediately they don't do damage
+        // so, they stay connected for a short time to do damage then are knocked back
+        protected float connectTimer = 0.0f;
+        protected float connectDuration = 0.1f;
+        protected bool connectTimerStart = false;
 
         // variables for controlling charge up
         public float chargeDuration = 1.5f;
@@ -28,14 +37,22 @@ namespace UnityStandardAssets._2D
         protected float attackTimer = 0.0f;
         protected bool attackNow = false;
 
+        // for detecting when to pursue and attack
+        public float attackRadius;
+        public float pursueRadius;
+
         protected Rigidbody2D rb;
+
+
+        [SerializeField]
+        protected List<GameObject> drops; //The drops
 
         protected SpriteRenderer enemySprite;
 
         protected AudioSource dyingSound;
         //protected AudioClip death;
-        [SerializeField] private List<GameObject> drops; //The drops
-        [SerializeField] private List<float> dropPercentage; //Percent chance for a drop
+        [SerializeField]
+        protected List<float> dropPercentage; //Percent chance for a drop
 
         public SpriteRenderer EnemySprite { get { return enemySprite; } }
 
@@ -49,27 +66,23 @@ namespace UnityStandardAssets._2D
 
             enemySprite = GetComponentInChildren<SpriteRenderer>();
         }
-	
-	    // Update is called once per frame
-        abstract public void Update();
+
+
+        /// <summary>
+        /// will be called when the bool attack is true
+        /// will greatly speed up the enemy
+        /// </summary>
+        abstract public void Attack();
 
         /// <summary>
         /// Handles what happens when an enemy collides with a weapon
         /// </summary>
         /// <param name="coll"></param>
-        public void OnTriggerEnter2D(Collider2D coll) //When a collision occurs
-        {
-            if (coll.gameObject.tag == "weapon") //If the collision is with a weapon
-            {
-                if (dropPercentage[0] >= Random.Range(0, 101)) //If the drop percentage is less than the random number generated
-                {
-                    Instantiate(drops[0].gameObject, transform.position, Quaternion.identity); //Spawn in a drop
-                }
+        abstract public void OnTriggerEnter2D(Collider2D coll); //When a collision occurs
 
-                AudioSource.PlayClipAtPoint(dyingSound.clip, transform.position);
-                Destroy(this.gameObject); //Destroy this gameobject
-            }
-        }
+        // Update is called once per frame
+        abstract public void Update();
+
 
         /// <summary>
         /// calculates the distance from the enemy to the player

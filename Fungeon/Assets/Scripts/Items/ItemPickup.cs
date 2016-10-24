@@ -44,12 +44,12 @@ public class ItemPickup : MonoBehaviour //KI
             if (that.gameObject.name.Contains("HealthPickup") && healthInventory < 3) //If the item is a health pickup and there is no health in the last health inventory slot
             {
                 healthInventory++; //Add a health pickup to the player's health inventory
-                //soundEffects[4].Play(); //Play a sound effect for destroying the item
+                soundEffects[4].Play(); //Play a sound effect for destroying the item
             }
             else if (that.gameObject.name.Contains("Orb") && !orbInventory.Contains(that.gameObject.name)) //If the item is an orb and that orb is not already in the inventory
             {
                 orbInventory.Add(that.gameObject.name); //Add the orb to the list
-                //soundEffects[4].Play(); //Play a sound effect for destroying the item
+                soundEffects[4].Play(); //Play a sound effect for destroying the item
             }
 
             Destroy(that.gameObject); //Destroy the item

@@ -37,7 +37,7 @@ namespace UnityStandardAssets._2D
                 Heal(); //Heal our savior Huebert
             }
 
-            //OrbEffects(); //Enables the effects of each orb when it is collected
+            OrbEffects(); //Enables the effects of each orb when it is collected
 
             if (pauseMenu.gameObject.activeInHierarchy || keyboardControlMenu.gameObject.activeInHierarchy || controllerControlMenu.gameObject.activeInHierarchy) //If the pause menu is pressed
             {
@@ -54,13 +54,33 @@ namespace UnityStandardAssets._2D
             }
         }
 
-        //private void OrbEffects() //Enables the effects of each orb when it is collected
-        //{
-        //    if (uIOverlay.PlayerInventory.OrbInventory.Contains("GreenOrb")) //If the orb inventory contains the green orb
-        //    {
-        //        uIOverlay.PlayerControlScript.MaxSpeed = 4.75f; //Increase the player's max speed
-        //    }
-        //}
+        private void OrbEffects() //Enables the effects of each orb when it is collected
+        {
+            if (uIOverlay.PlayerInventory.OrbInventory.Contains("RedOrb")) //If the orb inventory contains the red orb
+            {
+                
+            }
+            if (uIOverlay.PlayerInventory.OrbInventory.Contains("OrangeOrb")) //If the orb inventory contains the orange orb
+            {
+                
+            }
+            if (uIOverlay.PlayerInventory.OrbInventory.Contains("YellowOrb")) //If the orb inventory contains the yellow orb
+            {
+                
+            }
+            if (uIOverlay.PlayerInventory.OrbInventory.Contains("GreenOrb")) //If the orb inventory contains the green orb
+            {
+                uIOverlay.PlayerControlScript.MaxSpeed = 4.75f; //Increase the player's max speed
+            }
+            if (uIOverlay.PlayerInventory.OrbInventory.Contains("BlueOrb")) //If the orb inventory contains the blue orb
+            {
+
+            }
+            if (uIOverlay.PlayerInventory.OrbInventory.Contains("VioletOrb")) //If the orb inventory contains the violet orb
+            {
+
+            }
+        }
 
         private void Pause() //When the pause button is pressed
         {

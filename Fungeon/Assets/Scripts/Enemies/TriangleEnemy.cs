@@ -9,7 +9,7 @@ namespace UnityStandardAssets._2D
     {
         //public GameObject target;
         //public float moveSpeed;
-        public float attackSpeed;
+        
 
         private Color baseColor;
 
@@ -17,8 +17,6 @@ namespace UnityStandardAssets._2D
 
         [SerializeField]
         private GameObject player;
-        [SerializeField]
-        private float moveSpeed;
 
 
         //private Rigidbody2D dropsRigidbodies; //The rigidbodies on the drops
@@ -186,12 +184,12 @@ namespace UnityStandardAssets._2D
         {
             if (coll.gameObject.tag == "weapon") //If the collision is with a weapon
             {
-                //Spawn in a drop
-                Instantiate(drops[0].gameObject, transform.position, Quaternion.identity);
-                //dropsRigidbodies.velocity = new Vector2(Random.Range(-10, 10), 1f); //Fling the drop in a random direction
+                if (dropPercentage[0] >= Random.Range(0, 101)) //If the drop percentage is less than the random number generated
+                {
+                    Instantiate(drops[0].gameObject, transform.position, Quaternion.identity); //Spawn in a drop
+                }
 
                 AudioSource.PlayClipAtPoint(dyingSound.clip, transform.position);
-
                 Destroy(this.gameObject); //Destroy this gameobject
             }
 

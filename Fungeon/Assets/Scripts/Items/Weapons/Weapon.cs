@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+
 namespace UnityStandardAssets._2D
 {
     public abstract class Weapon : MonoBehaviour

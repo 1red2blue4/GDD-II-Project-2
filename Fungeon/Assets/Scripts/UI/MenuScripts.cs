@@ -4,163 +4,167 @@ using System.Collections;
 using UnityEngine.SceneManagement; //Load scenes
 using UnityEngine.EventSystems; //Event systems
 
-public class MenuScripts : MonoBehaviour //KI
+namespace UnityStandardAssets._2D
 {
-    [SerializeField] private Canvas pauseMenu; //The pause menu UI
-    [SerializeField] private Canvas keyboardControlMenu; //The keyboard controls menu UI
-    [SerializeField] private Canvas controllerControlMenu; //The controller controls menu UI
-    [SerializeField] private UIOverlayScript uIOverlay; //The player's health
-    //[SerializeField] private Canvas inventoryMenu; //The inventory menu UI
-    //[SerializeField] private ItemPickup playerInventory; //The player's inventory script
-    //private UnityEngine.UI.Image[] inventoryImages; //The UI images for the inventory
-    private bool controllerConnected; //If a controller is connected
-
-    //void Start() //Use this for initialization
-    //{
-    //    inventoryImages = inventoryMenu.GetComponentsInChildren<UnityEngine.UI.Image>(); //Get the images from the children
-    //}
-
-    void Update() //Update is called once per frame
+    public class MenuScripts : MonoBehaviour //KI
     {
-        if (Input.GetButtonDown("Pause") && !keyboardControlMenu.gameObject.activeInHierarchy && !controllerControlMenu.gameObject.activeInHierarchy/* && !inventoryMenu.gameObject.activeInHierarchy*/) //If the pause button is pressed and the control menu is not active and the inventory menu is not active
-        {
-            Pause(); //Pause or unpause the game
-        }
-        else if ((Input.GetButtonDown("Pause") || Input.GetButtonDown("Cancel")) && pauseMenu.gameObject.activeInHierarchy && !keyboardControlMenu.gameObject.activeInHierarchy && !controllerControlMenu.gameObject.activeInHierarchy/* && !inventoryMenu.gameObject.activeInHierarchy*/) //If the pause or cancel button is pressed while the pause menu is active and the control menu is not active and the inventory menu is not active
-        {
-            Pause(); //Pause or unpause the game
-        }
+        [SerializeField] private Canvas pauseMenu; //The pause menu UI
+        [SerializeField] private Canvas keyboardControlMenu; //The keyboard controls menu UI
+        [SerializeField] private Canvas controllerControlMenu; //The controller controls menu UI
+        [SerializeField] private UIOverlayScript uIOverlay; //The player's health
+        //[SerializeField] private Canvas inventoryMenu; //The inventory menu UI
+        //[SerializeField] private ItemPickup playerInventory; //The player's inventory script
+        //private UnityEngine.UI.Image[] inventoryImages; //The UI images for the inventory
+        private bool controllerConnected; //If a controller is connected
 
-        //if (Input.GetButtonDown("Inventory") && !keyboardControlMenu.gameObject.activeInHierarchy && !controllerControlMenu.gameObject.activeInHierarchy && !pauseMenu.gameObject.activeInHierarchy) //If the inventory button is pressed and the control menu is not active and the pause menu is not active
+        //void Start() //Use this for initialization
         //{
-        //    Inventory(); //Bring up the inventory menu
-        //}
-        //else if ((Input.GetButtonDown("Inventory") || Input.GetButtonDown("Cancel")) && inventoryMenu.gameObject.activeInHierarchy && !keyboardControlMenu.gameObject.activeInHierarchy && !controllerControlMenu.gameObject.activeInHierarchy && !pauseMenu.gameObject.activeInHierarchy) //If the inventory or cancel button is pressed while the inventory menu is active and the control menu is not active and the inventory menu is not active
-        //{
-        //    Inventory(); //Close the inventory menu
+        //    inventoryImages = inventoryMenu.GetComponentsInChildren<UnityEngine.UI.Image>(); //Get the images from the children
         //}
 
-        if ((Input.GetButtonDown("Pause") || Input.GetButtonDown("Cancel")) && !pauseMenu.gameObject.activeInHierarchy && (keyboardControlMenu.gameObject.activeInHierarchy || controllerControlMenu.gameObject.activeInHierarchy)) //Boot from a control menu to the pause menu using the back or cancel buttons
+        void Update() //Update is called once per frame
         {
-            keyboardControlMenu.gameObject.SetActive(false); //Disable the keyboard controls menu
-            controllerControlMenu.gameObject.SetActive(false); //Disable the controller controls menu
-            pauseMenu.gameObject.SetActive(true); //Enable the pause menu
+            if (Input.GetButtonDown("Pause") && !keyboardControlMenu.gameObject.activeInHierarchy && !controllerControlMenu.gameObject.activeInHierarchy/* && !inventoryMenu.gameObject.activeInHierarchy*/) //If the pause button is pressed and the control menu is not active and the inventory menu is not active
+            {
+                Pause(); //Pause or unpause the game
+            }
+            else if ((Input.GetButtonDown("Pause") || Input.GetButtonDown("Cancel")) && pauseMenu.gameObject.activeInHierarchy && !keyboardControlMenu.gameObject.activeInHierarchy && !controllerControlMenu.gameObject.activeInHierarchy/* && !inventoryMenu.gameObject.activeInHierarchy*/) //If the pause or cancel button is pressed while the pause menu is active and the control menu is not active and the inventory menu is not active
+            {
+                Pause(); //Pause or unpause the game
+            }
+
+            //if (Input.GetButtonDown("Inventory") && !keyboardControlMenu.gameObject.activeInHierarchy && !controllerControlMenu.gameObject.activeInHierarchy && !pauseMenu.gameObject.activeInHierarchy) //If the inventory button is pressed and the control menu is not active and the pause menu is not active
+            //{
+            //    Inventory(); //Bring up the inventory menu
+            //}
+            //else if ((Input.GetButtonDown("Inventory") || Input.GetButtonDown("Cancel")) && inventoryMenu.gameObject.activeInHierarchy && !keyboardControlMenu.gameObject.activeInHierarchy && !controllerControlMenu.gameObject.activeInHierarchy && !pauseMenu.gameObject.activeInHierarchy) //If the inventory or cancel button is pressed while the inventory menu is active and the control menu is not active and the inventory menu is not active
+            //{
+            //    Inventory(); //Close the inventory menu
+            //}
+
+            if ((Input.GetButtonDown("Pause") || Input.GetButtonDown("Cancel")) && !pauseMenu.gameObject.activeInHierarchy && (keyboardControlMenu.gameObject.activeInHierarchy || controllerControlMenu.gameObject.activeInHierarchy)) //Boot from a control menu to the pause menu using the back or cancel buttons
+            {
+                keyboardControlMenu.gameObject.SetActive(false); //Disable the keyboard controls menu
+                controllerControlMenu.gameObject.SetActive(false); //Disable the controller controls menu
+                pauseMenu.gameObject.SetActive(true); //Enable the pause menu
+            }
+
+            if (Input.GetButtonDown("Heal")) //If the heal button is pressed
+            {
+                heal(); //Heal our savior Huebert
+            }
+
+            if (pauseMenu.gameObject.activeInHierarchy || keyboardControlMenu.gameObject.activeInHierarchy || controllerControlMenu.gameObject.activeInHierarchy) //If the pause menu is pressed
+            {
+                ControllerConnectionManager(); //Manages controller connection behavior
+            }
         }
 
-        if (Input.GetButtonDown("Heal")) //If the heal button is pressed
+        private void Pause() //When the pause button is pressed
         {
-            heal(); //Heal our savior Huebert
+            if (!pauseMenu.gameObject.activeInHierarchy) //If the pause menu is disabled
+            {
+                pauseMenu.gameObject.SetActive(true); //Enable the pause menu
+                Time.timeScale = 0; //Pause the game
+                uIOverlay.PlayerControlScript.M_Grounded = false; //Make the player not jump
+            }
+            else //If the pause menu is enabled
+            {
+                pauseMenu.gameObject.SetActive(false); //Disable the pause menu
+                Time.timeScale = 1; //Run the game
+            }
         }
 
-        if (pauseMenu.gameObject.activeInHierarchy || keyboardControlMenu.gameObject.activeInHierarchy || controllerControlMenu.gameObject.activeInHierarchy) //If the pause menu is pressed
+        private void heal() //Heal our savior Huebert
         {
-            ControllerConnectionManager(); //Manages controller connection behavior
+            if (uIOverlay.PlayerHealthTracker.Health < 3 && uIOverlay.PlayerInventory.HealthInventory > 0) //If the player's health is not at it's maximum and the player has health pickups
+            {
+                uIOverlay.PlayerHealthTracker.Health++; //Heal the player
+                uIOverlay.PlayerInventory.HealthInventory--; //Use a health pickup
+            }
         }
-    }
 
-    private void Pause() //When the pause button is pressed
-    {
-        if (!pauseMenu.gameObject.activeInHierarchy) //If the pause menu is disabled
+        //private void Inventory() //When the inventory button is pressed
+        //{
+        //    if (!inventoryMenu.gameObject.activeInHierarchy) //If the inventory menu is disabled
+        //    {
+        //        inventoryMenu.gameObject.SetActive(true); //Enable the inventory menu
+        //        Time.timeScale = 0; //Pause the game
+        //    }
+        //    else //If the inventory menu is enabled
+        //    {
+        //        inventoryMenu.gameObject.SetActive(false); //Disable the inventory menu
+        //        Time.timeScale = 1; //Run the game
+        //    }
+        //}
+
+        public void StartButton(string loadLevel) //When the start button is clicked
         {
-            pauseMenu.gameObject.SetActive(true); //Enable the pause menu
-            Time.timeScale = 0; //Pause the game
+            SceneManager.LoadScene(loadLevel); //Load the scene
         }
-        else //If the pause menu is enabled
+
+        public void ResumeButton() //When the resume button is clicked
         {
             pauseMenu.gameObject.SetActive(false); //Disable the pause menu
             Time.timeScale = 1; //Run the game
         }
-    }
 
-    private void heal() //Heal our savior Huebert
-    {
-        if (uIOverlay.PlayerHealthTracker.Health < 3 && uIOverlay.PlayerInventory.HealthInventory > 0) //If the player's health is not at it's maximum and the player has health pickups
+        public void QuitButton() //When the exit button is clicked
         {
-            uIOverlay.PlayerHealthTracker.Health++; //Heal the player
-            uIOverlay.PlayerInventory.HealthInventory--; //Use a health pickup
+            Application.Quit(); //Quit the game
         }
-    }
 
-    //private void Inventory() //When the inventory button is pressed
-    //{
-    //    if (!inventoryMenu.gameObject.activeInHierarchy) //If the inventory menu is disabled
-    //    {
-    //        inventoryMenu.gameObject.SetActive(true); //Enable the inventory menu
-    //        Time.timeScale = 0; //Pause the game
-    //    }
-    //    else //If the inventory menu is enabled
-    //    {
-    //        inventoryMenu.gameObject.SetActive(false); //Disable the inventory menu
-    //        Time.timeScale = 1; //Run the game
-    //    }
-    //}
-
-    public void StartButton(string loadLevel) //When the start button is clicked
-    {
-        SceneManager.LoadScene(loadLevel); //Load the scene
-    }
-
-    public void ResumeButton() //When the resume button is clicked
-    {
-        pauseMenu.gameObject.SetActive(false); //Disable the pause menu
-        Time.timeScale = 1; //Run the game
-    }
-
-    public void QuitButton() //When the exit button is clicked
-    {
-        Application.Quit(); //Quit the game
-    }
-
-    public void ControlsButton() //When the controls button is clicked
-    {
-        if (!keyboardControlMenu.gameObject.activeInHierarchy && !controllerControlMenu.gameObject.activeInHierarchy) //If the keyboard controls menu is disabled and the controller controls menu is disabled
+        public void ControlsButton() //When the controls button is clicked
         {
-            if (!controllerConnected) //If there is no controller connected
+            if (!keyboardControlMenu.gameObject.activeInHierarchy && !controllerControlMenu.gameObject.activeInHierarchy) //If the keyboard controls menu is disabled and the controller controls menu is disabled
             {
-                keyboardControlMenu.gameObject.SetActive(true); //Enable the keyboard controls menu
-                pauseMenu.gameObject.SetActive(false); //Disable the pause menu
+                if (!controllerConnected) //If there is no controller connected
+                {
+                    keyboardControlMenu.gameObject.SetActive(true); //Enable the keyboard controls menu
+                    pauseMenu.gameObject.SetActive(false); //Disable the pause menu
+                }
+                else //If there is a controller connected
+                {
+                    controllerControlMenu.gameObject.SetActive(true); //Enable the controller controls menu
+                    pauseMenu.gameObject.SetActive(false); //Disable the pause menu
+                }
             }
-            else //If there is a controller connected
+            else //In any other case
             {
-                controllerControlMenu.gameObject.SetActive(true); //Enable the controller controls menu
-                pauseMenu.gameObject.SetActive(false); //Disable the pause menu
+                keyboardControlMenu.gameObject.SetActive(false); //Disable the keyboard controls menu
+                controllerControlMenu.gameObject.SetActive(false); //Disable the controller controls menu
+                pauseMenu.gameObject.SetActive(true); //Enable the pause menu
             }
         }
-        else //In any other case
-        {
-            keyboardControlMenu.gameObject.SetActive(false); //Disable the keyboard controls menu
-            controllerControlMenu.gameObject.SetActive(false); //Disable the controller controls menu
-            pauseMenu.gameObject.SetActive(true); //Enable the pause menu
-        }
-    }
 
-    private void ControllerConnectionManager() //Manages controller connection behavior
-    {
-        try //Try to do this
+        private void ControllerConnectionManager() //Manages controller connection behavior
         {
-            if (Input.GetJoystickNames()[0] == "") //If there is not a controller connected
+            try //Try to do this
+            {
+                if (Input.GetJoystickNames()[0] == "") //If there is not a controller connected
+                {
+                    controllerConnected = false; //There is no controller connected
+                }
+                else //If there is a controller connected
+                {
+                    controllerConnected = true; //There is a controller connected
+                }
+            }
+            catch (IndexOutOfRangeException) //If the game is starting while no controller is connected
             {
                 controllerConnected = false; //There is no controller connected
             }
-            else //If there is a controller connected
-            {
-                controllerConnected = true; //There is a controller connected
-            }
-        }
-        catch(IndexOutOfRangeException) //If the game is starting while no controller is connected
-        {
-            controllerConnected = false; //There is no controller connected
-        }
 
-        if (controllerConnected && keyboardControlMenu.gameObject.activeInHierarchy && !controllerControlMenu.gameObject.activeInHierarchy) //If a controller is connected while the keyboard controls menu is enabled and the controller controls menu is disabled
-        {
-            keyboardControlMenu.gameObject.SetActive(false); //Disable the keyboard controls menu
-            controllerControlMenu.gameObject.SetActive(true); //Enable the controller controls menu
-        }
-        else if (!controllerConnected && !keyboardControlMenu.gameObject.activeInHierarchy && controllerControlMenu.gameObject.activeInHierarchy) //If a controller is disconnected while the keyboard controls menu is disabled and the controller controls menu is enabled
-        {
-            keyboardControlMenu.gameObject.SetActive(true); //Enable the keyboard controls menu
-            controllerControlMenu.gameObject.SetActive(false); //Disable the controller controls menu
+            if (controllerConnected && keyboardControlMenu.gameObject.activeInHierarchy && !controllerControlMenu.gameObject.activeInHierarchy) //If a controller is connected while the keyboard controls menu is enabled and the controller controls menu is disabled
+            {
+                keyboardControlMenu.gameObject.SetActive(false); //Disable the keyboard controls menu
+                controllerControlMenu.gameObject.SetActive(true); //Enable the controller controls menu
+            }
+            else if (!controllerConnected && !keyboardControlMenu.gameObject.activeInHierarchy && controllerControlMenu.gameObject.activeInHierarchy) //If a controller is disconnected while the keyboard controls menu is disabled and the controller controls menu is enabled
+            {
+                keyboardControlMenu.gameObject.SetActive(true); //Enable the keyboard controls menu
+                controllerControlMenu.gameObject.SetActive(false); //Disable the controller controls menu
+            }
         }
     }
 }

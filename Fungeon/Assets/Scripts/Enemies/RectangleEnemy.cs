@@ -12,11 +12,11 @@ public class RectangleEnemy : Enemy {
     // bools for tracking states
     private bool playerDetected = false;
     private bool edgeDetected = true;
+    private bool isPatrolling = true;
     private int direction = 1;
 
     // for raycasting
-    public float detectPlayerDistance = 10.0f;
-    private RaycastHit2D playerCheck;
+    public float detectPlayerDistance;
 
     //-------------------------------------------------------------------
 
@@ -29,24 +29,42 @@ public class RectangleEnemy : Enemy {
 	// Update is called once per frame
 	override public void Update () {
 
-        Patrol();
+        if (isPatrolling == true)
+        {
+            Patrol();
+        }
 
-        //if (DetectRightEdge() == true)
-        //{
-        //    Debug.Log("Right Edge detected");
-        //}
-        //if (DetectLeftEdge() == true)
-        //{
-        //    Debug.Log("Left Edge detected");
-        //}
-        //if (DetectLeftPlayer() == true)
-        //{
-        //    Debug.Log("Player Left");
-        //}
-        //if (DetectRightPlayer() == true)
-        //{
-        //    Debug.Log("Player Right");
-        //}
+        // enemy sees player to the right
+        if (direction == 1 && isPatrolling == true)
+        {
+            if (DetectRightPlayer() == true)
+            {
+                playerDetected = true;
+                isPatrolling = false;
+            }
+        }
+
+        // enemy sees player to the left
+        if (direction == -1 && isPatrolling == true)
+        {
+            if (DetectLeftPlayer() == true)
+            {
+                playerDetected = true;
+                isPatrolling = false;
+            }       
+        }
+
+        // enemy sees player sneaking up behind it
+        if (DetectRadiusPlayer() == true && isPatrolling == true)
+        {
+            playerDetected = true;
+            isPatrolling = false;
+        }
+
+        if (playerDetected == true)
+        {
+            Attack();
+        }
 
 	}
 
@@ -61,14 +79,11 @@ public class RectangleEnemy : Enemy {
         bool left = DetectLeftEdge();
         bool right = DetectRightEdge();
 
-        Debug.Log("Right: " + right);
-        Debug.Log("Left: " + left);
-
         // make series of if statements to check where to partol
         // patrol right
         if (direction == 1 && right == true)
         {
-            Debug.Log("Going Right...");
+            //Debug.Log("Going Right...");
             rb.velocity = new Vector3(patrolSpeed, 0);
         }
 
@@ -76,14 +91,14 @@ public class RectangleEnemy : Enemy {
         if (direction == 1 && right == false)
         {
             Flip();
-            Debug.Log("Turning Left...");
+            //Debug.Log("Turning Left...");
             direction = -1;
         }
 
         // patrol left
         if (direction == -1 && left == true)
         {
-            Debug.Log("Going Left...");
+            //Debug.Log("Going Left...");
             rb.velocity = new Vector3(-patrolSpeed, 0);
         }
 
@@ -91,9 +106,21 @@ public class RectangleEnemy : Enemy {
         if (direction == -1 && left == false)
         {
             Flip();
-            Debug.Log("Turning Right...");
+            //Debug.Log("Turning Right...");
             direction = 1;
         }
+    }
+
+    /// <summary>
+    /// will be called when the bool attack is true
+    /// will greatly speed up the enemy
+    /// </summary>
+    public override void Attack()
+    {
+        Vector3 dist = CalcDistance();
+        Vector3 offset = CalcDistance();
+        Vector3 unitOffset = offset.normalized;
+        rb.velocity = unitOffset * attackSpeed;
     }
 
     /// <summary>
@@ -124,15 +151,6 @@ public class RectangleEnemy : Enemy {
 
         //Debug.Log(edgeCheck.collider.transform.parent.tag);
 
-        //if (edgeCheck.collider.transform.parent.tag == "platform")
-        //{
-        //    return true;
-        //}
-        //else
-        //{
-        //    return false;
-        //}
-
         if (edgeCheck.collider != null)
         {
             return true;
@@ -160,15 +178,6 @@ public class RectangleEnemy : Enemy {
 
         //Debug.Log(edgeCheck.collider.transform.parent.tag);
 
-        //if (edgeCheck.collider.transform.parent.tag == "platform")
-        //{
-        //    return true;
-        //}
-        //else
-        //{
-        //    return false;
-        //}
-
         if (edgeCheck.collider != null)
         {
             return true;
@@ -190,12 +199,11 @@ public class RectangleEnemy : Enemy {
         Vector3 playerDetectRight = transform.right;
         Vector3 playerDetectRightNorm = playerDetectRight.normalized;
 
-        RaycastHit2D playeeRightCheck = Physics2D.Raycast(new Vector3((transform.position.x + (enemySprite.bounds.size.x / 2) + 0.1f), transform.position.y, 0), playerDetectRightNorm, Mathf.Infinity);
+        RaycastHit2D playerRightCheck = Physics2D.Raycast(new Vector3((transform.position.x + (enemySprite.bounds.size.x / 2) + 0.1f), transform.position.y, 0), playerDetectRightNorm, detectPlayerDistance);
 
-        Debug.DrawRay(new Vector3((transform.position.x + (enemySprite.bounds.size.x / 2) + 0.1f), transform.position.y, 0), playerDetectRightNorm * Mathf.Infinity, Color.white);
+        Debug.DrawRay(new Vector3((transform.position.x + (enemySprite.bounds.size.x / 2) + 0.1f), transform.position.y, 0), playerDetectRightNorm * detectPlayerDistance, Color.white);
 
-
-        if(playeeRightCheck.transform.tag == "Player")
+        if (playerRightCheck.transform.tag == "Player")
         {
             return true;
         }
@@ -217,9 +225,9 @@ public class RectangleEnemy : Enemy {
         Vector3 playerDetectLeft = -transform.right;
         Vector3 playerDetectLeftNorm = playerDetectLeft.normalized;
 
-        RaycastHit2D playerLeftCheck = Physics2D.Raycast(new Vector3((transform.position.x - (enemySprite.bounds.size.x / 2) - 0.1f), transform.position.y, 0), playerDetectLeftNorm, Mathf.Infinity);
+        RaycastHit2D playerLeftCheck = Physics2D.Raycast(new Vector3((transform.position.x - (enemySprite.bounds.size.x / 2) - 0.1f), transform.position.y, 0), playerDetectLeftNorm, detectPlayerDistance);
 
-        Debug.DrawRay(new Vector3((transform.position.x - (enemySprite.bounds.size.x / 2) - 0.1f), transform.position.y, 0), playerDetectLeftNorm * Mathf.Infinity, Color.white);
+        Debug.DrawRay(new Vector3((transform.position.x - (enemySprite.bounds.size.x / 2) - 0.1f), transform.position.y, 0), playerDetectLeftNorm * detectPlayerDistance, Color.white);
 
         if (playerLeftCheck.transform.tag == "Player")
         {
@@ -230,4 +238,44 @@ public class RectangleEnemy : Enemy {
             return false;
         }
     }
+
+    /// <summary>
+    /// will check if the player is closely behind or in front of
+    /// the enemy
+    /// </summary>
+    /// <returns>if a player is detected</returns>
+    public bool DetectRadiusPlayer()
+    {
+        // gets the current distance from the enemy to the player
+        Vector3 distance = CalcDistance();
+
+        if(distance.magnitude <= pursueRadius)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+      public override void OnTriggerEnter2D(Collider2D coll)
+        {
+            if (coll.gameObject.tag == "weapon") //If the collision is with a weapon
+            {
+                //Spawn in a drop
+                Instantiate(drops[0].gameObject, transform.position, Quaternion.identity);
+                //dropsRigidbodies.velocity = new Vector2(Random.Range(-10, 10), 1f); //Fling the drop in a random direction
+
+                AudioSource.PlayClipAtPoint(dyingSound.clip, transform.position);
+
+                Destroy(this.gameObject); //Destroy this gameobject
+            }
+
+            // apply a knockback force
+            //if (coll.gameObject.tag == "Player")
+            //{
+            //    Debug.Log("Hit player");
+            //}
+        }
 }

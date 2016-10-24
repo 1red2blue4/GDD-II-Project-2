@@ -13,8 +13,6 @@ namespace UnityStandardAssets._2D
 
         private Color baseColor;
 
-        public float pursueRadius;
-
         private FlockManager fm;
 
         [SerializeField]
@@ -95,11 +93,45 @@ namespace UnityStandardAssets._2D
             }
         }
 
+        // knockback code
+        public void FixedUpdate()
+        {
+            if(connectTimerStart == true)
+            {
+                connectTimer += Time.deltaTime;
+                if (connectTimer >= connectDuration)
+                {
+                    connectTimer = 0.0f;
+                    knockedback = true;
+                    connectTimerStart = false;
+                }
+            }
+
+            if (knockedback == true)
+            {
+                knockbackTimer += Time.deltaTime;
+                if (knockbackTimer >= knockbackDuration)
+                {
+                    knockbackTimer = 0.0f;
+                    knockedback = false;
+                    attackNow = false;
+                }
+                else
+                {
+                    Vector2 knockbackDirection = -transform.up;
+
+                    Vector2 knockbackForce = (knockbackDirection * knockback);
+
+                    rb.velocity += knockbackForce;
+                }
+            }
+        }
+
         /// <summary>
         /// will be called when the bool attack is true
         /// will greatly speed up the enemy
         /// </summary>
-        void Attack()
+        public override void Attack()
         {
             rb.isKinematic = false;
             Vector3 offset = GameObject.Find("Player").transform.position - this.transform.position;
@@ -150,45 +182,27 @@ namespace UnityStandardAssets._2D
             rb.velocity = new Vector3(0, 0.2f, 0);
         }
 
-        // obstacle avoidance, self explanatory
-        //protected Vector3 ObstacleAvoidance(GameObject obstacle) {
-        //// set the desired
-        //desired = Vector3.zero;
-        //
-        //// get the distance from the seeker to the obstacle's center
-        //Vector3 centerDist = obstacle.transform.position - transform.position;
-        //
-        //// get the radius of the obstacle
-        ////float obstacleRadius = obstacle.GetComponent<ObstacleScript>().Radius;
-        ////
-        //// //check if objects aren't in the safe zone
-        ////if (centerDist.magnitude > safeDistance) {
-        ////    return desired;
-        ////}
-        ////
-        ////// if the obstacles are behind the seeker then don't worry about them
-        ////if (Vector3.Dot (centerDist, transform.up) < 0) {
-        ////    return desired;
-        ////}
-        ////
-        ////// if they're not within the seeker's movement zone then don't worry about them
-        ////if (Mathf.Abs (Vector3.Dot (centerDist, transform.right)) > radius + obstacleRadius) {
-        ////    return desired;
-        ////}
-        //
-        // //if the code reaches here, there will be a collision!
-        //
-        // //check whether to steer right or left
-        //if (Vector3.Dot (centerDist, transform.right) < 0) {
-        //    desired = transform.right * moveSpeed;
-        //}
-        //
-        //if (Vector3.Dot (centerDist, transform.right) >=0) {
-        //    desired = transform.right * -moveSpeed;
-        //}
-        //
-        //return desired;
-        //}
+        public override void OnTriggerEnter2D(Collider2D coll)
+        {
+            if (coll.gameObject.tag == "weapon") //If the collision is with a weapon
+            {
+                //Spawn in a drop
+                Instantiate(drops[0].gameObject, transform.position, Quaternion.identity);
+                //dropsRigidbodies.velocity = new Vector2(Random.Range(-10, 10), 1f); //Fling the drop in a random direction
+
+                AudioSource.PlayClipAtPoint(dyingSound.clip, transform.position);
+
+                Destroy(this.gameObject); //Destroy this gameobject
+            }
+
+            // apply a knockback force
+            if (coll.gameObject.tag == "Player")
+            {
+                Debug.Log("Hit player");
+
+                connectTimerStart = true;
+            }
+        }
 
     }
 }

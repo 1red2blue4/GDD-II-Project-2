@@ -73,6 +73,8 @@ namespace UnityStandardAssets._2D
         //Also influences room based on color.
         public void ChangeRoomColor(GameObject room)
         {
+            //Reset room
+            ResetStats();
             //Selecting a random color
             string color = colorKeys[Random.Range(0, 6)];
             while(color == activeColor)
@@ -80,10 +82,22 @@ namespace UnityStandardAssets._2D
                 color = colorKeys[Random.Range(0, 6)];
             }
             activeColor = color;
+            //get all enemies
+            GameObject[] enemiesByTag = GameObject.FindGameObjectsWithTag("enemy");
+
+            //changing stats based on color.
             switch (color)
             {
                 case "red":
-                    //TODO: Need Damage values
+                    player.damage = 2;
+                    for (int i = 0; i < enemiesByTag.Length; i++)
+                    {
+                        if (enemiesByTag[i].name != "Collider")
+                        {
+                            Enemy e = (Enemy)enemiesByTag[i].GetComponent<Enemy>();
+                            e.damage = 2;
+                        }
+                    }
                     break;
                 case "orange":
                     //TODO: Need Trump Sprite
@@ -92,10 +106,20 @@ namespace UnityStandardAssets._2D
                     //TODO: Need pickup rate
                     break;
                 case "green":
-                    //TODO: Need enemy base class
+                    player.defaultMaxSpeed = player.MaxSpeed;
+                    player.MaxSpeed = 20f;
+                    for (int i = 0; i < enemiesByTag.Length; i++)
+                    {
+                        if (enemiesByTag[i].name != "Collider")
+                        {
+                            Enemy e = (Enemy)enemiesByTag[i].GetComponent<Enemy>();
+                            e.defaultMoveSpeed = e.moveSpeed;
+                            e.moveSpeed = 20f;
+                        }
+                    }
                         break;
                 case "blue":
-                    //player.m_Rigidbody2D.gravityScale = .5f;
+                    player.m_Rigidbody2D.gravityScale = .5f;
                     break;
                 case "purple":
                     //TODO: Need health pickups
@@ -127,7 +151,6 @@ namespace UnityStandardAssets._2D
             }
 
             //Changing all enemy colors
-            GameObject[] enemiesByTag = GameObject.FindGameObjectsWithTag("enemy");
             for (int i = 0; i < enemiesByTag.Length; i++)
             {
                 if(enemiesByTag[i].name != "Collider")
@@ -166,6 +189,51 @@ namespace UnityStandardAssets._2D
             newColor.s = 1.0f;
             newColor.h = colors[activeColor];
             return HSBColor.Lerp(newColor, endColorHSB, alpha).ToColor();
+        }
+
+        public void ResetStats()
+        {
+            GameObject[] enemiesByTag = GameObject.FindGameObjectsWithTag("enemy");
+            switch (activeColor)
+            {
+                case "red":
+                    player.damage = 1;
+                    for (int i = 0; i < enemiesByTag.Length; i++)
+                    {
+                        if (enemiesByTag[i].name != "Collider")
+                        {
+                            Enemy e = (Enemy)enemiesByTag[i].GetComponent<Enemy>();
+                            e.damage = 1;
+                        }
+                    }
+                    break;
+                case "orange":
+                    //TODO: Need Trump Sprite
+                    break;
+                case "yellow":
+                    //TODO: Need pickup rate
+                    break;
+                case "green":
+                    player.MaxSpeed = player.defaultMaxSpeed;
+                    for (int i = 0; i < enemiesByTag.Length; i++)
+                    {
+                        if (enemiesByTag[i].name != "Collider")
+                        {
+                            Enemy e = (Enemy)enemiesByTag[i].GetComponent<Enemy>();
+                            e.moveSpeed = e.defaultMoveSpeed;
+                        }
+                    }
+                    break;
+                case "blue":
+                    //player.m_Rigidbody2D.gravityScale = .5f;
+                    break;
+                case "purple":
+                    //TODO: Need health pickups
+                    break;
+                default:
+                    //breaks out of method if color isn't in dictionary.
+                    return;
+            }
         }
     }
 }

@@ -77,10 +77,15 @@ namespace UnityStandardAssets._2D
                         chargeAttack = false;
                         attackNow = true;
                         chargeTimer = 0.0f;
+                        enemySprite.color = GameManager.Instance.ChangeColor(baseColor);
                     }
                     else
                     {
                         ChargeAttack();
+                        if (chargeTimer + Time.deltaTime * 6 >= chargeDuration)
+                        {
+                            enemySprite.color = new Color(1f, 1f, 1f);
+                        }
                     }
                 }
 

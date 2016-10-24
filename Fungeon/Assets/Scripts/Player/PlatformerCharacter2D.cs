@@ -43,6 +43,7 @@ namespace UnityStandardAssets._2D
         private void Awake()
         {
             // Setting up references.
+            playerSprite = GetComponentInChildren<SpriteRenderer>();
             soundEffects = new AudioSource[5];
             soundEffects = GetComponents<AudioSource>();
             m_GroundCheck = transform.Find("GroundCheck");
@@ -51,7 +52,6 @@ namespace UnityStandardAssets._2D
             m_Rigidbody2D = GetComponent<Rigidbody2D>();
             defaultGravityScale = m_Rigidbody2D.gravityScale;
             coolDown = weapons[activeWeapon].GetComponent<Weapon>().cooldown;
-            playerSprite = GetComponentInChildren<SpriteRenderer>();
             baseColor = playerSprite.color;
         }
 

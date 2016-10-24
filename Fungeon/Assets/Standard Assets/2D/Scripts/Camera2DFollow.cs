@@ -10,7 +10,6 @@ namespace UnityStandardAssets._2D
         public float lookAheadFactor = 3;
         public float lookAheadReturnSpeed = 0.5f;
         public float lookAheadMoveThreshold = 0.1f;
-
         public GameObject fadeScreen;
 
         private float m_OffsetZ;

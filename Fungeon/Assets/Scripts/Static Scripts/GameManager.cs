@@ -66,7 +66,6 @@ namespace UnityStandardAssets._2D
             activeColor = "red";
             roomLoaded = true;
             ChangeRoomColor(GameObject.Find("EntireLevel"));
-            player.playerSprite.color = ChangeColor(player.BaseColor);
         }
 
         //Changes the visual color of the objects in the room.
@@ -129,7 +128,11 @@ namespace UnityStandardAssets._2D
                     print("The string '" + color + "' is not in the dictionary.");
                     return;
             }
-            player.playerSprite.color = ChangeColor(player.playerSprite.color);
+            if(player.playerSprite != null)
+                {
+
+                player.playerSprite.color = ChangeColor(player.playerSprite.color);
+            }
 
             //Changing the camera background color
             HSBColor camColor = HSBColor.FromColor(mainCamera.backgroundColor);

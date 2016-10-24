@@ -42,7 +42,7 @@ public class ItemPickup : MonoBehaviour //KI
             }
 
             Destroy(that.gameObject); //Destroy the item
-            soundEffects[4].Play(); //Play a sound effect for destroying the item
+            //soundEffects[4].Play(); //Play a sound effect for destroying the item
         }
     }
 }

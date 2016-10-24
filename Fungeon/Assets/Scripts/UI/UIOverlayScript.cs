@@ -106,23 +106,26 @@ namespace UnityStandardAssets._2D
         {
             for (int i = 0; i < playerControlScript.weapons.Length; i++) //For each weapon
             {
-                UIImages[15 + i].enabled = true; //Enable the active weapon
+                if (playerControlScript.activeWeapon == i) //If the player's active weapon is the one to be enabled
+                {
+                    UIImages[15 + i].enabled = true; //Enable the active weapon
 
-                if (14 + i > 14) //If the weapon to the left exists
-                {
-                    UIImages[14 + i].enabled = false; //Disable the weapon to the left
-                }
-                else if (14 + i <= 14) //If the weapon to the left does not exist
-                {
-                    UIImages[UIImages.Length - 1].enabled = false; //Disable the weapon to the left
-                }
-                else if (16 + i <= UIImages.Length - 1) //If the weapon to the right exists
-                {
-                    UIImages[16 + i].enabled = false; //Disable the weapon to the right
-                }
-                else //If the weapon to the right does not exist
-                {
-                    UIImages[16].enabled = false; //Disable the weapon to the right
+                    if (14 + i > 14) //If the weapon to the left exists
+                    {
+                        UIImages[14 + i].enabled = false; //Disable the weapon to the left
+                    }
+                    else if (14 + i <= 14) //If the weapon to the left does not exist
+                    {
+                        UIImages[UIImages.Length - 1].enabled = false; //Disable the weapon to the left
+                    }
+                    else if (16 + i <= UIImages.Length - 1) //If the weapon to the right exists
+                    {
+                        UIImages[16 + i].enabled = false; //Disable the weapon to the right
+                    }
+                    else //If the weapon to the right does not exist
+                    {
+                        UIImages[15].enabled = false; //Disable the weapon to the right
+                    }
                 }
             }
         }

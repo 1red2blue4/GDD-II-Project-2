@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+
 namespace UnityStandardAssets._2D
 {
     public class HealthTracker : MonoBehaviour //KI
@@ -40,17 +41,16 @@ namespace UnityStandardAssets._2D
         }
 
         void OnTriggerStay2D(Collider2D that) //Detect when things enter the player's trigger
-    {
-        
-        if (that.gameObject.tag == "enemy" && damageCooldown <= 0f && that.gameObject.name != "Collider") //If the player collides with an enemy
-        {
-            Enemy e = that.gameObject.GetComponent<Enemy>();
-            health-= e.damage; //Decrement Huebert's health
-            soundEffects[0].Play();
-            //getsHit.Play();
-            damageCooldown = 1; //Reset the damage cooldown
+        {  
+            if (that.gameObject.tag == "enemy" && damageCooldown <= 0f && that.gameObject.name != "Collider") //If the player collides with an enemy
+            {
+                Enemy e = that.gameObject.GetComponent<Enemy>();
+                health -= e.damage; //Decrement Huebert's health
+                soundEffects[0].Play();
+                //getsHit.Play();
+                damageCooldown = 1; //Reset the damage cooldown
+            }
         }
-    }
 
         private void blink() //Make Huebert blink while in cooldown
         {

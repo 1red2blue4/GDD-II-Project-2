@@ -8,7 +8,7 @@ namespace UnityStandardAssets._2D
         public GameObject target;
         public int side;
         public Collider2D otherCollision;
-        public static AudioSource openDoor;
+        public AudioSource openDoor;
 
         private void OnTriggerStay2D(Collider2D other)
         {
@@ -16,8 +16,9 @@ namespace UnityStandardAssets._2D
             if (other.tag == "Player" && Input.GetButtonDown("DoorActivation") && !GameManager.Instance.MovingBetweenRooms)
             {
                 GameManager.Instance.MovingBetweenRooms = true;
-                FadeBetween();
+                openDoor = GetComponent<AudioSource>();
                 openDoor.Play();
+                FadeBetween();
             }
         }
         public void FadeBetween()

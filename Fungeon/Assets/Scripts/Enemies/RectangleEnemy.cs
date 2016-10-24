@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+namespace UnityStandardAssets._2D
+{
 public class RectangleEnemy : Enemy {
 
     //-----------------------VARIABLE DECLARATION------------------------
@@ -14,22 +15,34 @@ public class RectangleEnemy : Enemy {
     private bool edgeDetected = true;
     private int direction = 1;
 
-    // for raycasting
-    public float detectPlayerDistance = 10.0f;
-    private RaycastHit2D playerCheck;
+        // for raycasting
+        public float detectPlayerDistance = 10.0f;
+        private RaycastHit2D playerCheck;
 
-    //-------------------------------------------------------------------
+        //-------------------------------------------------------------------
 
-	// Use this for initialization
-	override public void Start () {
-        base.Start();
+        // Use this for initialization
+        override public void Start()
+        {
+            base.Start();
 
-	}
-	
-	// Update is called once per frame
-	override public void Update () {
+        }
+        // Update is called once per frame
+        override public void Update()
+        {
+            /*
+            if (DetectEdge() == true)
+            {
+                Debug.Log("Edge detected");
+            }
+            */
 
-        Patrol();
+            // debug stuff
+            //Debug.DrawLine(transform.position, new Vector3(transform.position.x + 0.65f, (transform.position.y - enemySprite.bounds.size.y / 2) - 0.15f ,  0), Color.white);
+            Debug.DrawRay(transform.position, transform.right, Color.white);
+            Debug.DrawRay(transform.position, -transform.right, Color.white);
+        
+            //Patrol();
 
         //if (DetectRightEdge() == true)
         //{
@@ -47,8 +60,8 @@ public class RectangleEnemy : Enemy {
         //{
         //    Debug.Log("Player Right");
         //}
-
-	}
+        }
+	
 
     /// <summary>
     /// what the enemy will do if no player is detected
@@ -56,45 +69,45 @@ public class RectangleEnemy : Enemy {
     /// platform they are on's edge, if they hit it, then
     /// swap their direction
     /// </summary>
-    public void Patrol()
-    {
-        bool left = DetectLeftEdge();
-        bool right = DetectRightEdge();
+    //public void Patrol()
+    //{
+    //    bool left = DetectLeftEdge();
+    //    bool right = DetectRightEdge();
 
-        Debug.Log("Right: " + right);
-        Debug.Log("Left: " + left);
+    //    Debug.Log("Right: " + right);
+    //    Debug.Log("Left: " + left);
 
-        // make series of if statements to check where to partol
-        // patrol right
-        if (direction == 1 && right == true)
-        {
-            Debug.Log("Going Right...");
-            rb.velocity = new Vector3(patrolSpeed, 0);
-        }
+    //    // make series of if statements to check where to partol
+    //    // patrol right
+    //    if (direction == 1 && right == true)
+    //    {
+    //        Debug.Log("Going Right...");
+    //        rb.velocity = new Vector3(patrolSpeed, 0);
+    //    }
 
-        // turn left
-        if (direction == 1 && right == false)
-        {
-            Flip();
-            Debug.Log("Turning Left...");
-            direction = -1;
-        }
+    //    // turn left
+    //    if (direction == 1 && right == false)
+    //    {
+    //        Flip();
+    //        Debug.Log("Turning Left...");
+    //        direction = -1;
+    //    }
 
-        // patrol left
-        if (direction == -1 && left == true)
-        {
-            Debug.Log("Going Left...");
-            rb.velocity = new Vector3(-patrolSpeed, 0);
-        }
+    //    // patrol left
+    //    if (direction == -1 && left == true)
+    //    {
+    //        Debug.Log("Going Left...");
+    //        rb.velocity = new Vector3(-patrolSpeed, 0);
+    //    }
 
-        // turn right
-        if (direction == -1 && left == false)
-        {
-            Flip();
-            Debug.Log("Turning Right...");
-            direction = 1;
-        }
-    }
+    //    // turn right
+    //    if (direction == -1 && left == false)
+    //    {
+    //        Flip();
+    //        Debug.Log("Turning Right...");
+    //        direction = 1;
+    //    }
+    //}
 
     /// <summary>
     /// flips the enemy
@@ -118,9 +131,9 @@ public class RectangleEnemy : Enemy {
         Vector3 edgeDetect = new Vector3(transform.position.x + 1.0f, -1 * (transform.position.y - enemySprite.bounds.size.y / 2) - 0.15f, 0);
         Vector3 edgeDetectNorm = edgeDetect.normalized;
 
-        RaycastHit2D edgeCheck = Physics2D.Raycast(new Vector3(transform.position.x + 0.4f, transform.position.y, 0), edgeDetectNorm, 1.0f);
+            RaycastHit2D edgeCheck = Physics2D.Raycast(new Vector3(transform.position.x + 0.4f, transform.position.y, 0), edgeDetectNorm, 1.0f);
 
-        Debug.DrawRay(new Vector3(transform.position.x + 0.4f, transform.position.y, 0), edgeDetectNorm * 1.0f, Color.white);
+            Debug.DrawRay(new Vector3(transform.position.x + 0.4f, transform.position.y, 0), edgeDetectNorm * 1.0f, Color.white);
 
         //Debug.Log(edgeCheck.collider.transform.parent.tag);
 
@@ -148,36 +161,33 @@ public class RectangleEnemy : Enemy {
     /// their position this method will check if the enemy is
     /// about to fall off of a platform
     /// </summary>
-    public bool DetectLeftEdge()
-    {
-        // calculate the vectors used in raycasting
-        Vector3 edgeDetect = new Vector3(transform.position.x - 1.0f, (transform.position.y - enemySprite.bounds.size.y / 2) - 0.15f, 0);
-        Vector3 edgeDetectNorm = edgeDetect.normalized * -1;
+    //public bool DetectLeftEdge()
+    //{
+    //    // calculate the vectors used in raycasting
+    //    Vector3 edgeDetect = new Vector3(transform.position.x - 1.0f, (transform.position.y - enemySprite.bounds.size.y / 2) - 0.15f, 0);
+    //    Vector3 edgeDetectNorm = edgeDetect.normalized * -1;
 
-        RaycastHit2D edgeCheck = Physics2D.Raycast(new Vector3(transform.position.x - 0.4f, transform.position.y, 0), edgeDetectNorm, 1.0f);
+    //    RaycastHit2D edgeCheck = Physics2D.Raycast(new Vector3(transform.position.x - 0.4f, transform.position.y, 0), edgeDetectNorm, 1.0f);
 
-        Debug.DrawRay(new Vector3(transform.position.x - 0.4f, transform.position.y, 0), edgeDetectNorm * 1.0f, Color.white);
+    //    Debug.DrawRay(new Vector3(transform.position.x - 0.4f, transform.position.y, 0), edgeDetectNorm * 1.0f, Color.white);
 
-        //Debug.Log(edgeCheck.collider.transform.parent.tag);
+    //    //Debug.Log(edgeCheck.collider.transform.parent.tag);
 
-        //if (edgeCheck.collider.transform.parent.tag == "platform")
-        //{
-        //    return true;
-        //}
-        //else
-        //{
-        //    return false;
-        //}
+    //    //if (edgeCheck.collider.transform.parent.tag == "platform")
+    //    //{
+    //    //    return true;
+    //    //}
+    //    //else
+    //    //{
+    //    //    return false;
+    //    //}
 
-        if (edgeCheck.collider != null)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
+    //    if (edgeCheck.collider != null)
+    //    {
+    //        return true;
+    //    }
+    //}
+
 
     /// <summary>
     /// using 2 raycasts that shoot off from the left and right of
@@ -229,5 +239,6 @@ public class RectangleEnemy : Enemy {
         {
             return false;
         }
+    }
     }
 }

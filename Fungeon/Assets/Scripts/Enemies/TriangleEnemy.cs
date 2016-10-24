@@ -9,7 +9,7 @@ namespace UnityStandardAssets._2D
     {
         //public GameObject target;
         //public float moveSpeed;
-        public float attackSpeed;
+        
 
         private Color baseColor;
 
@@ -19,8 +19,6 @@ namespace UnityStandardAssets._2D
 
         [SerializeField]
         private GameObject player;
-        [SerializeField]
-        private float moveSpeed;
 
 
         //private Rigidbody2D dropsRigidbodies; //The rigidbodies on the drops

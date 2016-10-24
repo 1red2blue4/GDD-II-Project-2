@@ -25,7 +25,7 @@ namespace UnityStandardAssets._2D
         void Start() //Use this for initialization
         {
             soundEffects = this.GetComponents<AudioSource>();
-            health = 3; //Give Huebert 3 health
+            health = 5; //Give Huebert 5 health
             damageCooldown = 1; //Set the damageCooldown
             playerSR = gameObject.GetComponentInChildren<SpriteRenderer>(); //Get the player's sprite renderer
         }

@@ -1,35 +1,34 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class DoorScripty : MonoBehaviour
+namespace UnityStandardAssets._2D
 {
-    public GameObject target;
-    public int side;
-    public static AudioSource openDoor;
-
-    private void OnTriggerStay2D(Collider2D other)
+    public class DoorScripty : MonoBehaviour
     {
-        openDoor = GetComponent<AudioSource>();
-        if (side == 0 && other.tag == "Player" && Input.GetButtonDown("DoorActivation"))
+        public GameObject target;
+        public int side;
+        public Collider2D otherCollision;
+        public static AudioSource openDoor;
+
+        private void OnTriggerStay2D(Collider2D other)
         {
-            openDoor.Play();
-            other.gameObject.transform.position = new Vector2(target.transform.position.x+2, target.transform.position.y + 2);
+            otherCollision = other;
+            if (other.tag == "Player" && Input.GetButtonDown("DoorActivation") && !GameManager.Instance.MovingBetweenRooms)
+            {
+                GameManager.Instance.MovingBetweenRooms = true;
+                FadeBetween();
+                openDoor.Play();
+            }
         }
-        if (side == 1 && other.tag == "Player" && Input.GetButtonDown("DoorActivation"))
+        public void FadeBetween()
         {
-            openDoor.Play();
-            other.gameObject.transform.position = new Vector2(target.transform.position.x-2, target.transform.position.y + 2);
-        }
-        if (side == 2 && other.tag == "Player" && Input.GetButtonDown("DoorActivation"))
-        {
-            openDoor.Play();
-            other.gameObject.transform.position = new Vector2(target.transform.position.x, target.transform.position.y + 0.5f);
-        }
-        if (side == 3 && other.tag == "Player" && Input.GetButtonDown("DoorActivation"))
-        {
-            openDoor.Play();
-            other.gameObject.transform.position = new Vector2(target.transform.position.x , target.transform.position.y + 2);
+            Vector3 pos = GameManager.Instance.MainCamera.gameObject.transform.position;
+            pos.x -= 27f;
+            pos.y -= 15f;
+            pos.z = -1f;
+            GameObject screen = (GameObject)Instantiate(GameManager.Instance.MainCamera.GetComponent<Camera2DFollow>().fadeScreen, pos, GameManager.Instance.MainCamera.gameObject.transform.rotation);
+            screen.transform.parent = GameManager.Instance.MainCamera.transform;
+            screen.GetComponent<FadeScreen>().door = this;
         }
     }
-
 }

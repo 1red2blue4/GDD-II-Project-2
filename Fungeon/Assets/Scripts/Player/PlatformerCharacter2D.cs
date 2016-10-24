@@ -6,6 +6,7 @@ namespace UnityStandardAssets._2D
     public class PlatformerCharacter2D : MonoBehaviour
     {
         [SerializeField] private float m_MaxSpeed = 10f;                    // The fastest the player can travel in the x axis.
+        public float defaultMaxSpeed;
         [SerializeField] private float m_JumpForce = 400f;                  // Amount of force added when the player jumps.
         [Range(0, 1)] [SerializeField] private float m_CrouchSpeed = .36f;  // Amount of maxSpeed applied to crouching movement. 1 = 100%
         [SerializeField] private bool m_AirControl = false;                 // Whether or not a player can steer while jumping;
@@ -23,18 +24,21 @@ namespace UnityStandardAssets._2D
         private float timer = 0.0f;         // Timer for the cooldown
         private float coolDown = 1.0f;             // Length the timer has to count up to
         private float defaultGravityScale = 3.0f;
-        private SpriteRenderer playerSprite;
+        public SpriteRenderer playerSprite;
         private Color baseColor;
 
         public int activeWeapon;
         public GameObject[] weapons;
         public Camera cam;
         public float slopeFriction;
+        public int damage;
 
         public AudioSource[] soundEffects;
 
         //Getter
         public bool CanAttack { get { return canAttack; } }
+        public Color BaseColor { get { return baseColor; } }
+        public float MaxSpeed { get { return m_MaxSpeed; } set { m_MaxSpeed = value; } }
 
         private void Awake()
         {
@@ -49,12 +53,6 @@ namespace UnityStandardAssets._2D
             coolDown = weapons[activeWeapon].GetComponent<Weapon>().cooldown;
             playerSprite = GetComponentInChildren<SpriteRenderer>();
             baseColor = playerSprite.color;
-            //Changing color
-            Color color = playerSprite.color;
-            HSBColor c = HSBColor.FromColor(color);
-            c.h = 0.0f;
-            c.s = 0f;
-            playerSprite.color = c.ToColor();
         }
 
         private void Update()

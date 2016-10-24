@@ -15,6 +15,7 @@ namespace UnityStandardAssets._2D
         private string[] colorKeys;
         private string activeColor;
         private bool roomLoaded;
+        private bool movingBetweenRooms = false;
 
         //Variables: In The Scene
         private Camera mainCamera;
@@ -27,7 +28,9 @@ namespace UnityStandardAssets._2D
         public PlatformerCharacter2D Player { get { return player; } set { player = value; } }
         public List<GameObject> Enemies { get { return enemies; } }
         public bool RoomLoaded { get { return roomLoaded; } set { roomLoaded = value; } }
-        public HSBColor ActiveColorHSB { get { return new HSBColor(colors[activeColor], 1.0f, 0.0f); } }
+        public string ActiveColor { get { return activeColor; } set { activeColor = value; } }
+        public HSBColor ActiveColorHSB { get { return new HSBColor(colors[activeColor], 1.0f, 1.0f); } }
+        public bool MovingBetweenRooms { get { return movingBetweenRooms; } set { movingBetweenRooms = value; } }
 
         //happens when created
         private void Awake()
@@ -60,20 +63,41 @@ namespace UnityStandardAssets._2D
             colors.Add("orange", .069f);
             //adding color names to array
             colorKeys = new string[6] { "red", "orange", "yellow", "green", "blue", "purple" };
-            activeColor = "";
+            activeColor = "red";
             roomLoaded = true;
-            ChangeRoomColor(GameObject.Find("Level 01"), "red");
+            ChangeRoomColor(GameObject.Find("EntireLevel"));
+            player.playerSprite.color = ChangeColor(player.BaseColor);
         }
 
         //Changes the visual color of the objects in the room.
         //Also influences room based on color.
-        public void ChangeRoomColor(GameObject room, string color)
+        public void ChangeRoomColor(GameObject room)
         {
+            //Reset room
+            ResetStats();
+            //Selecting a random color
+            string color = colorKeys[Random.Range(0, 6)];
+            while(color == activeColor)
+            {
+                color = colorKeys[Random.Range(0, 6)];
+            }
             activeColor = color;
+            //get all enemies
+            GameObject[] enemiesByTag = GameObject.FindGameObjectsWithTag("enemy");
+
+            //changing stats based on color.
             switch (color)
             {
                 case "red":
-                    //TODO: Need Damage values
+                    player.damage = 2;
+                    for (int i = 0; i < enemiesByTag.Length; i++)
+                    {
+                        if (enemiesByTag[i].name != "Collider")
+                        {
+                            Enemy e = (Enemy)enemiesByTag[i].GetComponent<Enemy>();
+                            e.damage = 2;
+                        }
+                    }
                     break;
                 case "orange":
                     //TODO: Need Trump Sprite
@@ -82,10 +106,20 @@ namespace UnityStandardAssets._2D
                     //TODO: Need pickup rate
                     break;
                 case "green":
-                    //TODO: Need enemy base class
+                    player.defaultMaxSpeed = player.MaxSpeed;
+                    player.MaxSpeed = 20f;
+                    for (int i = 0; i < enemiesByTag.Length; i++)
+                    {
+                        if (enemiesByTag[i].name != "Collider")
+                        {
+                            Enemy e = (Enemy)enemiesByTag[i].GetComponent<Enemy>();
+                            e.defaultMoveSpeed = e.moveSpeed;
+                            e.moveSpeed = 20f;
+                        }
+                    }
                         break;
                 case "blue":
-                    //player.m_Rigidbody2D.gravityScale = .5f;
+                    player.m_Rigidbody2D.gravityScale = .5f;
                     break;
                 case "purple":
                     //TODO: Need health pickups
@@ -95,6 +129,7 @@ namespace UnityStandardAssets._2D
                     print("The string '" + color + "' is not in the dictionary.");
                     return;
             }
+            player.playerSprite.color = ChangeColor(player.playerSprite.color);
 
             //Changing the camera background color
             HSBColor camColor = HSBColor.FromColor(mainCamera.backgroundColor);
@@ -106,23 +141,27 @@ namespace UnityStandardAssets._2D
             SpriteRenderer[] children = room.GetComponentsInChildren<SpriteRenderer>();
             for (int i = 0; i < children.Length; i++)
             {
-                HSBColor c = HSBColor.FromColor(children[i].color);
-                c.h = colors[color];
-                c.s = 1.0f;
-                children[i].color = c.ToColor();
+                if(children[i].tag != "item")
+                {
+                    HSBColor c = HSBColor.FromColor(children[i].color);
+                    c.h = colors[color];
+                    c.s = 1.0f;
+                    children[i].color = c.ToColor();
+                }
             }
 
             //Changing all enemy colors
-            GameObject[] enemiesByTag = GameObject.FindGameObjectsWithTag("enemy");
             for (int i = 0; i < enemiesByTag.Length; i++)
             {
-                Enemy e = (Enemy)enemiesByTag[i].GetComponent<Enemy>();
-                print(e);
-                SpriteRenderer enemySprite = e.EnemySprite;
-                HSBColor c = HSBColor.FromColor(enemySprite.color);
-                c.h = colors[color];
-                c.s = 1.0f;
-                enemySprite.color = c.ToColor();
+                if(enemiesByTag[i].name != "Collider")
+                {
+                    Enemy e = (Enemy)enemiesByTag[i].GetComponent<Enemy>();
+                    SpriteRenderer enemySprite = e.EnemySprite;
+                    HSBColor c = HSBColor.FromColor(enemySprite.color);
+                    c.h = colors[color];
+                    c.s = 1.0f;
+                    enemySprite.color = c.ToColor();
+                }
             }
         }
 
@@ -136,6 +175,7 @@ namespace UnityStandardAssets._2D
             HSBColor newColor = HSBColor.FromColor(current);
             newColor.h = colors[activeColor];
             newColor.s = 1.0f;
+            newColor.a = current.a;
             return newColor.ToColor();
         }
 
@@ -149,6 +189,51 @@ namespace UnityStandardAssets._2D
             newColor.s = 1.0f;
             newColor.h = colors[activeColor];
             return HSBColor.Lerp(newColor, endColorHSB, alpha).ToColor();
+        }
+
+        public void ResetStats()
+        {
+            GameObject[] enemiesByTag = GameObject.FindGameObjectsWithTag("enemy");
+            switch (activeColor)
+            {
+                case "red":
+                    player.damage = 1;
+                    for (int i = 0; i < enemiesByTag.Length; i++)
+                    {
+                        if (enemiesByTag[i].name != "Collider")
+                        {
+                            Enemy e = (Enemy)enemiesByTag[i].GetComponent<Enemy>();
+                            e.damage = 1;
+                        }
+                    }
+                    break;
+                case "orange":
+                    //TODO: Need Trump Sprite
+                    break;
+                case "yellow":
+                    //TODO: Need pickup rate
+                    break;
+                case "green":
+                    player.MaxSpeed = player.defaultMaxSpeed;
+                    for (int i = 0; i < enemiesByTag.Length; i++)
+                    {
+                        if (enemiesByTag[i].name != "Collider")
+                        {
+                            Enemy e = (Enemy)enemiesByTag[i].GetComponent<Enemy>();
+                            e.moveSpeed = e.defaultMoveSpeed;
+                        }
+                    }
+                    break;
+                case "blue":
+                    //player.m_Rigidbody2D.gravityScale = .5f;
+                    break;
+                case "purple":
+                    //TODO: Need health pickups
+                    break;
+                default:
+                    //breaks out of method if color isn't in dictionary.
+                    return;
+            }
         }
     }
 }

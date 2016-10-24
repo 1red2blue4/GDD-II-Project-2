@@ -26,6 +26,14 @@ public class UIOverlayScript : MonoBehaviour //KI
         }
     }
 
+    public UnityStandardAssets._2D.PlatformerCharacter2D PlayerControlScript //PlayerControlScript property
+    {
+        get
+        {
+            return playerControlScript; //Return the player's playerControlScript
+        }
+    }
+
     void Start() //Use this for initialization
     {
         UIImages = UIOverlay.GetComponentsInChildren<UnityEngine.UI.Image>(); //Get the images from the children

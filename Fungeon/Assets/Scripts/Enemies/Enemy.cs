@@ -27,7 +27,8 @@ abstract public class Enemy : MonoBehaviour {
     protected AudioSource dyingSound;
     //protected AudioClip death;
 
-    [SerializeField]private List<GameObject> drops; //The drops
+    [SerializeField] private List<GameObject> drops; //The drops
+    [SerializeField] private List<float> dropPercentage; //Percent chance for a drop
 
     public SpriteRenderer EnemySprite { get { return enemySprite; } }
 
@@ -40,7 +41,7 @@ abstract public class Enemy : MonoBehaviour {
         rb = this.GetComponent<Rigidbody2D>();
 
         enemySprite = GetComponentInChildren<SpriteRenderer>();
-	}
+    }
 	
 	// Update is called once per frame
     abstract public void Update();
@@ -51,12 +52,12 @@ abstract public class Enemy : MonoBehaviour {
     /// <param name="coll"></param>
     public void OnTriggerEnter2D(Collider2D coll) //When a collision occurs
     {
-
         if (coll.gameObject.tag == "weapon") //If the collision is with a weapon
         {
-            //Spawn in a drop
-            Instantiate(drops[0].gameObject, transform.position, Quaternion.identity); 
-            //dropsRigidbodies.velocity = new Vector2(Random.Range(-10, 10), 1f); //Fling the drop in a random direction
+            if (dropPercentage[0] >= Random.Range(0, 101)) //If the drop percentage is less than the random number generated
+            {
+                Instantiate(drops[0].gameObject, transform.position, Quaternion.identity); //Spawn in a drop
+            }
 
             AudioSource.PlayClipAtPoint(dyingSound.clip, transform.position);
 

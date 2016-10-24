@@ -37,6 +37,14 @@ namespace UnityStandardAssets._2D
         public bool CanAttack { get { return canAttack; } }
         public Color BaseColor { get { return baseColor; } }
 
+        public bool M_Grounded //Grounded property
+        {
+            set
+            {
+                m_Grounded = false; //Set the value of the player's grounded property
+            }
+        }
+
         private void Awake()
         {
             // Setting up references.

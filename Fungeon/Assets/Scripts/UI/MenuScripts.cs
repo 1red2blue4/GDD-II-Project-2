@@ -64,6 +64,7 @@ public class MenuScripts : MonoBehaviour //KI
         {
             pauseMenu.gameObject.SetActive(true); //Enable the pause menu
             Time.timeScale = 0; //Pause the game
+            uIOverlay.PlayerControlScript.M_Grounded = false; //Make the player not jump
         }
         else //If the pause menu is enabled
         {

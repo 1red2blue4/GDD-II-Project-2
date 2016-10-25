@@ -34,7 +34,7 @@ namespace UnityStandardAssets._2D
                 theScale.x *= -1;
                 this.GetComponentInChildren<SpriteRenderer>().transform.localScale = theScale;
             }
-            //this.gameObject.SetActive(false);
+            this.enabled = false;
         }
 
         override public void Update()

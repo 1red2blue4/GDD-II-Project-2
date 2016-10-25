@@ -86,7 +86,8 @@ public class FlockManager : MonoBehaviour {
             //enemyFlock[i].GetComponent<TriangleEnemy>().target = target;
             //enemyFlock[i].GetComponent<TriangleEnemy>().attackRadius = attackRad;
         }
-	}
+        this.enabled = false;
+    }
 	
 	// Update is called once per frame
 	void Update () {

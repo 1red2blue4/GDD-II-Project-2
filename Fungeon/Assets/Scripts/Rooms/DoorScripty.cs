@@ -44,17 +44,27 @@ namespace UnityStandardAssets._2D
 
                 Debug.Log(target.transform.parent.name);
 
-                FlockManager flock = target.transform.parent.GetComponentInChildren<FlockManager>();
-
-                if (flock.name.Contains("FlockManagerGO"))
+                FlockManager[] flocks = target.transform.parent.GetComponentsInChildren<FlockManager>();
+                for(int i=0; i<flocks.Length; i++)
                 {
-                    flock.enabled = true;
-                    //Debug.Log(flock.GetComponentInChildren<FlockManager>().name);
-                    //flock.GetComponentInChildren<FlockManager>().enabled = true;
+                    flocks[i].enabled = true;
                 }
-                
+
+                Enemy[] enemies = target.transform.parent.GetComponentsInChildren<Enemy>();
+                for(int i=0; i<enemies.Length; i++)
+                {
+                    enemies[i].enabled = true;
+                }
+
+                //if (flock.name.Contains("FlockManagerGO"))
+                //{
+                //    flock.enabled = true;
+                //    //Debug.Log(flock.GetComponentInChildren<FlockManager>().name);
+                //    //flock.GetComponentInChildren<FlockManager>().enabled = true;
+                //}
+
                 //RectangleEnemy rect = target.transform.parent.GetComponentInChildren<RectangleEnemy>();
-                //
+
                 //if (rect.name.Contains("RectangleEnemy"))
                 //{
                 //    rect.enabled = true;
@@ -62,15 +72,15 @@ namespace UnityStandardAssets._2D
                 //    //flock.GetComponentInChildren<FlockManager>().enabled = true;
                 //}
 
-                // set enemies to active
+                ////set enemies to active
                 //TriangleEnemy[] tris = target.transform.parent.GetComponentsInChildren<TriangleEnemy>();
-                //
+
                 //for (int i = 0; i < tris.Length; i++)
                 //{
                 //    Debug.Log(tris[i].name + " tris" + i);
                 //    tris[i].gameObject.SetActive(true);
                 //}
-                //
+
                 //RectangleEnemy[] rects = target.transform.parent.GetComponentsInChildren<RectangleEnemy>();
                 //for (int i = 0; i < rects.Length; i++)
                 //{

@@ -34,75 +34,74 @@ namespace UnityStandardAssets._2D
             //{
             //dropsRigidbodies = drops[0].GetComponent<Rigidbody2D>(); //Take the rigidbody from the drop
             //}
+            //this.gameObject.SetActive(false);
         }
 
         override public void Update() //Physics updates
         {
-            if (GameObject.Find("Player").GetComponent<PlatformerCharacter2D>().CurrentRoom == transform.parent.name)
+            if (!GameManager.Instance.MovingBetweenRooms)
             {
-                if (!GameManager.Instance.MovingBetweenRooms)
-                {
-                    // gets the current distance from the enemy to the player
-                    Vector3 distance = CalcDistance();
+                // gets the current distance from the enemy to the player
+                Vector3 distance = CalcDistance();
 
-                    if (distance.magnitude <= attackRadius && attackNow == false)
+                if (distance.magnitude <= attackRadius && attackNow == false)
+                {
+                    chargeAttack = true;
+                }
+                else if (attackNow == true)
+                {
+                    attackTimer += Time.deltaTime;
+                    if (attackTimer >= attackDuration)
                     {
-                        chargeAttack = true;
-                    }
-                    else if (attackNow == true)
-                    {
-                        attackTimer += Time.deltaTime;
-                        if (attackTimer >= attackDuration)
-                        {
-                            attackNow = false;
-                            attackTimer = 0.0f;
-                        }
-                        else
-                        {
-                            Attack();
-                        }
-                    }
-                    else if (distance.magnitude <= pursueRadius)
-                    {
-                        Pursue();
+                        attackNow = false;
+                        attackTimer = 0.0f;
                     }
                     else
                     {
-                        Idle();
+                        Attack();
                     }
-
-                    if (chargeAttack == true)
-                    {
-                        chargeTimer += Time.deltaTime;
-                        if (chargeTimer >= chargeDuration)
-                        {
-                            chargeAttack = false;
-                            attackNow = true;
-                            chargeTimer = 0.0f;
-                            enemySprite.color = GameManager.Instance.ChangeColor(baseColor);
-                        }
-                        else
-                        {
-                            ChargeAttack();
-                            if (chargeTimer + Time.deltaTime * 6 >= chargeDuration)
-                            {
-                                enemySprite.color = new Color(1f, 1f, 1f);
-                            }
-                        }
-                    }
-
-                    //Vector3 offset = player.gameObject.transform.position - this.transform.position;
-                    //Vector3 unitOffset = offset.normalized;
-                    //rb.velocity = unitOffset * moveSpeed;
-                    //rb.velocity = new Vector3(rb.velocity.x, 0, 0);
                 }
+                else if (distance.magnitude <= pursueRadius)
+                {
+                    Pursue();
+                }
+                else
+                {
+                    Idle();
+                }
+
+                if (chargeAttack == true)
+                {
+                    chargeTimer += Time.deltaTime;
+                    if (chargeTimer >= chargeDuration)
+                    {
+                        chargeAttack = false;
+                        attackNow = true;
+                        chargeTimer = 0.0f;
+                        enemySprite.color = GameManager.Instance.ChangeColor(baseColor);
+                    }
+                    else
+                    {
+                        ChargeAttack();
+                        if (chargeTimer + Time.deltaTime * 6 >= chargeDuration)
+                        {
+                            enemySprite.color = new Color(1f, 1f, 1f);
+                        }
+                    }
+                }
+
+                //Vector3 offset = player.gameObject.transform.position - this.transform.position;
+                //Vector3 unitOffset = offset.normalized;
+                //rb.velocity = unitOffset * moveSpeed;
+                //rb.velocity = new Vector3(rb.velocity.x, 0, 0);
+                
             }
         }
 
         // knockback code
         public void FixedUpdate()
         {
-            if (GameObject.Find("Player").GetComponent<PlatformerCharacter2D>().CurrentRoom == transform.parent.name)
+            if (!GameManager.Instance.MovingBetweenRooms)
             {
                 if (connectTimerStart == true)
                 {
@@ -134,6 +133,7 @@ namespace UnityStandardAssets._2D
                     }
                 }
             }
+            
         }
 
         /// <summary>
@@ -188,7 +188,7 @@ namespace UnityStandardAssets._2D
         void Idle()
         {
             // .2f counteracts gravity and causes the enemy to float
-            rb.velocity = new Vector3(0, 0.2f, 0);
+            //rb.velocity = new Vector3(0, 0.2f, 0);
         }
 
         public override void OnTriggerEnter2D(Collider2D coll)

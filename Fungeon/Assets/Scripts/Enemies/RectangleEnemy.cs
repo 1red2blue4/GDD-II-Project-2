@@ -34,11 +34,12 @@ namespace UnityStandardAssets._2D
                 theScale.x *= -1;
                 this.GetComponentInChildren<SpriteRenderer>().transform.localScale = theScale;
             }
+            //this.gameObject.SetActive(false);
         }
 
         override public void Update()
         {
-            if (GameObject.Find("Player").GetComponent<PlatformerCharacter2D>().CurrentRoom == transform.parent.name)
+            if (!GameManager.Instance.MovingBetweenRooms)
             {
                 if (isPatrolling == true)
                 {
@@ -71,20 +72,22 @@ namespace UnityStandardAssets._2D
                 //    playerDetected = true;
                 //    isPatrolling = false;
                 //}
-            }
 
+
+            }
         }
 
         // handles attacking
         void FixedUpdate()
         {
-            if (GameObject.Find("Player").GetComponent<PlatformerCharacter2D>().CurrentRoom == transform.parent.name)
+            if (!GameManager.Instance.MovingBetweenRooms)
             {
                 if (playerDetected == true && (DetectLeftEdge() == true || DetectRightEdge() == true))
                 {
                     Attack();
                 }
             }
+            
         }
 
         /// <summary>
@@ -105,7 +108,7 @@ namespace UnityStandardAssets._2D
             {
                 //Debug.Log(transform.name + " Going Right at " + rb.velocity.x);
                 rb.velocity = new Vector3(patrolSpeed, 0, 0);
-                rb.transform.position = new Vector3(transform.position.x, transform.position.y + .0001f, 0);
+                rb.transform.position = new Vector3(transform.position.x, transform.position.y + .001f, 0);
             }
 
             // turn left
@@ -120,7 +123,7 @@ namespace UnityStandardAssets._2D
             {
                 //Debug.Log(transform.name + " Going Left at" + rb.velocity.x);
                 rb.velocity = new Vector3(-patrolSpeed, 0, 0);
-                rb.transform.position = new Vector3(transform.position.x, transform.position.y + .0001f, 0);
+                rb.transform.position = new Vector3(transform.position.x, transform.position.y + .001f, 0);
             }
 
             // turn right
@@ -175,9 +178,9 @@ namespace UnityStandardAssets._2D
             Vector3 edgeDetect = new Vector3(transform.position.x + 1.0f, -1 * (transform.position.y - enemySprite.bounds.size.y / 2) - 0.15f, 0);
             Vector3 edgeDetectNorm = edgeDetect.normalized;
 
-            RaycastHit2D edgeCheck = Physics2D.Raycast(new Vector3(transform.position.x + 0.4f, transform.position.y, 0), edgeDetectNorm, 1.0f);
+            RaycastHit2D edgeCheck = Physics2D.Raycast(new Vector3(transform.position.x + 0.4f, transform.position.y, 0), edgeDetectNorm, 1.5f);
 
-            Debug.DrawRay(new Vector3(transform.position.x + 0.4f, transform.position.y, 0), edgeDetectNorm * 1.0f, Color.white);
+            Debug.DrawRay(new Vector3(transform.position.x + 0.4f, transform.position.y, 0), edgeDetectNorm * 1.5f, Color.white);
 
             if (edgeCheck.collider != null)
             {
@@ -200,9 +203,9 @@ namespace UnityStandardAssets._2D
             Vector3 edgeDetect = new Vector3(transform.position.x - 1.0f, (transform.position.y - enemySprite.bounds.size.y / 2) - 0.15f, 0);
             Vector3 edgeDetectNorm = edgeDetect.normalized * -1;
 
-            RaycastHit2D edgeCheck = Physics2D.Raycast(new Vector3(transform.position.x - 0.4f, transform.position.y, 0), edgeDetectNorm, 1.0f);
+            RaycastHit2D edgeCheck = Physics2D.Raycast(new Vector3(transform.position.x - 0.4f, transform.position.y, 0), edgeDetectNorm, 1.5f);
 
-            Debug.DrawRay(new Vector3(transform.position.x - 0.4f, transform.position.y, 0), edgeDetectNorm * 1.0f, Color.white);
+            Debug.DrawRay(new Vector3(transform.position.x - 0.4f, transform.position.y, 0), edgeDetectNorm * 1.5f, Color.white);
 
             if (edgeCheck.collider != null)
             {

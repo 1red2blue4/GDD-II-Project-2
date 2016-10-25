@@ -232,6 +232,10 @@ namespace UnityStandardAssets._2D
             {
                 soundEffects[1].Play();
             }
+            else if (activeWeapon == 2)
+            {
+                soundEffects[5].Play();
+            }
 
             //chekcing which side to attack on based on mouse position
             if (Input.mousePosition.x > (cam.WorldToViewportPoint(this.gameObject.transform.position).x) * Screen.width)
@@ -267,6 +271,10 @@ namespace UnityStandardAssets._2D
                 {
                     soundEffects[1].Play();
                 }
+                else if (activeWeapon == 2)
+                {
+                    soundEffects[5].Play();
+                }
 
                 if (scale.x > 0) //If the attack should flip
                 {
@@ -292,6 +300,10 @@ namespace UnityStandardAssets._2D
                 else if (activeWeapon == 1)
                 {
                     soundEffects[1].Play();
+                }
+                else if (activeWeapon == 2)
+                {
+                    soundEffects[5].Play();
                 }
 
                 if (scale.x < 0) //If the attack should flip

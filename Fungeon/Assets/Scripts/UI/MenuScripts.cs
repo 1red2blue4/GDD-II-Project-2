@@ -12,7 +12,36 @@ namespace UnityStandardAssets._2D
         [SerializeField] private Canvas keyboardControlMenu; //The keyboard controls menu UI
         [SerializeField] private Canvas controllerControlMenu; //The controller controls menu UI
         [SerializeField] private UIOverlayScript uIOverlay; //The player's health
+        private UnityEngine.UI.Text qText; //The UI text for weapon changing
+        private UnityEngine.UI.Text eText; //The UI text for weapon changing
+        private UnityEngine.UI.Text lBText; //The UI text for weapon changing
+        private UnityEngine.UI.Text rBText; //The UI text for weapon changing
         private bool controllerConnected; //If a controller is connected
+
+        void Start() //Use this for initilaization
+        {
+            UnityEngine.UI.Text[] uIText = uIOverlay.UIOverlay.GetComponentsInChildren<UnityEngine.UI.Text>(); //Temporarily store all of the UI text
+
+            for (int i = 0; i < uIText.Length; i++) //For each UI text element
+            {
+                if (uIText[i].name == "Q") //If the Q text is found
+                {
+                    qText = uIText[i]; //Save the Q text
+                }
+                else if (uIText[i].name == "E") //If the E text is found
+                {
+                    eText = uIText[i]; //Save the E text
+                }
+                else if (uIText[i].name == "LB") //If the LB text is found
+                {
+                    lBText = uIText[i]; //Save the LB text
+                }
+                else if (uIText[i].name == "RB") //If the RB text is found
+                {
+                    rBText = uIText[i]; //Save the RB text
+                }
+            }
+        }
 
         void Update() //Update is called once per frame
         {
@@ -37,10 +66,7 @@ namespace UnityStandardAssets._2D
                 Heal(); //Heal our savior Huebert
             }
 
-            if (pauseMenu.gameObject.activeInHierarchy || keyboardControlMenu.gameObject.activeInHierarchy || controllerControlMenu.gameObject.activeInHierarchy) //If the pause menu is pressed
-            {
-                ControllerConnectionManager(); //Manages controller connection behavior
-            }
+            ControllerConnectionManager(); //Manages controller connection behavior
         }
 
         private void Heal() //Heal our savior Huebert
@@ -113,15 +139,27 @@ namespace UnityStandardAssets._2D
                 if (Input.GetJoystickNames()[0] == "") //If there is not a controller connected
                 {
                     controllerConnected = false; //There is no controller connected
+                    qText.enabled = true; //Enable the Q text
+                    eText.enabled = true; //Enable the E text
+                    lBText.enabled = false; //Disable the LB text
+                    rBText.enabled = false; //Disable the RB text
                 }
                 else //If there is a controller connected
                 {
                     controllerConnected = true; //There is a controller connected
+                    qText.enabled = false; //Disable the Q text
+                    eText.enabled = false; //Disable the E text
+                    lBText.enabled = true; //Enable the LB text
+                    rBText.enabled = true; //Enable the RB text
                 }
             }
             catch (IndexOutOfRangeException) //If the game is starting while no controller is connected
             {
                 controllerConnected = false; //There is no controller connected
+                qText.enabled = true; //Enable the Q text
+                eText.enabled = true; //Enable the E text
+                lBText.enabled = false; //Disable the LB text
+                rBText.enabled = false; //Disable the RB text
             }
 
             if (controllerConnected && keyboardControlMenu.gameObject.activeInHierarchy && !controllerControlMenu.gameObject.activeInHierarchy) //If a controller is connected while the keyboard controls menu is enabled and the controller controls menu is disabled

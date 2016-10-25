@@ -6,12 +6,20 @@ namespace UnityStandardAssets._2D
 {
     public class UIOverlayScript : MonoBehaviour //KI
     {
-        [SerializeField] private Canvas UIOverlay; //The UI overlay
+        [SerializeField] private Canvas uIOverlay; //The UI overlay
         [SerializeField] private HealthTracker playerHealthTracker; //The player's health
         [SerializeField] private ItemPickup playerInventory; //The player's inventory script
         [SerializeField] private UnityStandardAssets._2D.PlatformerCharacter2D playerControlScript; //The player's control script 
-        private UnityEngine.UI.Image[] UIImages; //The UI images for the player's health
+        private UnityEngine.UI.Image[] uIImages; //The UI images for the player's health
         private bool orbInventoryFull; //If the player's orb inventory is full
+
+        public Canvas UIOverlay //UIOverlay property
+        {
+            get
+            {
+                return uIOverlay; //Return the UI overlay
+            }
+        }
 
         public HealthTracker PlayerHealthTracker //PlayerHealthTracker property
         {
@@ -39,7 +47,7 @@ namespace UnityStandardAssets._2D
 
         void Start() //Use this for initialization
         {
-            UIImages = UIOverlay.GetComponentsInChildren<UnityEngine.UI.Image>(); //Get the images from the children
+            uIImages = uIOverlay.GetComponentsInChildren<UnityEngine.UI.Image>(); //Get the images from the children
             orbInventoryFull = false; //The player's orb inventory is not full
         }
 
@@ -55,81 +63,81 @@ namespace UnityStandardAssets._2D
         {
             if (playerHealthTracker.Health == 5) //If the player has full health
             {
-                UIImages[0].color = new Color(1, 1, 1, 1); //Change the color of the background sprites
-                UIImages[1].color = new Color(0, .6f, 0, 1); //Change the color of the sprites
-                UIImages[2].color = new Color(1, 1, 1, 1); //Change the color of the background sprites
-                UIImages[3].color = new Color(0, .6f, 0, 1); //Change the color of the sprites
-                UIImages[4].color = new Color(1, 1, 1, 1); //Change the color of the background sprites
-                UIImages[5].color = new Color(0, .6f, 0, 1); //Change the color of the sprites
-                UIImages[6].color = new Color(1, 1, 1, 1); //Change the color of the background sprites
-                UIImages[7].color = new Color(0, .6f, 0, 1); //Change the color of the sprites
-                UIImages[8].color = new Color(1, 1, 1, 1); //Change the color of the background sprites
-                UIImages[9].color = new Color(0, .6f, 0, 1); //Change the color of the sprites
+                uIImages[0].color = new Color(1, 1, 1, 1); //Change the color of the background sprites
+                uIImages[1].color = new Color(0, .6f, 0, 1); //Change the color of the sprites
+                uIImages[2].color = new Color(1, 1, 1, 1); //Change the color of the background sprites
+                uIImages[3].color = new Color(0, .6f, 0, 1); //Change the color of the sprites
+                uIImages[4].color = new Color(1, 1, 1, 1); //Change the color of the background sprites
+                uIImages[5].color = new Color(0, .6f, 0, 1); //Change the color of the sprites
+                uIImages[6].color = new Color(1, 1, 1, 1); //Change the color of the background sprites
+                uIImages[7].color = new Color(0, .6f, 0, 1); //Change the color of the sprites
+                uIImages[8].color = new Color(1, 1, 1, 1); //Change the color of the background sprites
+                uIImages[9].color = new Color(0, .6f, 0, 1); //Change the color of the sprites
             }
             else if (playerHealthTracker.Health == 4) //If the player has 4 health
             {
-                UIImages[0].color = new Color(1, 1, 1, 1); //Change the color of the background sprites
-                UIImages[1].color = new Color(.6f, 1, 0, 1); //Change the color of the sprites
-                UIImages[2].color = new Color(1, 1, 1, 1); //Change the color of the background sprites
-                UIImages[3].color = new Color(.6f, 1, 0, 1); //Change the color of the sprites
-                UIImages[4].color = new Color(1, 1, 1, 1); //Change the color of the background sprites
-                UIImages[5].color = new Color(.6f, 1, 0, 1); //Change the color of the sprites
-                UIImages[6].color = new Color(1, 1, 1, 1); //Change the color of the background sprites
-                UIImages[7].color = new Color(.6f, 1, 0, 1); //Change the color of the sprites
-                UIImages[8].color = new Color(1, 1, 1, 0); //Change the color of the background sprites
-                UIImages[9].color = new Color(0, 0, 0, 0); //Change the color of the sprites
+                uIImages[0].color = new Color(1, 1, 1, 1); //Change the color of the background sprites
+                uIImages[1].color = new Color(.6f, 1, 0, 1); //Change the color of the sprites
+                uIImages[2].color = new Color(1, 1, 1, 1); //Change the color of the background sprites
+                uIImages[3].color = new Color(.6f, 1, 0, 1); //Change the color of the sprites
+                uIImages[4].color = new Color(1, 1, 1, 1); //Change the color of the background sprites
+                uIImages[5].color = new Color(.6f, 1, 0, 1); //Change the color of the sprites
+                uIImages[6].color = new Color(1, 1, 1, 1); //Change the color of the background sprites
+                uIImages[7].color = new Color(.6f, 1, 0, 1); //Change the color of the sprites
+                uIImages[8].color = new Color(1, 1, 1, 0); //Change the color of the background sprites
+                uIImages[9].color = new Color(0, 0, 0, 0); //Change the color of the sprites
             }
             else if (playerHealthTracker.Health == 3) //If the player has 3 health
             {
-                UIImages[0].color = new Color(1, 1, 1, 1); //Change the color of the background sprites
-                UIImages[1].color = new Color(.6f, .6f, 0, 1); //Change the color of the sprites
-                UIImages[2].color = new Color(1, 1, 1, 1); //Change the color of the background sprites
-                UIImages[3].color = new Color(.6f, .6f, 0, 1); //Change the color of the sprites
-                UIImages[4].color = new Color(1, 1, 1, 1); //Change the color of the background sprites
-                UIImages[5].color = new Color(.6f, .6f, 0, 1); //Change the color of the sprites
-                UIImages[6].color = new Color(1, 1, 1, 0); //Change the color of the background sprites
-                UIImages[7].color = new Color(0, 0, 0, 0); //Change the color of the sprites
-                UIImages[8].color = new Color(1, 1, 1, 0); //Change the color of the background sprites
-                UIImages[9].color = new Color(0, 0, 0, 0); //Change the color of the sprites
+                uIImages[0].color = new Color(1, 1, 1, 1); //Change the color of the background sprites
+                uIImages[1].color = new Color(.6f, .6f, 0, 1); //Change the color of the sprites
+                uIImages[2].color = new Color(1, 1, 1, 1); //Change the color of the background sprites
+                uIImages[3].color = new Color(.6f, .6f, 0, 1); //Change the color of the sprites
+                uIImages[4].color = new Color(1, 1, 1, 1); //Change the color of the background sprites
+                uIImages[5].color = new Color(.6f, .6f, 0, 1); //Change the color of the sprites
+                uIImages[6].color = new Color(1, 1, 1, 0); //Change the color of the background sprites
+                uIImages[7].color = new Color(0, 0, 0, 0); //Change the color of the sprites
+                uIImages[8].color = new Color(1, 1, 1, 0); //Change the color of the background sprites
+                uIImages[9].color = new Color(0, 0, 0, 0); //Change the color of the sprites
             }
             else if (playerHealthTracker.Health == 2) //If the player has 2 health
             {
-                UIImages[0].color = new Color(1, 1, 1, 1); //Change the color of the background sprites
-                UIImages[1].color = new Color(1, .6f, 0, 1); //Change the color of the sprites
-                UIImages[2].color = new Color(1, 1, 1, 1); //Change the color of the background sprites
-                UIImages[3].color = new Color(1, .6f, 0, 1); //Change the color of the sprites
-                UIImages[4].color = new Color(1, 1, 1, 0); //Change the color of the background sprites
-                UIImages[5].color = new Color(0, 0, 0, 0); //Change the color of the sprites
-                UIImages[6].color = new Color(1, 1, 1, 0); //Change the color of the background sprites
-                UIImages[7].color = new Color(0, 0, 0, 0); //Change the color of the sprites
-                UIImages[8].color = new Color(1, 1, 1, 0); //Change the color of the background sprites
-                UIImages[9].color = new Color(0, 0, 0, 0); //Change the color of the sprites
+                uIImages[0].color = new Color(1, 1, 1, 1); //Change the color of the background sprites
+                uIImages[1].color = new Color(1, .6f, 0, 1); //Change the color of the sprites
+                uIImages[2].color = new Color(1, 1, 1, 1); //Change the color of the background sprites
+                uIImages[3].color = new Color(1, .6f, 0, 1); //Change the color of the sprites
+                uIImages[4].color = new Color(1, 1, 1, 0); //Change the color of the background sprites
+                uIImages[5].color = new Color(0, 0, 0, 0); //Change the color of the sprites
+                uIImages[6].color = new Color(1, 1, 1, 0); //Change the color of the background sprites
+                uIImages[7].color = new Color(0, 0, 0, 0); //Change the color of the sprites
+                uIImages[8].color = new Color(1, 1, 1, 0); //Change the color of the background sprites
+                uIImages[9].color = new Color(0, 0, 0, 0); //Change the color of the sprites
             }
             else if (playerHealthTracker.Health == 1) //If the player has 1 health
             {
-                UIImages[0].color = new Color(1, 1, 1, 1); //Change the color of the background sprites
-                UIImages[1].color = new Color(.6f, 0, 0, 1); //Change the color of the sprites
-                UIImages[2].color = new Color(1, 1, 1, 0); //Change the color of the background sprites
-                UIImages[3].color = new Color(0, 0, 0, 0); //Change the color of the sprites
-                UIImages[4].color = new Color(1, 1, 1, 0); //Change the color of the background sprites
-                UIImages[5].color = new Color(0, 0, 0, 0); //Change the color of the sprites
-                UIImages[6].color = new Color(1, 1, 1, 0); //Change the color of the background sprites
-                UIImages[7].color = new Color(0, 0, 0, 0); //Change the color of the sprites
-                UIImages[8].color = new Color(1, 1, 1, 0); //Change the color of the background sprites
-                UIImages[9].color = new Color(0, 0, 0, 0); //Change the color of the sprites
+                uIImages[0].color = new Color(1, 1, 1, 1); //Change the color of the background sprites
+                uIImages[1].color = new Color(.6f, 0, 0, 1); //Change the color of the sprites
+                uIImages[2].color = new Color(1, 1, 1, 0); //Change the color of the background sprites
+                uIImages[3].color = new Color(0, 0, 0, 0); //Change the color of the sprites
+                uIImages[4].color = new Color(1, 1, 1, 0); //Change the color of the background sprites
+                uIImages[5].color = new Color(0, 0, 0, 0); //Change the color of the sprites
+                uIImages[6].color = new Color(1, 1, 1, 0); //Change the color of the background sprites
+                uIImages[7].color = new Color(0, 0, 0, 0); //Change the color of the sprites
+                uIImages[8].color = new Color(1, 1, 1, 0); //Change the color of the background sprites
+                uIImages[9].color = new Color(0, 0, 0, 0); //Change the color of the sprites
             }
             else //If the player has no health
             {
-                UIImages[0].color = new Color(1, 1, 1, 0); //Change the color of the background sprites
-                UIImages[1].color = new Color(0, 0, 0, 0); //Change the color of the sprites
-                UIImages[2].color = new Color(1, 1, 1, 0); //Change the color of the background sprites
-                UIImages[3].color = new Color(0, 0, 0, 0); //Change the color of the sprites
-                UIImages[4].color = new Color(1, 1, 1, 0); //Change the color of the background sprites
-                UIImages[5].color = new Color(0, 0, 0, 0); //Change the color of the sprites
-                UIImages[6].color = new Color(1, 1, 1, 0); //Change the color of the background sprites
-                UIImages[7].color = new Color(0, 0, 0, 0); //Change the color of the sprites
-                UIImages[8].color = new Color(1, 1, 1, 0); //Change the color of the background sprites
-                UIImages[9].color = new Color(0, 0, 0, 0); //Change the color of the sprites
+                uIImages[0].color = new Color(1, 1, 1, 0); //Change the color of the background sprites
+                uIImages[1].color = new Color(0, 0, 0, 0); //Change the color of the sprites
+                uIImages[2].color = new Color(1, 1, 1, 0); //Change the color of the background sprites
+                uIImages[3].color = new Color(0, 0, 0, 0); //Change the color of the sprites
+                uIImages[4].color = new Color(1, 1, 1, 0); //Change the color of the background sprites
+                uIImages[5].color = new Color(0, 0, 0, 0); //Change the color of the sprites
+                uIImages[6].color = new Color(1, 1, 1, 0); //Change the color of the background sprites
+                uIImages[7].color = new Color(0, 0, 0, 0); //Change the color of the sprites
+                uIImages[8].color = new Color(1, 1, 1, 0); //Change the color of the background sprites
+                uIImages[9].color = new Color(0, 0, 0, 0); //Change the color of the sprites
                 SceneManager.LoadScene(SceneManager.GetSceneAt(0).name); //Reload the scene
             }
         }
@@ -138,27 +146,27 @@ namespace UnityStandardAssets._2D
         {
             if (playerInventory.HealthInventory == 0) //If the player has no health pickups
             {
-                UIImages[10].enabled = false; //Show the health pickup on the UI
-                UIImages[11].enabled = false; //Hide the health pickup on the UI
-                UIImages[12].enabled = false; //Hide the health pickup on the UI
+                uIImages[10].enabled = false; //Show the health pickup on the UI
+                uIImages[11].enabled = false; //Hide the health pickup on the UI
+                uIImages[12].enabled = false; //Hide the health pickup on the UI
             }
             else if (playerInventory.HealthInventory == 1) //If the player has one health pickup
             {
-                UIImages[10].enabled = true; //Show the health pickup on the UI
-                UIImages[11].enabled = false; //Hide the health pickup on the UI
-                UIImages[12].enabled = false; //Hide the health pickup on the UI
+                uIImages[10].enabled = true; //Show the health pickup on the UI
+                uIImages[11].enabled = false; //Hide the health pickup on the UI
+                uIImages[12].enabled = false; //Hide the health pickup on the UI
             }
             else if (playerInventory.HealthInventory == 2) //If the player has two health pickups
             {
-                UIImages[10].enabled = true; //Show the health pickup on the UI
-                UIImages[11].enabled = true; //Show the health pickup on the UI
-                UIImages[12].enabled = false; //Hide the health pickup on the UI
+                uIImages[10].enabled = true; //Show the health pickup on the UI
+                uIImages[11].enabled = true; //Show the health pickup on the UI
+                uIImages[12].enabled = false; //Hide the health pickup on the UI
             }
             else if (playerInventory.HealthInventory == 3) //If the player has three health pickups
             {
-                UIImages[10].enabled = true; //Show the health pickup on the UI
-                UIImages[11].enabled = true; //Show the health pickup on the UI
-                UIImages[12].enabled = true; //Show the health pickup on the UI
+                uIImages[10].enabled = true; //Show the health pickup on the UI
+                uIImages[11].enabled = true; //Show the health pickup on the UI
+                uIImages[12].enabled = true; //Show the health pickup on the UI
             }
         }
 
@@ -168,9 +176,9 @@ namespace UnityStandardAssets._2D
             {
                 for (int i = 0; i < playerInventory.OrbInventory.Capacity; i++) //For each orb in the orb inventory
                 {
-                    if (playerInventory.OrbInventory.Contains(UIImages[13 + i].name)) //If the orb inventory contains the orb
+                    if (playerInventory.OrbInventory.Contains(uIImages[13 + i].name)) //If the orb inventory contains the orb
                     {
-                        UIImages[13 + i].color = new Color(UIImages[13 + i].color.r, UIImages[13 + i].color.g, UIImages[13 + i].color.b, 1); //Make the orb's UI less transparent
+                        uIImages[13 + i].color = new Color(uIImages[13 + i].color.r, uIImages[13 + i].color.g, uIImages[13 + i].color.b, 1); //Make the orb's UI less transparent
                     }
 
                     if (playerInventory.OrbInventory.Count == playerInventory.OrbInventory.Capacity) //If the player's orb inventory is ful
@@ -189,21 +197,21 @@ namespace UnityStandardAssets._2D
                 {
                     if (i == 0) //If the first weapon is enabed
                     {
-                        UIImages[19].enabled = true; //Enable the first weapon
-                        UIImages[20].enabled = false; //Disable the second weapon
-                        UIImages[21].enabled = false; //Disable the third weapon
+                        uIImages[19].enabled = true; //Enable the first weapon
+                        uIImages[20].enabled = false; //Disable the second weapon
+                        uIImages[21].enabled = false; //Disable the third weapon
                     }
                     else if (i == 1) //If the second weapon is enabled
                     {
-                        UIImages[19].enabled = false; //Disable the first weapon
-                        UIImages[20].enabled = true; //Enable the second weapon
-                        UIImages[21].enabled = false; //Disable the third weapon
+                        uIImages[19].enabled = false; //Disable the first weapon
+                        uIImages[20].enabled = true; //Enable the second weapon
+                        uIImages[21].enabled = false; //Disable the third weapon
                     }
                     else if (i == 2) //If the third weapon is enabled
                     {
-                        UIImages[19].enabled = false; //Disable the first weapon
-                        UIImages[20].enabled = false; //Disable the second weapon
-                        UIImages[21].enabled = true; //Enable the third weapon
+                        uIImages[19].enabled = false; //Disable the first weapon
+                        uIImages[20].enabled = false; //Disable the second weapon
+                        uIImages[21].enabled = true; //Enable the third weapon
                     }
                 }
             }

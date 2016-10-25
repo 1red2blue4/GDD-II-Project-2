@@ -9,6 +9,12 @@ namespace UnityStandardAssets._2D
         public int side;
         public Collider2D otherCollision;
         public AudioSource openDoor;
+        private string roomName;
+
+        public void Start()
+        {
+
+        }
 
         private void OnTriggerStay2D(Collider2D other)
         {
@@ -19,6 +25,8 @@ namespace UnityStandardAssets._2D
                 openDoor = GetComponent<AudioSource>();
                 openDoor.Play();
                 FadeBetween();
+                string roomName = target.transform.parent.name;
+                other.gameObject.GetComponent<PlatformerCharacter2D>().CurrentRoom = roomName;
             }
         }
         public void FadeBetween()

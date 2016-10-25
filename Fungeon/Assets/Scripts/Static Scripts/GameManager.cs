@@ -21,6 +21,7 @@ namespace UnityStandardAssets._2D
         private PlatformerCharacter2D player;
         private List<GameObject> enemies;
 
+        [SerializeField] private ItemPickup playerInventory; //Huebert's inventory
         public Sprite playerSpriteImage;
         public Sprite trumpSpriteImage;
 
@@ -70,6 +71,34 @@ namespace UnityStandardAssets._2D
             ChangeRoomColor(GameObject.Find("EntireLevel"));
         }
 
+        void Update() //Update is called once per frame
+        {
+            if (playerInventory.OrbInventory.Contains("RedOrb") && !playerInventory.ActivatedOrbEffect[0]) //If the orb inventory contains the red orb
+            {
+
+            }
+            if (playerInventory.OrbInventory.Contains("OrangeOrb") && !playerInventory.ActivatedOrbEffect[1]) //If the orb inventory contains the orange orb
+            {
+
+            }
+            if (playerInventory.OrbInventory.Contains("YellowOrb") && !playerInventory.ActivatedOrbEffect[2]) //If the orb inventory contains the yellow orb
+            {
+
+            }
+            if (playerInventory.OrbInventory.Contains("GreenOrb") && !playerInventory.ActivatedOrbEffect[3]) //If the orb inventory contains the green orb
+            {
+                player.MaxSpeed = 4.75f; //Increase the player's max speed
+            }
+            if (playerInventory.OrbInventory.Contains("BlueOrb") && !playerInventory.ActivatedOrbEffect[4]) //If the orb inventory contains the blue orb
+            {
+
+            }
+            if (playerInventory.OrbInventory.Contains("VioletOrb") && !playerInventory.ActivatedOrbEffect[5]) //If the orb inventory contains the violet orb
+            {
+
+            }
+        }
+
         //Changes the visual color of the objects in the room.
         //Also influences room based on color.
         public void ChangeRoomColor(GameObject room)
@@ -108,6 +137,12 @@ namespace UnityStandardAssets._2D
                     break;
                 case "green":
                     player.defaultMaxSpeed = player.MaxSpeed;
+
+                    if (playerInventory.OrbInventory.Contains("GreenOrb")) //If the orb inventory contains the green orb
+                    {
+                        player.MaxSpeed = 4.75f; //Increase the player's max speed
+                    }
+
                     player.MaxSpeed = 15f;
                     for (int i = 0; i < enemiesByTag.Length; i++)
                     {
@@ -219,6 +254,7 @@ namespace UnityStandardAssets._2D
                     break;
                 case "green":
                     player.MaxSpeed = player.defaultMaxSpeed;
+
                     for (int i = 0; i < enemiesByTag.Length; i++)
                     {
                         if (enemiesByTag[i].name != "Collider")

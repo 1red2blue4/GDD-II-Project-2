@@ -38,46 +38,52 @@ namespace UnityStandardAssets._2D
 
         override public void Update()
         {
-            if (isPatrolling == true)
+            if (GameObject.Find("Player").GetComponent<PlatformerCharacter2D>().CurrentRoom == transform.parent.name)
             {
-                Patrol();
-            }
-
-            // enemy sees player to the right
-            if (direction == 1 && isPatrolling == true)
-            {
-                if (DetectRightPlayer() == true)
+                if (isPatrolling == true)
                 {
-                    playerDetected = true;
-                    isPatrolling = false;
+                    Patrol();
                 }
-            }
 
-            // enemy sees player to the left
-            if (direction == -1 && isPatrolling == true)
-            {
-                if (DetectLeftPlayer() == true)
+                // enemy sees player to the right
+                if (direction == 1 && isPatrolling == true)
                 {
-                    playerDetected = true;
-                    isPatrolling = false;
+                    if (DetectRightPlayer() == true)
+                    {
+                        playerDetected = true;
+                        isPatrolling = false;
+                    }
                 }
-            }
 
-            // enemy sees player sneaking up behind it
-            //if (DetectRadiusPlayer() == true && isPatrolling == true)
-            //{
-            //    playerDetected = true;
-            //    isPatrolling = false;
-            //}
+                // enemy sees player to the left
+                if (direction == -1 && isPatrolling == true)
+                {
+                    if (DetectLeftPlayer() == true)
+                    {
+                        playerDetected = true;
+                        isPatrolling = false;
+                    }
+                }
+
+                // enemy sees player sneaking up behind it
+                //if (DetectRadiusPlayer() == true && isPatrolling == true)
+                //{
+                //    playerDetected = true;
+                //    isPatrolling = false;
+                //}
+            }
 
         }
 
         // handles attacking
         void FixedUpdate()
         {
-            if (playerDetected == true && (DetectLeftEdge() == true || DetectRightEdge() == true))
+            if (GameObject.Find("Player").GetComponent<PlatformerCharacter2D>().CurrentRoom == transform.parent.name)
             {
-                Attack();
+                if (playerDetected == true && (DetectLeftEdge() == true || DetectRightEdge() == true))
+                {
+                    Attack();
+                }
             }
         }
 
@@ -97,7 +103,7 @@ namespace UnityStandardAssets._2D
             // patrol right
             if (direction == 1 && right == true)
             {
-                Debug.Log(transform.name + " Going Right at " + rb.velocity.x);
+                //Debug.Log(transform.name + " Going Right at " + rb.velocity.x);
                 rb.velocity = new Vector3(patrolSpeed, 0, 0);
                 rb.transform.position = new Vector3(transform.position.x, transform.position.y + .0001f, 0);
             }
@@ -112,7 +118,7 @@ namespace UnityStandardAssets._2D
             // patrol left
             if (direction == -1 && left == true)
             {
-                Debug.Log(transform.name + " Going Left at" + rb.velocity.x);
+                //Debug.Log(transform.name + " Going Left at" + rb.velocity.x);
                 rb.velocity = new Vector3(-patrolSpeed, 0, 0);
                 rb.transform.position = new Vector3(transform.position.x, transform.position.y + .0001f, 0);
             }
@@ -223,11 +229,18 @@ namespace UnityStandardAssets._2D
 
             Debug.DrawRay(new Vector3((transform.position.x + (enemySprite.bounds.size.x / 2) + 0.1f), transform.position.y, 0), playerDetectRightNorm * detectPlayerDistance, Color.white);
 
-            if (playerRightCheck.transform.tag == "Player")
+            try
             {
-                return true;
+                if (playerRightCheck.transform.tag == "Player")
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
-            else
+            catch
             {
                 return false;
             }
@@ -249,11 +262,18 @@ namespace UnityStandardAssets._2D
 
             Debug.DrawRay(new Vector3((transform.position.x - (enemySprite.bounds.size.x / 2) - 0.1f), transform.position.y, 0), playerDetectLeftNorm * detectPlayerDistance, Color.white);
 
-            if (playerLeftCheck.transform.tag == "Player")
+            try
             {
-                return true;
+                if (playerLeftCheck.transform.tag == "Player")
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
-            else
+            catch
             {
                 return false;
             }
@@ -290,6 +310,10 @@ namespace UnityStandardAssets._2D
 
                 AudioSource.PlayClipAtPoint(dyingSound.clip, transform.position);
                 Destroy(this.gameObject); //Destroy this gameobject
+            }
+            if (coll.gameObject.transform.parent.tag == "platform")
+            {
+                direction = direction * -1;
             }
 
             // apply a knockback force

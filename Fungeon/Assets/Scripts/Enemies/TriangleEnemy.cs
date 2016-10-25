@@ -38,94 +38,100 @@ namespace UnityStandardAssets._2D
 
         override public void Update() //Physics updates
         {
-            if (!GameManager.Instance.MovingBetweenRooms)
+            if (GameObject.Find("Player").GetComponent<PlatformerCharacter2D>().CurrentRoom == transform.parent.name)
             {
-                // gets the current distance from the enemy to the player
-                Vector3 distance = CalcDistance();
+                if (!GameManager.Instance.MovingBetweenRooms)
+                {
+                    // gets the current distance from the enemy to the player
+                    Vector3 distance = CalcDistance();
 
-                if (distance.magnitude <= attackRadius && attackNow == false)
-                {
-                    chargeAttack = true;
-                }
-                else if (attackNow == true)
-                {
-                    attackTimer += Time.deltaTime;
-                    if (attackTimer >= attackDuration)
+                    if (distance.magnitude <= attackRadius && attackNow == false)
                     {
-                        attackNow = false;
-                        attackTimer = 0.0f;
+                        chargeAttack = true;
                     }
-                    else
+                    else if (attackNow == true)
                     {
-                        Attack();
-                    }
-                }
-                else if (distance.magnitude <= pursueRadius)
-                {
-                    Pursue();
-                }
-                else
-                {
-                    Idle();
-                }
-
-                if (chargeAttack == true)
-                {
-                    chargeTimer += Time.deltaTime;
-                    if (chargeTimer >= chargeDuration)
-                    {
-                        chargeAttack = false;
-                        attackNow = true;
-                        chargeTimer = 0.0f;
-                        enemySprite.color = GameManager.Instance.ChangeColor(baseColor);
-                    }
-                    else
-                    {
-                        ChargeAttack();
-                        if (chargeTimer + Time.deltaTime * 6 >= chargeDuration)
+                        attackTimer += Time.deltaTime;
+                        if (attackTimer >= attackDuration)
                         {
-                            enemySprite.color = new Color(1f, 1f, 1f);
+                            attackNow = false;
+                            attackTimer = 0.0f;
+                        }
+                        else
+                        {
+                            Attack();
                         }
                     }
-                }
+                    else if (distance.magnitude <= pursueRadius)
+                    {
+                        Pursue();
+                    }
+                    else
+                    {
+                        Idle();
+                    }
 
-                //Vector3 offset = player.gameObject.transform.position - this.transform.position;
-                //Vector3 unitOffset = offset.normalized;
-                //rb.velocity = unitOffset * moveSpeed;
-                //rb.velocity = new Vector3(rb.velocity.x, 0, 0);
+                    if (chargeAttack == true)
+                    {
+                        chargeTimer += Time.deltaTime;
+                        if (chargeTimer >= chargeDuration)
+                        {
+                            chargeAttack = false;
+                            attackNow = true;
+                            chargeTimer = 0.0f;
+                            enemySprite.color = GameManager.Instance.ChangeColor(baseColor);
+                        }
+                        else
+                        {
+                            ChargeAttack();
+                            if (chargeTimer + Time.deltaTime * 6 >= chargeDuration)
+                            {
+                                enemySprite.color = new Color(1f, 1f, 1f);
+                            }
+                        }
+                    }
+
+                    //Vector3 offset = player.gameObject.transform.position - this.transform.position;
+                    //Vector3 unitOffset = offset.normalized;
+                    //rb.velocity = unitOffset * moveSpeed;
+                    //rb.velocity = new Vector3(rb.velocity.x, 0, 0);
+                }
             }
         }
 
         // knockback code
         public void FixedUpdate()
         {
-            if (connectTimerStart == true)
+            if (GameObject.Find("Player").GetComponent<PlatformerCharacter2D>().CurrentRoom == transform.parent.name)
             {
-                connectTimer += Time.deltaTime;
-                if (connectTimer >= connectDuration)
+                if (connectTimerStart == true)
                 {
-                    connectTimer = 0.0f;
-                    knockedback = true;
-                    connectTimerStart = false;
+                    connectTimer += Time.deltaTime;
+                    if (connectTimer >= connectDuration)
+                    {
+                        connectTimer = 0.0f;
+                        knockedback = true;
+                        connectTimerStart = false;
+                    }
                 }
-            }
 
-            if (knockedback == true)
-            {
-                knockbackTimer += Time.deltaTime;
-                if (knockbackTimer >= knockbackDuration)
+                if (knockedback == true)
                 {
-                    knockbackTimer = 0.0f;
-                    knockedback = false;
-                    attackNow = false;
-                }
-                else
-                {
-                    Vector2 knockbackDirection = -transform.up;
+                    knockbackTimer += Time.deltaTime;
+                    if (knockbackTimer >= knockbackDuration)
+                    {
+                        knockbackTimer = 0.0f;
+                        knockedback = false;
+                        attackNow = false;
+                    }
+                    else
+                    {
+                        Vector2 knockbackDirection = -transform.up;
 
-                    Vector2 knockbackForce = (knockbackDirection * knockback);
+                        Vector2 knockbackForce = (knockbackDirection * knockback);
 
-                    rb.velocity += knockbackForce;
+                        rb.velocity += knockbackForce;
+                    }
                 }
             }
         }
@@ -201,8 +207,6 @@ namespace UnityStandardAssets._2D
             // apply a knockback force
             if (coll.gameObject.tag == "Player" && attackNow == true)
             {
-                Debug.Log("Hit player");
-
                 connectTimerStart = true;
             }
 

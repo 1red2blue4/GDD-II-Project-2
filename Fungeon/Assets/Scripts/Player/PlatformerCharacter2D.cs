@@ -26,6 +26,7 @@ namespace UnityStandardAssets._2D
         private float defaultGravityScale = 3.0f;
         public SpriteRenderer playerSprite;
         private Color baseColor;
+        private string currentRoom;
 
         public int activeWeapon;
         public GameObject[] weapons;
@@ -39,6 +40,8 @@ namespace UnityStandardAssets._2D
         public bool CanAttack { get { return canAttack; } }
         public Color BaseColor { get { return baseColor; } }
         public float MaxSpeed { get { return m_MaxSpeed; } set { m_MaxSpeed = value; } }
+
+        public string CurrentRoom { get { return currentRoom; } set { currentRoom = value; } }
 
         public bool M_Grounded //Grounded property
         {

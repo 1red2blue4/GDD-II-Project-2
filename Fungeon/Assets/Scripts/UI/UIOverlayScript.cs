@@ -187,23 +187,23 @@ namespace UnityStandardAssets._2D
             {
                 if (playerControlScript.activeWeapon == i) //If the player's active weapon is the one to be enabled
                 {
-                    UIImages[19 + i].enabled = true; //Enable the active weapon
-
-                    if (18 + i > 18) //If the weapon to the left exists
+                    if (i == 0) //If the first weapon is enabed
                     {
-                        UIImages[18 + i].enabled = false; //Disable the weapon to the left
+                        UIImages[19].enabled = true; //Enable the first weapon
+                        UIImages[20].enabled = false; //Disable the second weapon
+                        UIImages[21].enabled = false; //Disable the third weapon
                     }
-                    else if (18 + i <= 18) //If the weapon to the left does not exist
+                    else if (i == 1) //If the second weapon is enabled
                     {
-                        UIImages[UIImages.Length - 1].enabled = false; //Disable the weapon to the left
+                        UIImages[19].enabled = false; //Disable the first weapon
+                        UIImages[20].enabled = true; //Enable the second weapon
+                        UIImages[21].enabled = false; //Disable the third weapon
                     }
-                    else if (20 + i <= UIImages.Length - 1) //If the weapon to the right exists
+                    else if (i == 2) //If the third weapon is enabled
                     {
-                        UIImages[20 + i].enabled = false; //Disable the weapon to the right
-                    }
-                    else //If the weapon to the right does not exist
-                    {
-                        UIImages[15].enabled = false; //Disable the weapon to the right
+                        UIImages[19].enabled = false; //Disable the first weapon
+                        UIImages[20].enabled = false; //Disable the second weapon
+                        UIImages[21].enabled = true; //Enable the third weapon
                     }
                 }
             }

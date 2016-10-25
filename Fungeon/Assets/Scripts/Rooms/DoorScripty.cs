@@ -11,18 +11,20 @@ namespace UnityStandardAssets._2D
         public Collider2D otherCollision;
         public AudioSource openDoor;
         private string roomName;
-        private FlockManager []flockManagers; //Flock managers
-        private RectangleEnemy[] rectangles; //Rectangles
+        private FlockManager[] oldFlocks;
+        private Enemy[] oldEnemies;
 
         public void Start()
         {
-            flockManagers = FindObjectsOfType<FlockManager>(); //Instantiate the flock managers
-            //rectangles = FindObjectsOfType<RectangleEnemy>(); //Instantiate the flock managers
+            oldFlocks = new FlockManager[0];
+            oldEnemies = new Enemy[0];
+            //flockManagers = FindObjectsOfType<FlockManager>(); //Instantiate the flock managers
+            ////rectangles = FindObjectsOfType<RectangleEnemy>(); //Instantiate the flock managers
 
-            for (int i = 0; i < flockManagers.Length; i++) //For each flock manager
-            {
-                flockManagers[i].enabled = false; //Disable them
-            }
+            //for (int i = 0; i < flockManagers.Length; i++) //For each flock manager
+            //{
+            //    flockManagers[i].enabled = false; //Disable them
+            //}
 
             //for (int i = 0; i < rectangles.Length; i++) //For rectangle
             //{
@@ -42,20 +44,19 @@ namespace UnityStandardAssets._2D
                 string roomName = target.transform.parent.name;
 
                 //Disabling enemies in past room
-                FlockManager [] oldFlocks = this.transform.parent.transform.parent.GetComponentsInChildren<FlockManager>();
+                oldFlocks = this.transform.parent.transform.parent.GetComponentsInChildren<FlockManager>();
                 for (int i = 0; i < oldFlocks.Length; i++)
                 {
                     oldFlocks[i].enabled = false;
-                    for(int j=0; j<oldFlocks[i].EnemyFlock.Count; j++)
+                    for (int j = 0; j < oldFlocks[i].EnemyFlock.Count; j++)
                     {
-                        if(oldFlocks[i].EnemyFlock[j] != null)
+                        if (oldFlocks[i].EnemyFlock[j] != null)
                         {
                             oldFlocks[i].EnemyFlock[j].GetComponent<TriangleEnemy>().enabled = false;
                         }
                     }
                 }
-
-                Enemy [] oldEnemies = this.transform.parent.transform.parent.GetComponentsInChildren<Enemy>();
+                oldEnemies = this.transform.parent.transform.parent.GetComponentsInChildren<Enemy>();
                 for (int i = 0; i < oldEnemies.Length; i++)
                 {
                     oldEnemies[i].enabled = false;
@@ -65,24 +66,25 @@ namespace UnityStandardAssets._2D
                 other.gameObject.GetComponent<PlatformerCharacter2D>().CurrentRoom = roomName;
 
                 FlockManager[] flocks = target.transform.parent.GetComponentsInChildren<FlockManager>();
-                for(int i=0; i<flocks.Length; i++)
+                for (int i = 0; i < flocks.Length; i++)
                 {
                     flocks[i].enabled = true;
-
                     for (int j = 0; j < flocks[i].EnemyFlock.Count; j++)
                     {
-                        if(flocks[i].EnemyFlock[j] != null)
+                        if (flocks[i].EnemyFlock[j] != null)
                         {
                             flocks[i].EnemyFlock[j].GetComponent<TriangleEnemy>().enabled = true;
                         }
                     }
                 }
+                oldFlocks = flocks;
 
                 Enemy[] enemies = target.transform.parent.GetComponentsInChildren<Enemy>();
-                for(int i=0; i<enemies.Length; i++)
+                for (int i = 0; i < enemies.Length; i++)
                 {
                     enemies[i].enabled = true;
                 }
+                oldEnemies = enemies;
 
                 //if (flock.name.Contains("FlockManagerGO"))
                 //{

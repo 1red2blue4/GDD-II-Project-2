@@ -42,7 +42,7 @@ namespace UnityStandardAssets._2D
                 string roomName = target.transform.parent.name;
 
                 //Disabling enemies in past room
-                oldFlocks = this.transform.parent.transform.parent.GetComponentsInChildren<FlockManager>();
+                FlockManager [] oldFlocks = this.transform.parent.transform.parent.GetComponentsInChildren<FlockManager>();
                 for (int i = 0; i < oldFlocks.Length; i++)
                 {
                     oldFlocks[i].enabled = false;
@@ -54,7 +54,8 @@ namespace UnityStandardAssets._2D
                         }
                     }
                 }
-                oldEnemies = this.transform.parent.transform.parent.GetComponentsInChildren<Enemy>();
+
+                Enemy [] oldEnemies = this.transform.parent.transform.parent.GetComponentsInChildren<Enemy>();
                 for (int i = 0; i < oldEnemies.Length; i++)
                 {
                     oldEnemies[i].enabled = false;

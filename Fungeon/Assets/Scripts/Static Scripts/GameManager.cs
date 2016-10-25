@@ -81,10 +81,12 @@ namespace UnityStandardAssets._2D
             }
             if (playerInventory.OrbInventory.Contains("OrangeOrb") && !playerInventory.ActivatedOrbEffect[1]) //If the orb inventory contains the orange orb
             {
+
                 playerInventory.ActivatedOrbEffect[1] = true; //The orb's effect has been activated
             }
             if (playerInventory.OrbInventory.Contains("YellowOrb") && !playerInventory.ActivatedOrbEffect[2]) //If the orb inventory contains the yellow orb
             {
+
                 playerInventory.ActivatedOrbEffect[2] = true; //The orb's effect has been activated
             }
             if (playerInventory.OrbInventory.Contains("GreenOrb") && !playerInventory.ActivatedOrbEffect[3]) //If the orb inventory contains the green orb
@@ -94,10 +96,12 @@ namespace UnityStandardAssets._2D
             }
             if (playerInventory.OrbInventory.Contains("BlueOrb") && !playerInventory.ActivatedOrbEffect[4]) //If the orb inventory contains the blue orb
             {
+
                 playerInventory.ActivatedOrbEffect[4] = true; //The orb's effect has been activated
             }
             if (playerInventory.OrbInventory.Contains("VioletOrb") && !playerInventory.ActivatedOrbEffect[5]) //If the orb inventory contains the violet orb
             {
+
                 playerInventory.ActivatedOrbEffect[5] = true; //The orb's effect has been activated
             }
         }

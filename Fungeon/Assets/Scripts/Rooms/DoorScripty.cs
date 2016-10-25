@@ -40,14 +40,41 @@ namespace UnityStandardAssets._2D
                 openDoor.Play();
                 FadeBetween();
                 string roomName = target.transform.parent.name;
-                other.gameObject.GetComponent<PlatformerCharacter2D>().CurrentRoom = roomName;
 
-                Debug.Log(target.transform.parent.name);
+                //Disabling enemies in past room
+                oldFlocks = this.transform.parent.transform.parent.GetComponentsInChildren<FlockManager>();
+                for (int i = 0; i < oldFlocks.Length; i++)
+                {
+                    oldFlocks[i].enabled = false;
+                    for(int j=0; j<oldFlocks[i].EnemyFlock.Count; j++)
+                    {
+                        if(oldFlocks[i].EnemyFlock[j] != null)
+                        {
+                            oldFlocks[i].EnemyFlock[j].GetComponent<TriangleEnemy>().enabled = false;
+                        }
+                    }
+                }
+                oldEnemies = this.transform.parent.transform.parent.GetComponentsInChildren<Enemy>();
+                for (int i = 0; i < oldEnemies.Length; i++)
+                {
+                    oldEnemies[i].enabled = false;
+                }
+
+                //Setting new enemies to being enabled
+                other.gameObject.GetComponent<PlatformerCharacter2D>().CurrentRoom = roomName;
 
                 FlockManager[] flocks = target.transform.parent.GetComponentsInChildren<FlockManager>();
                 for(int i=0; i<flocks.Length; i++)
                 {
                     flocks[i].enabled = true;
+
+                    for (int j = 0; j < flocks[i].EnemyFlock.Count; j++)
+                    {
+                        if(flocks[i].EnemyFlock[j] != null)
+                        {
+                            flocks[i].EnemyFlock[j].GetComponent<TriangleEnemy>().enabled = true;
+                        }
+                    }
                 }
 
                 Enemy[] enemies = target.transform.parent.GetComponentsInChildren<Enemy>();

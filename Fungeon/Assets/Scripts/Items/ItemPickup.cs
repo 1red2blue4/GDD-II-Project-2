@@ -7,7 +7,7 @@ public class ItemPickup : MonoBehaviour //KI
     [SerializeField] private UnityStandardAssets._2D.PlatformerCharacter2D playerControlScript; //The player's control script 
     private int healthInventory; //Create an array to hold the health items
     private List<string> orbInventory = new List<string>(); //Create a list to hold the orb items
-    private bool[] activatedOrbEffect; //If the orb's effect has been activated
+    private bool[] activatedOrbEffect = new bool[6]; //If the orb's effect has been activated
     public AudioSource[] soundEffects;
 
     public int HealthInventory //HealthInventory property
@@ -44,6 +44,11 @@ public class ItemPickup : MonoBehaviour //KI
         orbInventory.Capacity = 6; //Set the capacity of the orb inventory
         soundEffects = new AudioSource[5];
         soundEffects = GetComponents<AudioSource>();
+
+        for (int i = 0; i < activatedOrbEffect.Length; i++) //For each orb
+        {
+            activatedOrbEffect[i] = false; //Set the orb as inactive
+        }
     }
 
     void OnTriggerEnter2D(Collider2D that) //If the player collides with something
@@ -62,34 +67,6 @@ public class ItemPickup : MonoBehaviour //KI
             }
 
             Destroy(that.gameObject); //Destroy the item
-        }
-    }
-
-    private void PedistalColorChange() //Changes the color of the pedistal
-    {
-        if (OrbInventory.Contains("RedOrb") && !activatedOrbEffect[0]) //If the orb inventory contains the red orb
-        {
-            activatedOrbEffect[0] = true; //The orb's effect has been activated
-        }
-        if (OrbInventory.Contains("OrangeOrb") && !activatedOrbEffect[1]) //If the orb inventory contains the orange orb
-        {
-            activatedOrbEffect[1] = true; //The orb's effect has been activated
-        }
-        if (OrbInventory.Contains("YellowOrb") && !activatedOrbEffect[2]) //If the orb inventory contains the yellow orb
-        {
-            activatedOrbEffect[2] = true; //The orb's effect has been activated
-        }
-        if (OrbInventory.Contains("GreenOrb") && !activatedOrbEffect[3]) //If the orb inventory contains the green orb
-        {
-            activatedOrbEffect[3] = true; //The orb's effect has been activated
-        }
-        if (OrbInventory.Contains("BlueOrb") && !activatedOrbEffect[4]) //If the orb inventory contains the blue orb
-        {
-            activatedOrbEffect[4] = true; //The orb's effect has been activated
-        }
-        if (OrbInventory.Contains("VioletOrb") && !activatedOrbEffect[5]) //If the orb inventory contains the violet orb
-        {
-            activatedOrbEffect[5] = true; //The orb's effect has been activated
         }
     }
 }

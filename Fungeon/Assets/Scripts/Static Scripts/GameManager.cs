@@ -69,7 +69,7 @@ namespace UnityStandardAssets._2D
             colorKeys = new string[6] { "red", "orange", "yellow", "green", "blue", "purple" };
             activeColor = "red";
             roomLoaded = true;
-            ChangeRoomColor(GameObject.Find("EntireLevel"));
+            ChangeRoomColor(GameObject.Find("New_Entire_Level"));
         }
 
         void Update() //Update is called once per frame

@@ -175,12 +175,13 @@ namespace UnityStandardAssets._2D
         public bool DetectRightEdge()
         {
             // calculate the vectors used in raycasting
-            Vector3 edgeDetect = new Vector3(transform.position.x + 1.0f, -1 * (transform.position.y - enemySprite.bounds.size.y / 2) - 0.15f, 0);
-            Vector3 edgeDetectNorm = edgeDetect.normalized;
+            Vector3 edgeDetect = new Vector3(transform.position.x + 1.0f, (transform.position.y - enemySprite.bounds.size.y / 2) - 0.15f, 0);
+            Vector3 originDetect = new Vector3(transform.position.x + 0.4f, transform.position.y, 0);
+            Vector3 edgeDetectNorm = (edgeDetect - originDetect).normalized;
 
-            RaycastHit2D edgeCheck = Physics2D.Raycast(new Vector3(transform.position.x + 0.4f, transform.position.y, 0), edgeDetectNorm, 1.5f);
+            RaycastHit2D edgeCheck = Physics2D.Raycast(originDetect, edgeDetectNorm, 1.5f);
 
-            Debug.DrawRay(new Vector3(transform.position.x + 0.4f, transform.position.y, 0), edgeDetectNorm * 1.5f, Color.white);
+            Debug.DrawRay(new Vector3(transform.position.x + 0.4f, transform.position.y, 0), edgeDetectNorm * 1.5f, Color.red);
 
             if (edgeCheck.collider != null)
             {
@@ -201,11 +202,12 @@ namespace UnityStandardAssets._2D
         {
             // calculate the vectors used in raycasting
             Vector3 edgeDetect = new Vector3(transform.position.x - 1.0f, (transform.position.y - enemySprite.bounds.size.y / 2) - 0.15f, 0);
-            Vector3 edgeDetectNorm = edgeDetect.normalized * -1;
+            Vector3 originDetect = new Vector3(transform.position.x - 0.4f, transform.position.y, 0);
+            Vector3 edgeDetectNorm = (edgeDetect - originDetect).normalized;
 
-            RaycastHit2D edgeCheck = Physics2D.Raycast(new Vector3(transform.position.x - 0.4f, transform.position.y, 0), edgeDetectNorm, 1.5f);
+            RaycastHit2D edgeCheck = Physics2D.Raycast(originDetect, edgeDetectNorm, 1.5f);
 
-            Debug.DrawRay(new Vector3(transform.position.x - 0.4f, transform.position.y, 0), edgeDetectNorm * 1.5f, Color.white);
+            Debug.DrawRay(new Vector3(transform.position.x - 0.4f, transform.position.y, 0), edgeDetectNorm * 1.5f, Color.red);
 
             if (edgeCheck.collider != null)
             {

@@ -250,7 +250,7 @@ namespace UnityStandardAssets._2D
                     }
                     break;
                 case "orange":
-                    player.playerSprite.sprite = playerSpriteImage;
+                    //TODO: Need Trump Sprite
                     break;
                 case "yellow":
                     //TODO: Need pickup rate

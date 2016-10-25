@@ -64,7 +64,6 @@ namespace UnityStandardAssets._2D
             defaultGravityScale = m_Rigidbody2D.gravityScale;
             coolDown = weapons[activeWeapon].GetComponent<Weapon>().cooldown;
             baseColor = playerSprite.color;
-            currentRoom = "Level 01";
         }
 
         private void Update()

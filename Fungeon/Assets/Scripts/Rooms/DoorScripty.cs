@@ -50,7 +50,10 @@ namespace UnityStandardAssets._2D
                     oldFlocks[i].enabled = false;
                     for(int j=0; j<oldFlocks[i].EnemyFlock.Count; j++)
                     {
-                        oldFlocks[i].EnemyFlock[j].GetComponent<TriangleEnemy>().enabled = false;
+                        if(oldFlocks[i].EnemyFlock[j] != null)
+                        {
+                            oldFlocks[i].EnemyFlock[j].GetComponent<TriangleEnemy>().enabled = false;
+                        }
                     }
                 }
                 oldEnemies = this.transform.parent.transform.parent.GetComponentsInChildren<Enemy>();
@@ -61,7 +64,6 @@ namespace UnityStandardAssets._2D
 
                 //Setting new enemies to being enabled
                 other.gameObject.GetComponent<PlatformerCharacter2D>().CurrentRoom = roomName;
-                Debug.Log(target.transform.parent.name);
 
                 FlockManager[] flocks = target.transform.parent.GetComponentsInChildren<FlockManager>();
                 for(int i=0; i<flocks.Length; i++)
@@ -69,7 +71,10 @@ namespace UnityStandardAssets._2D
                     flocks[i].enabled = true;
                     for (int j = 0; j < flocks[i].EnemyFlock.Count; j++)
                     {
-                        flocks[i].EnemyFlock[j].GetComponent<TriangleEnemy>().enabled = true;
+                        if(flocks[i].EnemyFlock[j] != null)
+                        {
+                            flocks[i].EnemyFlock[j].GetComponent<TriangleEnemy>().enabled = true;
+                        }
                     }
                 }
                 oldFlocks = flocks;
@@ -77,7 +82,6 @@ namespace UnityStandardAssets._2D
                 Enemy[] enemies = target.transform.parent.GetComponentsInChildren<Enemy>();
                 for(int i=0; i<enemies.Length; i++)
                 {
-                    print(enemies[i].gameObject.name);
                     enemies[i].enabled = true;
                 }
                 oldEnemies = enemies;

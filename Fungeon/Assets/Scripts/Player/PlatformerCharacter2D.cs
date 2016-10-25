@@ -82,6 +82,10 @@ namespace UnityStandardAssets._2D
                 {//changing color
                     float colorTemp = .4f + ((timer / coolDown) * .6f);
                     playerSprite.color = GameManager.Instance.LerpColor(baseColor, colorTemp);
+                    if(timer + Time.deltaTime*6 >= coolDown)
+                    {
+                        playerSprite.color = new Color(1f, 1f, 1f);
+                    }
                 }
             }
             if(Input.GetButtonDown("SwitchWeaponLeft"))

@@ -18,6 +18,14 @@ namespace UnityStandardAssets._2D
         private UnityEngine.UI.Text rBText; //The UI text for weapon changing
         private bool controllerConnected; //If a controller is connected
 
+        public bool ControllerConnected //ControllerConnected property
+        {
+            get
+            {
+                return controllerConnected; //Return controllerConnected
+            }
+        }
+
         void Start() //Use this for initilaization
         {
             UnityEngine.UI.Text[] uIText = uIOverlay.UIOverlay.GetComponentsInChildren<UnityEngine.UI.Text>(); //Temporarily store all of the UI text

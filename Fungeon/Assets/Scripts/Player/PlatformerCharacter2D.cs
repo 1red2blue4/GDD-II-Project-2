@@ -11,6 +11,7 @@ namespace UnityStandardAssets._2D
         [Range(0, 1)] [SerializeField] private float m_CrouchSpeed = .36f;  // Amount of maxSpeed applied to crouching movement. 1 = 100%
         [SerializeField] private bool m_AirControl = false;                 // Whether or not a player can steer while jumping;
         [SerializeField] private LayerMask m_WhatIsGround;                  // A mask determining what is ground to the character
+        [SerializeField] private MenuScripts mS; //The menu script
 
         private Transform m_GroundCheck;    // A position marking where to check if the player is grounded.
         const float k_GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
@@ -106,15 +107,32 @@ namespace UnityStandardAssets._2D
                 }
                 coolDown = weapons[activeWeapon].GetComponent<Weapon>().cooldown;
             }
-            if(Input.mousePosition.x - (cam.WorldToViewportPoint(this.transform.position).x*Screen.width) < 0 && m_FacingRight)
+            if(Input.mousePosition.x - (cam.WorldToViewportPoint(this.transform.position).x*Screen.width) < 0 && m_FacingRight && !mS.ControllerConnected)
             {
                 Flip();
             }
-            else if (Input.mousePosition.x - (cam.WorldToViewportPoint(this.transform.position).x * Screen.width) > 0 && !m_FacingRight)
+            else if (Input.mousePosition.x - (cam.WorldToViewportPoint(this.transform.position).x * Screen.width) > 0 && !m_FacingRight && !mS.ControllerConnected)
             {
                 Flip();
             }
 
+            if (Input.GetAxis("Horizontal") > 0 && !m_FacingRight && mS.ControllerConnected)
+            {
+                Flip();
+            }
+            else if (Input.GetAxis("Horizontal") < 0 && m_FacingRight && mS.ControllerConnected)
+            {
+                Flip();
+            }
+
+            //if (m_FacingRight && mS.ControllerConnected)
+            //{
+            //    Flip();
+            //}
+            //else if (!m_FacingRight && mS.ControllerConnected)
+            //{
+            //    Flip();
+            //}
         }
 
         private void FixedUpdate()

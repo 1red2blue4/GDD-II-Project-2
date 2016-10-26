@@ -34,6 +34,7 @@ namespace UnityStandardAssets._2D
             //{
             //dropsRigidbodies = drops[0].GetComponent<Rigidbody2D>(); //Take the rigidbody from the drop
             //}
+            this.enabled = false;
         }
 
         override public void Update() //Physics updates

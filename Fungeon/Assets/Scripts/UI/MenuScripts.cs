@@ -40,6 +40,10 @@ namespace UnityStandardAssets._2D
                 {
                     rBText = uIText[i]; //Save the RB text
                 }
+                else if (uIText[i].name == "Message") //If the message text is found
+                {
+                    uIOverlay.MessageText = uIText[i]; //Save the message text
+                }
             }
         }
 

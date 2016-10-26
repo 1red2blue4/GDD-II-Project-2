@@ -22,7 +22,7 @@ namespace UnityStandardAssets._2D
         private List<GameObject> enemies;
 
         //[SerializeField] private SpriteRenderer[] pedistalSprites = new SpriteRenderer[6]; //The pedistals to change
-        [SerializeField] private ItemPickup playerInventory; //Huebert's inventory
+        //[SerializeField] private ItemPickup playerInventory; //Huebert's inventory
         public Sprite playerSpriteImage;
         public Sprite trumpSpriteImage;
 
@@ -72,40 +72,6 @@ namespace UnityStandardAssets._2D
             ChangeRoomColor(GameObject.Find("New_Entire_Level"));
         }
 
-        void Update() //Update is called once per frame
-        {
-            if (playerInventory.OrbInventory.Contains("RedOrb") && !playerInventory.ActivatedOrbEffect[0]) //If the orb inventory contains the red orb
-            {
-                //pedistalSprites[0].color = Color.red; //Make the pedistal red
-                playerInventory.ActivatedOrbEffect[0] = true; //The orb's effect has been activated
-            }
-            if (playerInventory.OrbInventory.Contains("OrangeOrb") && !playerInventory.ActivatedOrbEffect[1]) //If the orb inventory contains the orange orb
-            {
-
-                playerInventory.ActivatedOrbEffect[1] = true; //The orb's effect has been activated
-            }
-            if (playerInventory.OrbInventory.Contains("YellowOrb") && !playerInventory.ActivatedOrbEffect[2]) //If the orb inventory contains the yellow orb
-            {
-
-                playerInventory.ActivatedOrbEffect[2] = true; //The orb's effect has been activated
-            }
-            if (playerInventory.OrbInventory.Contains("GreenOrb") && !playerInventory.ActivatedOrbEffect[3]) //If the orb inventory contains the green orb
-            {
-                player.MaxSpeed = 4.75f; //Increase the player's max speed
-                playerInventory.ActivatedOrbEffect[3] = true; //The orb's effect has been activated
-            }
-            if (playerInventory.OrbInventory.Contains("BlueOrb") && !playerInventory.ActivatedOrbEffect[4]) //If the orb inventory contains the blue orb
-            {
-
-                playerInventory.ActivatedOrbEffect[4] = true; //The orb's effect has been activated
-            }
-            if (playerInventory.OrbInventory.Contains("VioletOrb") && !playerInventory.ActivatedOrbEffect[5]) //If the orb inventory contains the violet orb
-            {
-
-                playerInventory.ActivatedOrbEffect[5] = true; //The orb's effect has been activated
-            }
-        }
-
         //Changes the visual color of the objects in the room.
         //Also influences room based on color.
         public void ChangeRoomColor(GameObject room)
@@ -145,10 +111,10 @@ namespace UnityStandardAssets._2D
                 case "green":
                     player.defaultMaxSpeed = player.MaxSpeed;
 
-                    if (playerInventory.OrbInventory.Contains("GreenOrb")) //If the orb inventory contains the green orb
-                    {
-                        player.MaxSpeed = 4.75f; //Increase the player's max speed
-                    }
+                    //if (playerInventory.OrbInventory.Contains("GreenOrb")) //If the orb inventory contains the green orb
+                    //{
+                    //    player.MaxSpeed = 4.75f; //Increase the player's max speed
+                    //}
 
                     player.MaxSpeed = 15f;
                     for (int i = 0; i < enemiesByTag.Length; i++)

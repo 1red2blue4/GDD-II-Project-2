@@ -98,25 +98,6 @@ namespace UnityStandardAssets._2D
                     healthInventory++; //Add a health pickup to the player's health inventory
                     soundEffects[4].Play(); //Play a sound effect for destroying the item
                 }
-                else if (that.gameObject.name.Contains("Orb") && !orbInventory.Contains(that.gameObject.name)) //If the item is an orb and that orb is not already in the inventory
-                {
-                    orbInventory.Add(that.gameObject.name); //Add the orb to the list
-                    soundEffects[4].Play(); //Play a sound effect for destroying the item
-                    SpriteRenderer[] sprites = GameManager.Instance.stairs[GameManager.Instance.stairIndex].GetComponentsInChildren<SpriteRenderer>();
-                    GameManager.Instance.stairIndex++;
-                    for(int i=0; i<sprites.Length; i++)
-                    {
-                        sprites[i].color = that.gameObject.GetComponent<SpriteRenderer>().color;
-                    }
-                    if(GameManager.Instance.stairIndex > 5)
-                    {
-                        Vector3 dogPos = GameObject.Find("RoyGBivColorless").transform.position;
-                        GameManager.Instance.Player.transform.position = dogPos;
-                        GameManager.Instance.MainCamera.transform.position = dogPos;
-                        Instantiate(GameManager.Instance.royGBivCelebrating, dogPos, Quaternion.identity);
-                        Destroy(GameObject.Find("RoyGBivColorless"));
-                    }
-                }
             }
         }
     }

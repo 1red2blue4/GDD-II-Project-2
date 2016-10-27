@@ -6,8 +6,6 @@ namespace UnityStandardAssets._2D
 {
     public class ItemPickup : MonoBehaviour //KI
     {
-        [SerializeField]
-        private UnityStandardAssets._2D.PlatformerCharacter2D playerControlScript; //The player's control script 
         private int healthInventory; //Create an array to hold the health items
         private List<string> orbInventory = new List<string>(); //Create a list to hold the orb items
         private bool[] activatedOrbEffect = new bool[6]; //If the orb's effect has been activated
@@ -56,7 +54,8 @@ namespace UnityStandardAssets._2D
 
         void OnTriggerEnter2D(Collider2D that) //If the player collides with something
         {
-            if (that.gameObject.tag == "item" && playerControlScript.CanAttack == true) //If the player is colliding with the item and is not attacking
+            Weapon weapon = GameManager.Instance.Player.GetComponentInChildren<Weapon>();
+            if (that.gameObject.tag == "item" && weapon == null) //If the player is colliding with the item and is not attacking
             {
                 Destroy(that.gameObject); //Destroy the item
 
@@ -89,7 +88,8 @@ namespace UnityStandardAssets._2D
 
         void OnTriggerExit2D(Collider2D that) //If the player collides with something
         {
-            if (that.gameObject.tag == "item" && playerControlScript.CanAttack == true) //If the player is colliding with the item and is not attacking
+            Weapon weapon = GameManager.Instance.Player.GetComponentInChildren<Weapon>();
+            if (that.gameObject.tag == "item" && weapon == null) //If the player is colliding with the item and is not attacking
             {
                 Destroy(that.gameObject); //Destroy the item
 

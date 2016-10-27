@@ -96,7 +96,6 @@ namespace UnityStandardAssets._2D
                 {
                     activeWeapon = weapons.Length - 1;
                 }
-                coolDown = weapons[activeWeapon].GetComponent<Weapon>().cooldown;
             }
             if(Input.GetButtonDown("SwitchWeaponRight"))
             {
@@ -105,7 +104,6 @@ namespace UnityStandardAssets._2D
                 {
                     activeWeapon = 0;
                 }
-                coolDown = weapons[activeWeapon].GetComponent<Weapon>().cooldown;
             }
             if(Input.mousePosition.x - (cam.WorldToViewportPoint(this.transform.position).x*Screen.width) < 0 && m_FacingRight && !mS.ControllerConnected)
             {
@@ -269,6 +267,7 @@ namespace UnityStandardAssets._2D
             weapon.transform.localScale = scale;
             weapon.transform.parent = this.gameObject.transform;
             canAttack = false;
+            coolDown = weapons[activeWeapon].GetComponent<Weapon>().cooldown;
             playerSprite.color = new Color(.4f, .4f, .4f);
         }
 

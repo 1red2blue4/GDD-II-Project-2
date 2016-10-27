@@ -55,6 +55,7 @@ namespace UnityStandardAssets._2D
         protected List<float> dropPercentage; //Percent chance for a drop
 
         public SpriteRenderer EnemySprite { get { return enemySprite; } }
+        public List<float> DropPercentage { get { return dropPercentage;  } set { dropPercentage = value; } }
 
         // Use this for initialization
         virtual public void Start()

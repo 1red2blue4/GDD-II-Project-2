@@ -106,7 +106,14 @@ namespace UnityStandardAssets._2D
                     player.playerSprite.sprite = trumpSpriteImage;
                     break;
                 case "yellow":
-                    //TODO: Need pickup rate
+                    for (int i = 0; i < enemiesByTag.Length; i++)
+                    {
+                        if (enemiesByTag[i].name != "Collider")
+                        {
+                            Enemy e = (Enemy)enemiesByTag[i].GetComponent<Enemy>();
+                            e.DropPercentage[0] = 100;
+                        }
+                    }
                     break;
                 case "green":
                     player.defaultMaxSpeed = player.MaxSpeed;
@@ -131,6 +138,14 @@ namespace UnityStandardAssets._2D
                     player.m_Rigidbody2D.gravityScale = 1.5f;
                     break;
                 case "purple":
+                    for (int i = 0; i < enemiesByTag.Length; i++)
+                    {
+                        if (enemiesByTag[i].name != "Collider")
+                        {
+                            Enemy e = (Enemy)enemiesByTag[i].GetComponent<Enemy>();
+                            e.DropPercentage[0] = 0;
+                        }
+                    }
                     break;
                 default:
                     //breaks out of method if color isn't in dictionary.
@@ -220,10 +235,17 @@ namespace UnityStandardAssets._2D
                     }
                     break;
                 case "orange":
-                    //TODO: Need Trump Sprite
+                    player.playerSprite.sprite = playerSpriteImage;
                     break;
                 case "yellow":
-                    //TODO: Need pickup rate
+                    for (int i = 0; i < enemiesByTag.Length; i++)
+                    {
+                        if (enemiesByTag[i].name != "Collider")
+                        {
+                            Enemy e = (Enemy)enemiesByTag[i].GetComponent<Enemy>();
+                            e.DropPercentage[0] = 25;
+                        }
+                    }
                     break;
                 case "green":
                     player.MaxSpeed = player.defaultMaxSpeed;
@@ -241,6 +263,14 @@ namespace UnityStandardAssets._2D
                     player.m_Rigidbody2D.gravityScale = 3.0f;
                     break;
                 case "purple":
+                    for (int i = 0; i < enemiesByTag.Length; i++)
+                    {
+                        if (enemiesByTag[i].name != "Collider")
+                        {
+                            Enemy e = (Enemy)enemiesByTag[i].GetComponent<Enemy>();
+                            e.DropPercentage[0] = 25;
+                        }
+                    }
                     break;
                 default:
                     //breaks out of method if color isn't in dictionary.

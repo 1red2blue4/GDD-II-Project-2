@@ -50,6 +50,10 @@ namespace UnityStandardAssets._2D
 
         public UnityEngine.UI.Text MessageText //MessageText property
         {
+            get
+            {
+                return messageText;
+            }
             set
             {
                 messageText = value; //Set the value of the message text

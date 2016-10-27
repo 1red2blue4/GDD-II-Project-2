@@ -189,9 +189,9 @@ namespace UnityStandardAssets._2D
 
                 // The Speed animator parameter is set to the absolute value of the horizontal input.
                 m_Anim.SetFloat("Speed", Mathf.Abs(move));
-
+                //Mathf.Clamp(m_Rigidbody2D.velocity.y, -10f, 10f)
                 // Move the character
-                m_Rigidbody2D.velocity = new Vector2(move*m_MaxSpeed, m_Rigidbody2D.velocity.y);
+                m_Rigidbody2D.velocity = new Vector2(move*m_MaxSpeed, Mathf.Clamp(m_Rigidbody2D.velocity.y, -15f, 100f));
 
                 //// If the input is moving the player right and the player is facing left...
                 //if (move > 0 && !m_FacingRight)

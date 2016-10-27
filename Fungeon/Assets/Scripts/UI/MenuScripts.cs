@@ -97,11 +97,13 @@ namespace UnityStandardAssets._2D
                 pauseMenu.gameObject.SetActive(true); //Enable the pause menu
                 Time.timeScale = 0; //Pause the game
                 uIOverlay.PlayerControlScript.M_Grounded = false; //Make the player not jump
+                uIOverlay.MessageText.enabled = false;
             }
             else //If the pause menu is enabled
             {
                 pauseMenu.gameObject.SetActive(false); //Disable the pause menu
                 Time.timeScale = 1; //Run the game
+                uIOverlay.MessageText.enabled = true;
             }
         }
 
@@ -142,6 +144,12 @@ namespace UnityStandardAssets._2D
                 controllerControlMenu.gameObject.SetActive(false); //Disable the controller controls menu
                 pauseMenu.gameObject.SetActive(true); //Enable the pause menu
             }
+        }
+
+        public void QuitToMenu(string scene)
+        {
+            SceneManager.LoadScene(scene);
+            Time.timeScale = 1;
         }
 
         private void ControllerConnectionManager() //Manages controller connection behavior

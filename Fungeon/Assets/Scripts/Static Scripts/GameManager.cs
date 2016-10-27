@@ -15,16 +15,19 @@ namespace UnityStandardAssets._2D
         private string activeColor;
         private bool roomLoaded;
         private bool movingBetweenRooms = false;
+        public int stairIndex = 0;
 
         //Variables: In The Scene
         private Camera mainCamera;
         private PlatformerCharacter2D player;
         private List<GameObject> enemies;
+        public GameObject[] stairs;
 
         //[SerializeField] private SpriteRenderer[] pedistalSprites = new SpriteRenderer[6]; //The pedistals to change
         //[SerializeField] private ItemPickup playerInventory; //Huebert's inventory
         public Sprite playerSpriteImage;
         public Sprite trumpSpriteImage;
+        public GameObject royGBivCelebrating;
 
         //Properties
         public static GameManager Instance { get { return _instance; } }
@@ -168,7 +171,7 @@ namespace UnityStandardAssets._2D
             SpriteRenderer[] children = room.GetComponentsInChildren<SpriteRenderer>();
             for (int i = 0; i < children.Length; i++)
             {
-                if(children[i].tag != "item")
+                if(children[i].tag != "item" && children[i].transform.parent.tag != "stair")
                 {
                     HSBColor c = HSBColor.FromColor(children[i].color);
                     c.h = colors[color];

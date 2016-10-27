@@ -135,13 +135,11 @@ namespace UnityStandardAssets._2D
 
             if(DetectEnemyLeft() == true && direction == -1)
             {
-                Debug.Log(name + " checking for left");
                 Flip();
             }
 
             if(DetectEnemyRight() == true && direction == 1)
             {
-                Debug.Log(name + " checking for right");
                 Flip();
             }
         }

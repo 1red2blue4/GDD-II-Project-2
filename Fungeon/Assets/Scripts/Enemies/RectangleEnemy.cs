@@ -108,7 +108,7 @@ namespace UnityStandardAssets._2D
             {
                 //Debug.Log(transform.name + " Going Right at " + rb.velocity.x);
                 rb.velocity = new Vector3(patrolSpeed, 0, 0);
-                rb.transform.position = new Vector3(transform.position.x, transform.position.y + .001f, 0);
+                rb.transform.position = new Vector3(transform.position.x, transform.position.y + .005f, 0);
             }
 
             // turn left
@@ -123,7 +123,7 @@ namespace UnityStandardAssets._2D
             {
                 //Debug.Log(transform.name + " Going Left at" + rb.velocity.x);
                 rb.velocity = new Vector3(-patrolSpeed, 0, 0);
-                rb.transform.position = new Vector3(transform.position.x, transform.position.y + .001f, 0);
+                rb.transform.position = new Vector3(transform.position.x, transform.position.y + .005f, 0);
             }
 
             // turn right
@@ -131,6 +131,18 @@ namespace UnityStandardAssets._2D
             {
                 Flip();
                 //Debug.Log("Turning Right...");
+            }
+
+            if(DetectEnemyLeft() == true && direction == -1)
+            {
+                Debug.Log(name + " checking for left");
+                Flip();
+            }
+
+            if(DetectEnemyRight() == true && direction == 1)
+            {
+                Debug.Log(name + " checking for right");
+                Flip();
             }
         }
 
@@ -232,7 +244,7 @@ namespace UnityStandardAssets._2D
 
             RaycastHit2D playerRightCheck = Physics2D.Raycast(new Vector3((transform.position.x + (enemySprite.bounds.size.x / 2) + 0.1f), transform.position.y, 0), playerDetectRightNorm, detectPlayerDistance);
 
-            Debug.DrawRay(new Vector3((transform.position.x + (enemySprite.bounds.size.x / 2) + 0.1f), transform.position.y, 0), playerDetectRightNorm * detectPlayerDistance, Color.white);
+            //Debug.DrawRay(new Vector3((transform.position.x + (enemySprite.bounds.size.x / 2) + 0.1f), transform.position.y, 0), playerDetectRightNorm * detectPlayerDistance, Color.white);
 
             try
             {
@@ -265,7 +277,7 @@ namespace UnityStandardAssets._2D
 
             RaycastHit2D playerLeftCheck = Physics2D.Raycast(new Vector3((transform.position.x - (enemySprite.bounds.size.x / 2) - 0.1f), transform.position.y, 0), playerDetectLeftNorm, detectPlayerDistance);
 
-            Debug.DrawRay(new Vector3((transform.position.x - (enemySprite.bounds.size.x / 2) - 0.1f), transform.position.y, 0), playerDetectLeftNorm * detectPlayerDistance, Color.white);
+            //Debug.DrawRay(new Vector3((transform.position.x - (enemySprite.bounds.size.x / 2) - 0.1f), transform.position.y, 0), playerDetectLeftNorm * detectPlayerDistance, Color.white);
 
             try
             {
@@ -304,6 +316,91 @@ namespace UnityStandardAssets._2D
             }
         }
 
+        public bool DetectEnemyLeft()
+        {
+            // calculate vectors used in raycasting
+            Vector3 playerDetectLeft = -transform.right;
+            Vector3 playerDetectLeftNorm = playerDetectLeft.normalized;
+
+            RaycastHit2D playerLeftCheck = Physics2D.Raycast(new Vector3((transform.position.x - (enemySprite.bounds.size.x / 2) - 0.1f), transform.position.y, 0), playerDetectLeftNorm, 0.5f);
+
+            Debug.DrawRay(new Vector3((transform.position.x - (enemySprite.bounds.size.x / 2) - 0.1f), transform.position.y, 0), playerDetectLeftNorm * 0.5f, Color.white);
+
+            //Debug.Log(name + " hit " + playerLeftCheck.transform.name);
+
+            if (playerLeftCheck.collider != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+            //try
+            //{
+            //    if (playerLeftCheck.transform.tag == "enemy")
+            //    {
+            //        return true;
+            //    }
+            //    else if (playerLeftCheck.transform.tag == "platform")
+            //    {
+            //        return true;
+            //    }
+            //    else
+            //    {
+            //        return false;
+            //    }
+            //}
+            //catch
+            //{
+            //    return false;
+            //}
+        }
+
+        public bool DetectEnemyRight()
+        {
+            // calculate vectors used in raycasting
+            Vector3 playerDetectRight = transform.right;
+            Vector3 playerDetectRightNorm = playerDetectRight.normalized;
+
+            RaycastHit2D playerRightCheck = Physics2D.Raycast(new Vector3((transform.position.x + (enemySprite.bounds.size.x / 2) + 0.1f), transform.position.y, 0), playerDetectRightNorm, 0.5f);
+
+            Debug.DrawRay(new Vector3((transform.position.x + (enemySprite.bounds.size.x / 2) + 0.1f), transform.position.y, 0), playerDetectRightNorm * 0.5f, Color.white);
+
+            //Debug.Log(name + " hit " + playerRightCheck.transform.name);
+
+            if (playerRightCheck.collider != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+            //try
+            //{
+            //    if (playerRightCheck.transform.tag == "enemy")
+            //    {
+            //        return true;
+            //    }
+            //    else if (playerRightCheck.transform.tag == "slider")
+            //    {
+            //        return true;
+            //    }
+            //    else
+            //    {
+            //        return false;
+            //    }
+            //}
+            //catch
+            //{
+            //    return false;
+            //}
+
+        }
+
         public override void OnTriggerEnter2D(Collider2D coll)
         {
             if (coll.gameObject.tag == "weapon") //If the collision is with a weapon
@@ -316,10 +413,20 @@ namespace UnityStandardAssets._2D
                 AudioSource.PlayClipAtPoint(dyingSound.clip, transform.position);
                 Destroy(this.gameObject); //Destroy this gameobject
             }
-            if (coll.gameObject.transform.parent.tag == "platform")
-            {
-                direction = direction * -1;
-            }
+            //if (coll.gameObject.tag == "platform")
+            //{
+            //    Flip();
+            //    Debug.Log(name + " is colliding with " + coll.gameObject.name);
+            //}
+            //if (coll.gameObject.tag == "Untagged")
+            //{
+            //    Flip();
+            //}
+            //if (coll.gameObject.tag == "enemy")
+            //{
+            //    Flip();
+            //    Debug.Log(name + " is colliding with " + coll.gameObject.name);
+            //}
 
             // apply a knockback force
             //if (coll.gameObject.tag == "Player")
@@ -327,5 +434,23 @@ namespace UnityStandardAssets._2D
             //    Debug.Log("Hit player");
             //}
         }
+
+        //public void OnTriggerStay2D(Collider2D coll)
+        //{
+        //    if (coll.gameObject.tag == "enemy")
+        //    {
+        //        Flip();
+        //        Debug.Log(name + " is colliding with " + coll.gameObject.name);
+        //    }
+        //    if (coll.gameObject.tag == "platform")
+        //    {
+        //        Flip();
+        //        Debug.Log(name + " is colliding with " + coll.gameObject.name);
+        //    }
+        //    if (coll.gameObject.tag == "Untagged")
+        //    {
+        //        Flip();
+        //    }
+        //}
     }
 }

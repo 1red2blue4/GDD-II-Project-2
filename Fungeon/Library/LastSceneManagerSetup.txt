@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/Test Scenes/Mark Merging.unity
+- path: Assets/Scenes/Huebert's Peril.unity
   isLoaded: 1
   isActive: 1

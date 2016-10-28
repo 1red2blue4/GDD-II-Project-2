@@ -74,11 +74,11 @@ namespace UnityStandardAssets._2D
             OrbUIUpdater(); //Update the player's orb UI
             WeaponUIUpdater(); //Update the player's weapon UI
 
-            if (messageText.text != "" && messageTimer < 3.5) //If the message box is not empty
+            if (messageText.text != "" && messageTimer < 7.5) //If the message box is not empty
             {
                 messageTimer += Time.deltaTime; //Update the message timer
             }
-            else if (messageTimer >= 3.5) //If the message box is empty
+            else if (messageTimer >= 7.5) //If the message box is empty
             {
                 messageText.text = ""; //Set the message to not display
                 messageTimer = 0; //Reset the message timer

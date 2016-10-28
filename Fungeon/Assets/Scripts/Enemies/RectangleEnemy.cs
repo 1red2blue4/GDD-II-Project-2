@@ -82,6 +82,11 @@ namespace UnityStandardAssets._2D
         {
             if (!GameManager.Instance.MovingBetweenRooms)
             {
+                if (isPatrolling == true)
+                {
+                    DetectSurface();
+                }
+
                 if (playerDetected == true && (DetectLeftEdge() == true || DetectRightEdge() == true))
                 {
                     Attack();
@@ -108,7 +113,7 @@ namespace UnityStandardAssets._2D
             {
                 //Debug.Log(transform.name + " Going Right at " + rb.velocity.x);
                 rb.velocity = new Vector3(patrolSpeed, 0, 0);
-                rb.transform.position = new Vector3(transform.position.x, transform.position.y + .005f, 0);
+                //rb.transform.position = new Vector3(transform.position.x, transform.position.y + .005f, 0);
             }
 
             // turn left
@@ -123,7 +128,7 @@ namespace UnityStandardAssets._2D
             {
                 //Debug.Log(transform.name + " Going Left at" + rb.velocity.x);
                 rb.velocity = new Vector3(-patrolSpeed, 0, 0);
-                rb.transform.position = new Vector3(transform.position.x, transform.position.y + .005f, 0);
+                //rb.transform.position = new Vector3(transform.position.x, transform.position.y + .005f, 0);
             }
 
             // turn right
@@ -150,6 +155,7 @@ namespace UnityStandardAssets._2D
         /// </summary>
         public override void Attack()
         {
+            rb.gravityScale = 7.0f;
             Vector3 dist = CalcDistance();
             Vector3 offset = CalcDistance();
             Vector3 unitOffset = offset.normalized;
@@ -175,6 +181,31 @@ namespace UnityStandardAssets._2D
             theScale.x *= -1;
             this.GetComponentInChildren<SpriteRenderer>().transform.localScale = theScale;
             direction = direction * -1;
+        }
+
+        /// <summary>
+        /// projects a ray to detect if enemy is on surface
+        /// </summary>
+        public void DetectSurface()
+        {
+            Vector3 bottom = new Vector3(transform.position.x, (transform.position.y - enemySprite.bounds.size.y / 2) - 0.001f, 0);
+        
+            RaycastHit2D bottomCheck = Physics2D.Raycast(bottom, -transform.up, 0.1f);
+        
+            Debug.DrawRay(bottom, -transform.up * 0.1f, Color.white);
+            try
+            {
+                if (bottomCheck != null)
+                {
+                    transform.position = new Vector3(transform.position.x, transform.position.y + bottomCheck.distance, 0);
+       
+                    rb.gravityScale = 0.0f;
+                }
+            }
+            catch
+            {
+       
+            }
         }
 
         /// <summary>

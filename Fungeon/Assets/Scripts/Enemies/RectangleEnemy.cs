@@ -403,13 +403,16 @@ namespace UnityStandardAssets._2D
         {
             if (coll.gameObject.tag == "weapon") //If the collision is with a weapon
             {
-                if (dropPercentage[0] >= Random.Range(0, 101)) //If the drop percentage is less than the random number generated
-                {
-                    Instantiate(drops[0].gameObject, transform.position, Quaternion.identity); //Spawn in a drop
-                }
-
+                health--;
                 AudioSource.PlayClipAtPoint(dyingSound.clip, transform.position);
-                Destroy(this.gameObject); //Destroy this gameobject
+                if(health <= 0)
+                {
+                    if (dropPercentage[0] >= Random.Range(0, 101)) //If the drop percentage is less than the random number generated
+                    {
+                        Instantiate(drops[0].gameObject, transform.position, Quaternion.identity); //Spawn in a drop
+                    }
+                    Destroy(this.gameObject); //Destroy this gameobject
+                }
             }
             //if (coll.gameObject.tag == "platform")
             //{

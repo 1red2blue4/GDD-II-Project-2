@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic; //List
+using UnityEngine.SceneManagement; //Reloading scenes
 
 namespace UnityStandardAssets._2D
 {
@@ -10,6 +11,7 @@ namespace UnityStandardAssets._2D
         private List<string> orbInventory = new List<string>(); //Create a list to hold the orb items
         private bool[] activatedOrbEffect = new bool[6]; //If the orb's effect has been activated
         public AudioSource[] soundEffects;
+        private float messageTimer; //How long to display messages for
 
         public int HealthInventory //HealthInventory property
         {
@@ -50,6 +52,13 @@ namespace UnityStandardAssets._2D
             {
                 activatedOrbEffect[i] = false; //Set the orb as inactive
             }
+
+            messageTimer = 0; //Update the message timer
+        }
+
+        void Update()
+        {
+            messageTimer += Time.deltaTime; //Update the message timer
         }
 
         void OnTriggerEnter2D(Collider2D that) //If the player collides with something
@@ -81,6 +90,15 @@ namespace UnityStandardAssets._2D
                         GameManager.Instance.MainCamera.transform.position = dogPos;
                         Instantiate(GameManager.Instance.royGBivCelebrating, dogPos, Quaternion.identity);
                         Destroy(GameObject.Find("RoyGBivColorless"));
+
+                        if(messageTimer > 5)
+                        {
+                            messageTimer = 0;
+                        }
+                        else if (messageTimer > 5 && messageTimer < 6)
+                        {
+                            SceneManager.LoadScene("WinningCredits");
+                        }
                     }
                     GameManager.Instance.Checkpoint();
                 }

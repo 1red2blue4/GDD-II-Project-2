@@ -86,37 +86,7 @@ namespace UnityStandardAssets._2D
                 }
                 oldEnemies = enemies;
 
-                //if (flock.name.Contains("FlockManagerGO"))
-                //{
-                //    flock.enabled = true;
-                //    //Debug.Log(flock.GetComponentInChildren<FlockManager>().name);
-                //    //flock.GetComponentInChildren<FlockManager>().enabled = true;
-                //}
-
-                //RectangleEnemy rect = target.transform.parent.GetComponentInChildren<RectangleEnemy>();
-
-                //if (rect.name.Contains("RectangleEnemy"))
-                //{
-                //    rect.enabled = true;
-                //    //Debug.Log(flock.GetComponentInChildren<FlockManager>().name);
-                //    //flock.GetComponentInChildren<FlockManager>().enabled = true;
-                //}
-
-                ////set enemies to active
-                //TriangleEnemy[] tris = target.transform.parent.GetComponentsInChildren<TriangleEnemy>();
-
-                //for (int i = 0; i < tris.Length; i++)
-                //{
-                //    Debug.Log(tris[i].name + " tris" + i);
-                //    tris[i].gameObject.SetActive(true);
-                //}
-
-                //RectangleEnemy[] rects = target.transform.parent.GetComponentsInChildren<RectangleEnemy>();
-                //for (int i = 0; i < rects.Length; i++)
-                //{
-                //    Debug.Log(rects[i].name + " rect" + i);
-                //    rects[i].gameObject.SetActive(true);
-                //}
+                print(GameManager.Instance.Player.CurrentRoom);
             }
         }
         public void FadeBetween()

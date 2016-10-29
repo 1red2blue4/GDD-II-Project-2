@@ -82,6 +82,7 @@ namespace UnityStandardAssets._2D
                         Instantiate(GameManager.Instance.royGBivCelebrating, dogPos, Quaternion.identity);
                         Destroy(GameObject.Find("RoyGBivColorless"));
                     }
+                    GameManager.Instance.Checkpoint();
                 }
             }
         }

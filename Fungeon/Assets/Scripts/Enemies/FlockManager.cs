@@ -24,6 +24,8 @@ public class FlockManager : MonoBehaviour {
     public float minYSpawn;
     public float maxYSpawn;
 
+    public bool dead;
+
     // the FlockManagerGO's position should be the same as the same as the centroid
     private Vector3 centroid;
 
@@ -69,7 +71,7 @@ public class FlockManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	    
+        dead = false;
         // initialize any variables
         enemyFlock = new List<GameObject>();
 
@@ -121,6 +123,25 @@ public class FlockManager : MonoBehaviour {
             CalcCentroid();
         }
 	}
+
+    public void Spawn()
+    {
+        EnemyFlock.Clear();
+
+        // populate the flock of enemies
+        for (int i = 0; i < numEnemies; i++)
+        {
+            // calculate a random position around the centroid, assign each enemy a random pos
+            Vector3 randPos = new Vector3(Random.Range(this.transform.position.x - minXSpawn, this.transform.position.x + maxXSpawn),
+                                          Random.Range(this.transform.position.y - minYSpawn, this.transform.position.y + maxYSpawn),
+                                          0);
+
+            // add an enemy to the flock
+            enemyFlock.Add((GameObject)Instantiate(enemyPrefab, randPos, Quaternion.identity));
+            //enemyFlock[i].GetComponent<TriangleEnemy>().target = target;
+            //enemyFlock[i].GetComponent<TriangleEnemy>().attackRadius = attackRad;
+        }
+    }
 
     /// <summary>
     /// This method will calculate the centroid that the enemies will seek to maintain cohesion

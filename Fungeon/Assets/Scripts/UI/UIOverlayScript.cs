@@ -164,7 +164,15 @@ namespace UnityStandardAssets._2D
                 uIImages[7].color = new Color(0, 0, 0, 0); //Change the color of the sprites
                 uIImages[8].color = new Color(1, 1, 1, 0); //Change the color of the background sprites
                 uIImages[9].color = new Color(0, 0, 0, 0); //Change the color of the sprites
-                SceneManager.LoadScene(SceneManager.GetSceneAt(0).name); //Reload the scene
+                if(playerInventory.OrbInventory.Count < 1)
+                {
+                    SceneManager.LoadScene(SceneManager.GetSceneAt(0).name); //Reload the scene
+                }
+                else
+                {
+                    GameManager.Instance.Player.GetComponent<HealthTracker>().Health = 5;
+                    GameManager.Instance.Respawn();
+                }
             }
         }
 

@@ -209,9 +209,10 @@ namespace UnityStandardAssets._2D
             {
                 connectTimerStart = true;
             }
-
-            if (coll.gameObject.transform.parent.tag == "platform" && knockedback)
+            
+            if (coll.gameObject.transform.parent != null && coll.gameObject.transform.parent.tag == "platform" && knockedback)
             {
+                
                 rb.velocity = new Vector3(0, 0, 0);
             }
         }

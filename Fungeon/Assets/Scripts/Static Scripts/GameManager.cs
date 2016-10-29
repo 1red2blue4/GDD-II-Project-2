@@ -16,6 +16,7 @@ namespace UnityStandardAssets._2D
         private bool roomLoaded;
         private bool movingBetweenRooms = false;
         public int stairIndex = 0;
+        private SaveState saveState;
 
         //Variables: In The Scene
         private Camera mainCamera;
@@ -28,6 +29,7 @@ namespace UnityStandardAssets._2D
         public Sprite playerSpriteImage;
         public Sprite trumpSpriteImage;
         public GameObject royGBivCelebrating;
+        public GameObject rectangleEnemies;
 
         //Properties
         public static GameManager Instance { get { return _instance; } }
@@ -38,6 +40,7 @@ namespace UnityStandardAssets._2D
         public string ActiveColor { get { return activeColor; } set { activeColor = value; } }
         public HSBColor ActiveColorHSB { get { return new HSBColor(colors[activeColor], 1.0f, 1.0f); } }
         public bool MovingBetweenRooms { get { return movingBetweenRooms; } set { movingBetweenRooms = value; } }
+        public GameObject RectangleEnemies { get { return rectangleEnemies; } }
 
         //happens when created
         private void Awake()
@@ -187,10 +190,13 @@ namespace UnityStandardAssets._2D
                 {
                     Enemy e = (Enemy)enemiesByTag[i].GetComponent<Enemy>();
                     SpriteRenderer enemySprite = e.EnemySprite;
-                    HSBColor c = HSBColor.FromColor(enemySprite.color);
-                    c.h = colors[color];
-                    c.s = 1.0f;
-                    enemySprite.color = c.ToColor();
+                    if (enemySprite != null)
+                    {
+                        HSBColor c = HSBColor.FromColor(enemySprite.color);
+                        c.h = colors[color];
+                        c.s = 1.0f;
+                        enemySprite.color = c.ToColor();
+                    }
                 }
             }
         }
@@ -279,6 +285,38 @@ namespace UnityStandardAssets._2D
                     //breaks out of method if color isn't in dictionary.
                     return;
             }
+        }
+
+        public void Checkpoint()
+        {
+            //gathering data for save state.
+            GameObject room = GameObject.Find(player.CurrentRoom);
+            print(room);
+            GameObject level = GameObject.Find("New_Entire_Level");
+            RectangleEnemy[] rects = level.GetComponentsInChildren<RectangleEnemy>();
+            Vector3[] rectPos = new Vector3[rects.Length];
+            Transform[] parents = new Transform[rects.Length];
+            for(int i=0; i<rectPos.Length; i++)
+            {
+                rectPos[i] = rects[i].transform.position;
+                parents[i] = rects[i].transform.parent;
+            }
+            Vector2 spawnPoint = new Vector2(player.transform.position.x, player.transform.position.y);
+            FlockManager[] fm = level.GetComponentsInChildren<FlockManager>();
+            for(int i=0; i<fm.Length; i++)
+            {
+                fm[i].numEnemies = fm[i].EnemyFlock.Count;
+            }
+
+            //save state
+            saveState = new SaveState(rects, rectPos, fm, parents, spawnPoint, room);
+        }
+
+        public void Respawn()
+        {
+            saveState.Respawn();
+            player.transform.position = saveState.SpawnPoint;
+            mainCamera.transform.position = saveState.SpawnPoint;
         }
     }
 }
